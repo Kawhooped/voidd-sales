@@ -1,62 +1,121 @@
 <!DOCTYPE html>
 <html lang="en" data-qa="qa.json">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VOIDD Labs · Closer desk</title>
-<style>
-:root { --bg:#000; --panel:#0a0a0a; --ink:#f2efe8; --muted:#8b939c; --line:#2a3138; --go:#c4a35a; }
-body { margin:0; font:16px/1.5 Segoe UI,system-ui,sans-serif; color:var(--ink); background:var(--bg); }
-header { padding:.85rem 1.25rem; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; }
-header strong { color:var(--go); }
-nav a { color:var(--muted); margin-left:.85rem; text-decoration:none; font-size:.82rem; text-transform:uppercase; }
-nav a.on { color:var(--ink); }
-main { max-width:42rem; margin:0 auto; padding:1.4rem 1.15rem 3rem; }
-.sub,.note,.reach-kicker { color:var(--muted); }
-.card { background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:.85rem 1rem; margin:.55rem 0; }
-button { font:inherit; font-weight:650; border:0; border-radius:4px; padding:.5rem .85rem; background:var(--go); color:#111; cursor:pointer; }
-input, textarea { width:100%; font:inherit; background:#12161a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:.6rem .7rem; }
-.nums { display:flex; flex-wrap:wrap; gap:.4rem; margin:.4rem 0 .7rem; }
-.nums a { display:inline-block; background:var(--go); color:#111; font-weight:700; text-decoration:none; border-radius:4px; padding:.65rem .9rem; }
-.nums a.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
-.reach { margin:0 0 1rem; padding:.85rem 1rem; border:1px solid var(--line); border-radius:6px; }
-#reach-form { display:grid; grid-template-columns:1fr auto; gap:.4rem; }
-#log { min-height:10rem; max-height:46vh; overflow:auto; border:1px solid var(--line); border-radius:6px; padding:.75rem; margin:0 0 .7rem; }
-#composer { display:grid; grid-template-columns:1fr auto; gap:.4rem; }
-#tabs { display:flex; gap:.35rem; margin:0 0 1rem; }
-#tabs button { background:transparent; color:var(--ink); border:1px solid var(--line); }
-#tabs button.on { background:var(--go); color:#111; }
-.hid { display:none; }
-a { color:var(--go); }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VOIDD Labs · Closer desk</title>
+  <style>
+    :root { --bg:#000; --panel:#0a0a0a; --ink:#f2efe8; --muted:#8b939c; --line:#2a3138; --go:#c4a35a; --bad:#c45c4a; }
+    body { margin:0; font:16px/1.5 "Segoe UI",system-ui,sans-serif; color:var(--ink); background:var(--bg); }
+    header { padding:.85rem 1.25rem; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; }
+    header strong { color:var(--go); }
+    nav a { color:var(--muted); margin-left:.85rem; text-decoration:none; font-size:.82rem; text-transform:uppercase; }
+    nav a.on { color:var(--ink); }
+    main { max-width:42rem; margin:0 auto; padding:1.4rem 1.15rem 3rem; }
+    h1 { font-size:1.4rem; }
+    .sub,.note,.reach-kicker,.tag { color:var(--muted); }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:.85rem 1rem; margin:.55rem 0; }
+    button { font:inherit; font-weight:650; border:0; border-radius:4px; padding:.5rem .85rem; background:var(--go); color:#111; cursor:pointer; }
+    button.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
+    input, textarea { width:100%; font:inherit; background:#12161a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:.6rem .7rem; }
+    .nums { display:flex; flex-wrap:wrap; gap:.4rem; margin:.4rem 0 .7rem; }
+    .nums a { display:inline-block; background:var(--go); color:#111; font-weight:700; text-decoration:none; border-radius:4px; padding:.65rem .9rem; }
+    .nums a.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
+    .reach { margin:0 0 1rem; padding:.85rem 1rem; border:1px solid var(--line); border-radius:6px; }
+    #reach-form { display:grid; grid-template-columns:1fr auto; gap:.4rem; }
+    #log { min-height:10rem; max-height:46vh; overflow:auto; border:1px solid var(--line); border-radius:6px; padding:.75rem; margin:0 0 .7rem; }
+    #composer { display:grid; grid-template-columns:1fr auto; gap:.4rem; }
+    #tabs { display:flex; gap:.35rem; margin:0 0 1rem; }
+    #tabs button { background:transparent; color:var(--ink); border:1px solid var(--line); }
+    #tabs button.on { background:var(--go); color:#111; }
+    .hid { display:none; }
+    a { color:var(--go); }
+  </style>
 </head>
 <body>
-<header><div>VOIDD Labs <strong>Closer portal</strong></div>
-<nav><a href="portal.html" class="on">Desk</a> <a href="terms.html">Terms</a> <a href="#" id="out">Log out</a></nav></header>
-<main>
-<h1>Your desk</h1>
-<p class="sub" id="who-line">$7,500 once. You close. We install. The shop calls.</p>
-<div id="reach"></div>
-<div id="tabs"><button type="button" class="on" data-pane="ask">Ask</button><button type="button" data-pane="pack">Full pack</button></div>
-<section id="pane-ask"><div id="log"></div><form id="composer"><input id="q" placeholder="e.g. When do I get paid?" /><button type="submit">Ask</button></form></section>
-<section id="pane-pack" class="hid"><input id="find" type="search" placeholder="Search the pack…" /><div id="list"></div></section>
-</main>
-<script src="closer.js"></script>
-<script>
-VOIDDCloser.needAuth();
-document.getElementById("out").onclick=function(e){e.preventDefault();VOIDDCloser.clear();location.replace("index.html");};
-var s=VOIDDCloser.session()||{};
-if(s.name) document.getElementById("who-line").textContent=s.name+" · "+(s.phone||"");
-document.getElementById("reach").innerHTML=VOIDDCloser.contactHtml();
-VOIDDCloser.bindContact(document.getElementById("reach"));
-var pack={items:[],pitch:"",collect:"",phone:"786-660-1778"};
-function esc(t){return String(t).replace(/[&<>]/g,function(c){return {"&":"&","<":"<",">":">"}[c];});}
-function add(html){var m=document.createElement("div");m.innerHTML=html;document.getElementById("log").appendChild(m);document.getElementById("log").scrollTop=99999;}
-function score(q,it){var w=q.toLowerCase().split(/\s+/).filter(function(x){return x.length>2;});var hay=(it.q+" "+it.a).toLowerCase(),n=0;w.forEach(function(x){if(hay.indexOf(x)>=0)n++;});return n;}
-function ask(q){q=(q||"").trim();if(!q)return;add("<b>You</b><p>"+esc(q)+"</p>");var ranked=pack.items.map(function(it){return {it:it,s:score(q,it)};}).filter(function(x){return x.s>0;});ranked.sort(function(a,b){return b.s-a.s;});if(!ranked.length){add("<p>Not in the pack. Call or text Danny "+esc(pack.phone)+".</p><p>"+esc(pack.pitch)+"</p>");}else{var h="";ranked.slice(0,3).forEach(function(x){h+="<p><b>"+esc(x.it.q)+"</b><br>"+esc(x.it.a)+"</p>";});add(h);}document.getElementById("q").value="";}
-document.getElementById("composer").onsubmit=function(e){e.preventDefault();ask(document.getElementById("q").value);};
-document.getElementById("tabs").onclick=function(e){var b=e.target.closest("button");if(!b)return;document.querySelectorAll("#tabs button").forEach(function(x){x.classList.toggle("on",x===b);});var p=b.getAttribute("data-pane");document.getElementById("pane-ask").classList.toggle("hid",p!=="ask");document.getElementById("pane-pack").classList.toggle("hid",p!=="pack");};
-document.getElementById("find").oninput=function(){var q=this.value.toLowerCase(),list=document.getElementById("list");list.innerHTML="";pack.items.forEach(function(it){if(q&&(it.q+it.a).toLowerCase().indexOf(q)<0)return;var d=document.createElement("article");d.className="card";d.innerHTML="<p><b></b></p><p></p>";d.querySelector("b").textContent=it.q;d.querySelectorAll("p")[1].textContent=it.a;list.appendChild(d);});};
-fetch("qa.json").then(function(r){return r.json();}).then(function(j){pack=j;add("<p>"+esc(j.pitch||"")+"</p><p>Ask how much, when you get paid, what to collect. Call 786-660-1778 if it is not in the pack.</p>");document.getElementById("find").dispatchEvent(new Event("input"));});
-</script>
-</body></html>
+  <header>
+    <div>VOIDD Labs <strong>Closer portal</strong></div>
+    <nav>
+      <a href="portal.html" class="on">Desk</a>
+      <a href="terms.html">Terms</a>
+      <a href="#" id="out">Log out</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Your desk</h1>
+    <p class="sub" id="who-line">$7,500 once. You close. We install. The shop calls.</p>
+    <div id="reach"></div>
+    <div id="tabs">
+      <button type="button" class="on" data-pane="ask">Ask</button>
+      <button type="button" data-pane="pack">Full pack</button>
+    </div>
+    <section id="pane-ask">
+      <div id="log"></div>
+      <form id="composer"><input id="q" placeholder="e.g. When do I get paid?" /><button type="submit">Ask</button></form>
+    </section>
+    <section id="pane-pack" class="hid">
+      <input id="find" type="search" placeholder="Search the pack…" />
+      <div id="list"></div>
+    </section>
+  </main>
+  <script src="closer.js"></script>
+  <script>
+    VOIDDCloser.needAuth();
+    document.getElementById("out").onclick = function (e) { e.preventDefault(); VOIDDCloser.clear(); location.replace("index.html"); };
+    var s = VOIDDCloser.session() || {};
+    if (s.name) document.getElementById("who-line").textContent = s.name + " · " + (s.phone || "");
+    document.getElementById("reach").innerHTML = VOIDDCloser.contactHtml();
+    VOIDDCloser.bindContact(document.getElementById("reach"));
+    var pack = { items: [], pitch: "", collect: "", phone: "786-660-1778" };
+    function esc(t) { return String(t).replace(/[&<>]/g, function (c) { return ({ "&":"&amp;","<":"&lt;",">":"&gt;" })[c]; }); }
+    function add(kind, html) {
+      var m = document.createElement("div"); m.className = "msg"; m.innerHTML = html;
+      document.getElementById("log").appendChild(m);
+      document.getElementById("log").scrollTop = 99999;
+    }
+    function score(q, it) {
+      var w = q.toLowerCase().split(/\s+/).filter(function (x) { return x.length > 2; });
+      var hay = (it.q + " " + it.a).toLowerCase(); var n = 0;
+      w.forEach(function (x) { if (hay.indexOf(x) >= 0) n++; });
+      return n;
+    }
+    function ask(q) {
+      q = (q || "").trim(); if (!q) return;
+      add("me", "<b>You</b><p>" + esc(q) + "</p>");
+      var ranked = pack.items.map(function (it) { return { it: it, s: score(q, it) }; }).filter(function (x) { return x.s > 0; });
+      ranked.sort(function (a, b) { return b.s - a.s; });
+      if (!ranked.length || ranked[0].s < 1) {
+        add("desk", "<p>Not in the pack. Call or text Danny " + esc(pack.phone) + ".</p><p>" + esc(pack.pitch) + "</p>");
+      } else {
+        var h = "";
+        ranked.slice(0, 3).forEach(function (x) { h += "<p><b>" + esc(x.it.q) + "</b><br>" + esc(x.it.a) + "</p>"; });
+        add("desk", h);
+      }
+      document.getElementById("q").value = "";
+    }
+    document.getElementById("composer").onsubmit = function (e) { e.preventDefault(); ask(document.getElementById("q").value); };
+    document.getElementById("tabs").onclick = function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      document.querySelectorAll("#tabs button").forEach(function (x) { x.classList.toggle("on", x === b); });
+      var p = b.getAttribute("data-pane");
+      document.getElementById("pane-ask").classList.toggle("hid", p !== "ask");
+      document.getElementById("pane-pack").classList.toggle("hid", p !== "pack");
+    };
+    document.getElementById("find").oninput = function () {
+      var q = this.value.toLowerCase(); var list = document.getElementById("list"); list.innerHTML = "";
+      pack.items.forEach(function (it) {
+        if (q && (it.q + it.a).toLowerCase().indexOf(q) < 0) return;
+        var d = document.createElement("article"); d.className = "card";
+        d.innerHTML = "<p><b></b></p><p></p>";
+        d.querySelector("b").textContent = it.q; d.querySelectorAll("p")[1].textContent = it.a;
+        list.appendChild(d);
+      });
+    };
+    fetch("qa.json").then(function (r) { return r.json(); }).then(function (j) {
+      pack = j;
+      add("desk", "<p>" + esc(j.pitch || "") + "</p><p>Ask how much, when you get paid, what to collect. Call 786-660-1778 if it is not in the pack.</p>");
+      document.getElementById("find").dispatchEvent(new Event("input"));
+    });
+  </script>
+</body>
+</html>
