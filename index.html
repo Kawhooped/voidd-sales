@@ -14,7 +14,7 @@
     nav a.on, nav a:hover { color:var(--ink); }
     main { max-width:28rem; margin:0 auto; padding:1.4rem 1.15rem 3.5rem; }
     h1 { font-size:1.55rem; font-weight:600; margin:.15rem 0 .45rem; }
-    .sub,.note,.reach-kicker { color:var(--muted); }
+    .sub,.note,.reach-kicker,.office { color:var(--muted); }
     .card { background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:1rem 1.1rem; margin:.65rem 0; }
     label { display:block; font-size:.78rem; color:var(--muted); margin:.55rem 0 .2rem; }
     input, textarea { width:100%; font:inherit; background:#12161a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:.65rem .75rem; }
@@ -23,10 +23,10 @@
     .row { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.5rem; }
     .err { color:var(--bad); }
     a { color:var(--go); }
-    .nums { display:flex; flex-wrap:wrap; gap:.4rem; margin:.4rem 0 .7rem; }
-    .nums a { display:inline-block; background:var(--go); color:#111; font-weight:700; text-decoration:none; border-radius:4px; padding:.65rem .9rem; }
-    .nums a.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
-    #reach-form { display:grid; gap:.4rem; }
+    .reach { margin-top:1.2rem; }
+    .wren-log { max-height:22vh; overflow:auto; }
+    .wmsg span { font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--go); }
+    #reach-form { display:grid; grid-template-columns:1fr auto; gap:.4rem; }
   </style>
 </head>
 <body>
@@ -48,7 +48,7 @@
       <label>Password (you create, 6+)</label><input id="password" type="password" autocomplete="new-password" minlength="6" required />
       <p><label style="display:flex;gap:.5rem;align-items:flex-start;margin-top:.6rem">
         <input id="terms" type="checkbox" style="width:auto;margin-top:.2rem" />
-        <span>I am 18+, independent (1099), and I accept the <a href="terms.html">closer terms</a>: 20% after the shop pays VOIDD, no leads supplied, no exclusive, no website = walk, handshake is not a check.</span>
+        <span>I am 18+, independent (1099), and I accept the <a href="terms.html">closer terms</a>.</span>
       </label></p>
       <p class="row"><button type="submit">Get started</button></p>
       <p id="up-err" class="err"></p>
@@ -65,8 +65,8 @@
   <script src="closer.js"></script>
   <script>
     if (VOIDDCloser.session()) location.replace("portal.html");
-    document.getElementById("reach").innerHTML = VOIDDCloser.contactHtml();
-    VOIDDCloser.bindContact(document.getElementById("reach"));
+    document.getElementById("reach").innerHTML = VOIDDCloser.wrenHtml();
+    VOIDDCloser.bindWren(document.getElementById("reach"));
     document.getElementById("up").onsubmit = function (e) {
       e.preventDefault();
       var err = document.getElementById("up-err"); err.textContent = "";
