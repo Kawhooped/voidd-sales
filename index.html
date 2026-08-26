@@ -4,29 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VOIDD Labs · Closer portal</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
-    :root { --bg:#000; --panel:#0a0a0a; --ink:#f2efe8; --muted:#8b939c; --line:#2a3138; --go:#c4a35a; --bad:#c45c4a; }
-    * { box-sizing: border-box; }
-    body { margin:0; font:16px/1.5 "Segoe UI",system-ui,sans-serif; color:var(--ink); background:var(--bg); }
-    header { padding:.85rem 1.25rem; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
-    header strong { color:var(--go); }
-    nav a { color:var(--muted); margin-left:.85rem; text-decoration:none; font-size:.82rem; text-transform:uppercase; }
-    nav a.on, nav a:hover { color:var(--ink); }
-    main { max-width:28rem; margin:0 auto; padding:1.4rem 1.15rem 3.5rem; }
-    h1 { font-size:1.55rem; font-weight:600; margin:.15rem 0 .45rem; }
-    .sub,.note,.reach-kicker,.office { color:var(--muted); }
-    .card { background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:1rem 1.1rem; margin:.65rem 0; }
-    label { display:block; font-size:.78rem; color:var(--muted); margin:.55rem 0 .2rem; }
-    input, textarea { width:100%; font:inherit; background:#12161a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:.65rem .75rem; }
-    button,.btn { font:inherit; font-weight:650; border:0; border-radius:4px; padding:.55rem .95rem; background:var(--go); color:#111; cursor:pointer; text-decoration:none; display:inline-block; }
-    button.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
-    .row { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.5rem; }
-    .err { color:var(--bad); }
-    a { color:var(--go); }
-    .reach { margin-top:1.2rem; }
-    .wren-log { max-height:22vh; overflow:auto; }
-    .wmsg span { font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--go); }
-    #reach-form { display:grid; grid-template-columns:1fr auto; gap:.4rem; }
+    main { max-width: 28rem; }
+    .reach { margin-top: 1.2rem; }
+    .reach-kicker, .note { color: var(--muted); font-size: .88rem; }
+    .nums { display: flex; flex-wrap: wrap; gap: .4rem; margin: .4rem 0 .7rem; }
+    .nums a {
+      display: inline-block; background: var(--go); color: #111; font-weight: 700;
+      text-decoration: none; border-radius: 4px; padding: .65rem .9rem;
+    }
+    .nums a.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+    #reach-form { display: grid; gap: .4rem; }
+    .okline { color: #9cba7a; }
+    .err { color: var(--bad); }
+    .toggle { color: var(--muted); font-size: .9rem; }
   </style>
 </head>
 <body>
@@ -39,27 +31,36 @@
   </header>
   <main>
     <h1>Close $7,500 installs. Keep $1,500.</h1>
-    <p class="sub">You sell. We install. The shop calls. Sign up in one screen — then the pack is open.</p>
+    <p class="sub">You sell. We install. The shop calls. Sign up — then Today tells you the next shop, the next call, the collect pack.</p>
+
     <form class="card" id="up">
       <p><b>Create your account</b> — you pick the password. We don’t invent one.</p>
-      <label>Name</label><input id="name" autocomplete="name" required />
-      <label>Phone</label><input id="phone" type="tel" autocomplete="tel" required />
-      <label>Email</label><input id="email" type="email" autocomplete="email" required />
-      <label>Password (you create, 6+)</label><input id="password" type="password" autocomplete="new-password" minlength="6" required />
+      <label>Name</label>
+      <input id="name" name="name" autocomplete="name" required />
+      <label>Phone</label>
+      <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+      <label>Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required />
+      <label>Password (you create, 6+)</label>
+      <input id="password" name="password" type="password" autocomplete="new-password" minlength="6" required />
       <p><label style="display:flex;gap:.5rem;align-items:flex-start;margin-top:.6rem">
         <input id="terms" type="checkbox" style="width:auto;margin-top:.2rem" />
-        <span>I am 18+, independent (1099), and I accept the <a href="terms.html">closer terms</a>.</span>
+        <span>I am 18+, independent (1099), and I accept the <a href="terms.html">closer terms</a>: 20% after the shop pays VOIDD, no leads supplied, no exclusive, no website = walk, handshake is not a check.</span>
       </label></p>
       <p class="row"><button type="submit">Get started</button></p>
       <p id="up-err" class="err"></p>
     </form>
+
     <form class="card" id="in">
       <p><b>Already in?</b></p>
-      <label>Email</label><input id="in-email" type="email" autocomplete="username" />
-      <label>Password</label><input id="in-pass" type="password" autocomplete="current-password" />
+      <label>Email</label>
+      <input id="in-email" type="email" autocomplete="username" />
+      <label>Password</label>
+      <input id="in-pass" type="password" autocomplete="current-password" />
       <p class="row"><button type="submit" class="ghost">Log in</button></p>
       <p id="in-err" class="err"></p>
     </form>
+
     <div id="reach"></div>
   </main>
   <script src="closer.js"></script>
@@ -67,26 +68,29 @@
     if (VOIDDCloser.session()) location.replace("portal.html");
     document.getElementById("reach").innerHTML = VOIDDCloser.wrenHtml();
     VOIDDCloser.bindWren(document.getElementById("reach"));
+
     document.getElementById("up").onsubmit = function (e) {
       e.preventDefault();
-      var err = document.getElementById("up-err"); err.textContent = "";
+      const err = document.getElementById("up-err");
+      err.textContent = "";
       VOIDDCloser.signup({
         name: document.getElementById("name").value,
         phone: document.getElementById("phone").value,
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
-        terms: document.getElementById("terms").checked
+        terms: document.getElementById("terms").checked,
       }).then(function (j) {
         if (j && j.ok) location.replace("portal.html");
-        else err.textContent = (j && j.error) || "Call 786-660-1778.";
+        else err.textContent = (j && j.error) || "Couldn’t start. Call 786-660-1778.";
       });
     };
     document.getElementById("in").onsubmit = function (e) {
       e.preventDefault();
-      var err = document.getElementById("in-err"); err.textContent = "";
+      const err = document.getElementById("in-err");
+      err.textContent = "";
       VOIDDCloser.login({
         email: document.getElementById("in-email").value,
-        password: document.getElementById("in-pass").value
+        password: document.getElementById("in-pass").value,
       }).then(function (j) {
         if (j && j.ok) location.replace("portal.html");
         else err.textContent = (j && j.error) || "Call 786-660-1778.";

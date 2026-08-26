@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VOIDD Labs · Confirm email</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div>VOIDD Labs <strong>Confirm</strong></div>
+    <nav><a href="index.html">Join</a> <a href="portal.html">Desk</a></nav>
+  </header>
+  <main>
+    <h1>Email confirmation</h1>
+    <p class="sub" id="out">Checking the link…</p>
+    <p class="row"><a class="btn" href="portal.html">Open your desk</a></p>
+  </main>
+  <script>
+    const t = new URLSearchParams(location.search).get("t") || "";
+    const out = document.getElementById("out");
+    if (!t) { out.textContent = "Missing link. Sign in again and we will send a new confirm mail."; }
+    else {
+      fetch("/api/closer/confirm?t=" + encodeURIComponent(t)).then(function (r) { return r.json(); }).then(function (j) {
+        if (j && j.ok) out.textContent = "Confirmed. Your desk is open.";
+        else out.textContent = (j && j.error) || "Link expired. Log in again to get a new mail.";
+      }).catch(function () { out.textContent = "Could not confirm here. Use the local desk or text 786-660-1778."; });
+    }
+  </script>
+</body>
+</html>
