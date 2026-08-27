@@ -55,4 +55,14 @@
       + "</ol>";
     host.parentNode.insertBefore(art, host.nextSibling);
   }
+  if (host && !document.getElementById("outside-world")) {
+    var cmp = document.createElement("article");
+    cmp.className = "card";
+    cmp.id = "outside-world";
+    cmp.innerHTML = "<h2>If they compare</h2>"
+      + "<p><b>Jobber / Housecall / a $59 app:</b> that’s a subscription. This is a one-time install on the site they already have. Don’t discount.</p>"
+      + "<p><b>A form / Wix:</b> the box does not hit the phone they check, stop a double job, or sit until they called a test lead.</p>"
+      + "<p><b>An answering service:</b> that’s the phone. We catch people already on their website. If they want a receptionist, walk.</p>";
+    host.parentNode.appendChild(cmp);
+  }
 })(window);
