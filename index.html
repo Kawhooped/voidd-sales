@@ -61,6 +61,18 @@
       <p id="in-err" class="err"></p>
     </form>
 
+    <form class="card" id="pw">
+      <p><b>Set a new password</b> — same email and phone you signed up with. You pick it. We don’t invent one. This page and the local desk do not share accounts.</p>
+      <label>Email</label>
+      <input id="pw-email" type="email" autocomplete="username" />
+      <label>Phone</label>
+      <input id="pw-phone" type="tel" autocomplete="tel" />
+      <label>New password (you create, 6+)</label>
+      <input id="pw-pass" type="password" autocomplete="new-password" minlength="6" />
+      <p class="row"><button type="submit" class="ghost">Save password</button></p>
+      <p id="pw-err" class="err"></p>
+    </form>
+
     <div id="reach"></div>
   </main>
   <script src="closer.js"></script>
@@ -68,6 +80,12 @@
     if (VOIDDCloser.session()) location.replace("portal.html");
     document.getElementById("reach").innerHTML = VOIDDCloser.wrenHtml();
     VOIDDCloser.bindWren(document.getElementById("reach"));
+    if (!VOIDDCloser.LOCAL) {
+      var note = document.createElement("p");
+      note.className = "note";
+      note.textContent = "This Pages copy keeps you in this browser. We do not store the password here. The local desk on :8875 is the real account.";
+      document.getElementById("up").appendChild(note);
+    }
 
     document.getElementById("up").onsubmit = function (e) {
       e.preventDefault();
@@ -91,6 +109,19 @@
       VOIDDCloser.login({
         email: document.getElementById("in-email").value,
         password: document.getElementById("in-pass").value,
+      }).then(function (j) {
+        if (j && j.ok) location.replace("portal.html");
+        else err.textContent = (j && j.error) || "Call 786-660-1778.";
+      });
+    };
+    document.getElementById("pw").onsubmit = function (e) {
+      e.preventDefault();
+      const err = document.getElementById("pw-err");
+      err.textContent = "";
+      VOIDDCloser.setPassword({
+        email: document.getElementById("pw-email").value,
+        phone: document.getElementById("pw-phone").value,
+        password: document.getElementById("pw-pass").value,
       }).then(function (j) {
         if (j && j.ok) location.replace("portal.html");
         else err.textContent = (j && j.error) || "Call 786-660-1778.";
