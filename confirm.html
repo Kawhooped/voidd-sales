@@ -16,15 +16,27 @@
     <p class="sub" id="out">Checking the link…</p>
     <p class="row"><a class="btn" href="portal.html">Open your desk</a></p>
   </main>
+  <script src="closer.js"></script>
   <script>
     const t = new URLSearchParams(location.search).get("t") || "";
     const out = document.getElementById("out");
-    if (!t) { out.textContent = "Missing link. Sign in again and we will send a new confirm mail."; }
+    if (!t) { out.textContent = "Missing link. Sign in again and copy a new confirm link from the desk."; }
     else {
       fetch("/api/closer/confirm?t=" + encodeURIComponent(t)).then(function (r) { return r.json(); }).then(function (j) {
-        if (j && j.ok) out.textContent = "Confirmed. Your desk is open.";
-        else out.textContent = (j && j.error) || "Link expired. Log in again to get a new mail.";
-      }).catch(function () { out.textContent = "Could not confirm here. Use the local desk or text 786-660-1778."; });
+        if (j && j.ok) {
+          if (window.VOIDDCloser && VOIDDCloser.session()) {
+            const s = VOIDDCloser.session(); s.confirmed = true; VOIDDCloser.save(s);
+          }
+          out.textContent = "Confirmed. Your desk is open.";
+        } else out.textContent = (j && j.error) || "Link expired. Sign in again.";
+      }).catch(function () {
+        if (window.VOIDDCloser && VOIDDCloser.confirmLocal) {
+          const j = VOIDDCloser.confirmLocal(t);
+          out.textContent = j.ok ? "Confirmed. Your desk is open." : (j.error || "Open this link on the same browser you signed up in.");
+          return;
+        }
+        out.textContent = "Could not confirm here. Text 786-660-1778.";
+      });
     }
   </script>
 </body>
