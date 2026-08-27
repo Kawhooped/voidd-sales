@@ -15,7 +15,13 @@
         chunks.forEach(function (c) { (c.items || []).forEach(function (it) { items.push(it); }); });
         if (!items.length) return pack;
         const head = chunks.filter(function (c) { return c && c.phone; })[0] || pack;
-        return Object.assign({}, head, { items: items });
+        pack.items = items;
+        pack.phone = head.phone || pack.phone;
+        pack.who = head.who || pack.who;
+        pack.pitch = head.pitch || pack.pitch;
+        pack.pitchEs = head.pitchEs || pack.pitchEs;
+        pack.collect = head.collect || pack.collect;
+        return pack;
       });
     });
   };
