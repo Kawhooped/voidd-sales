@@ -4,37 +4,60 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VOIDD Labs · Closer desk</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
-    :root { --bg:#000; --panel:#0a0a0a; --ink:#f2efe8; --muted:#8b939c; --line:#2a3138; --go:#c4a35a; --bad:#c45c4a; }
-    body { margin:0; font:16px/1.5 "Segoe UI",system-ui,sans-serif; color:var(--ink); background:var(--bg); }
-    header { padding:.85rem 1.25rem; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; }
-    header strong { color:var(--go); }
-    nav a { color:var(--muted); margin-left:.85rem; text-decoration:none; font-size:.82rem; text-transform:uppercase; }
-    nav a.on { color:var(--ink); }
-    main { max-width:42rem; margin:0 auto; padding:1.4rem 1.15rem 3rem; }
-    h1 { font-size:1.4rem; }
-    .sub,.note,.reach-kicker,.tag { color:var(--muted); }
-    .card { background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:.85rem 1rem; margin:.55rem 0; }
-    button { font:inherit; font-weight:650; border:0; border-radius:4px; padding:.5rem .85rem; background:var(--go); color:#111; cursor:pointer; }
-    button.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
-    input, textarea { width:100%; font:inherit; background:#12161a; color:var(--ink); border:1px solid var(--line); border-radius:4px; padding:.6rem .7rem; }
-    .nums { display:flex; flex-wrap:wrap; gap:.4rem; margin:.4rem 0 .7rem; }
-    .nums a { display:inline-block; background:var(--go); color:#111; font-weight:700; text-decoration:none; border-radius:4px; padding:.65rem .9rem; }
-    .nums a.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
-    .reach { margin:0 0 1rem; padding:.85rem 1rem; border:1px solid var(--line); border-radius:6px; }
-    #reach-form { display:grid; grid-template-columns:1fr auto; gap:.4rem; }
-    #log { min-height:10rem; max-height:46vh; overflow:auto; border:1px solid var(--line); border-radius:6px; padding:.75rem; margin:0 0 .7rem; }
-    #composer { display:grid; grid-template-columns:1fr auto; gap:.4rem; }
-    #tabs { display:flex; gap:.35rem; margin:0 0 1rem; }
-    #tabs button { background:transparent; color:var(--ink); border:1px solid var(--line); }
-    #tabs button.on { background:var(--go); color:#111; }
-    .hid { display:none; }
-    a { color:var(--go); }
+    main { max-width: 52rem; }
+    #now-strip {
+      position: sticky; top: 0; z-index: 6;
+      background: #0a0a0a; border: 1px solid var(--go);
+      padding: .8rem .95rem; border-radius: 6px; margin: 0 0 1rem;
+    }
+    #now-title { text-transform: none; letter-spacing: -0.02em; font-size: 1.2rem; color: var(--ink); margin: .15rem 0 .25rem; }
+    #menus { display: flex; flex-direction: column; gap: .45rem; margin: 0 0 1rem; }
+    .menu-row { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+    .menu-row em {
+      font-style: normal; font-size: .68rem; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--muted); width: 3.6rem;
+    }
+    #menus button {
+      background: transparent; color: var(--ink); border: 1px solid var(--line);
+      font-weight: 650; padding: .4rem .7rem;
+    }
+    #menus button.on { background: var(--go); color: #111; border-color: var(--go); }
+    .hid { display: none; }
+    .reach { margin: 0 0 1rem; padding: .85rem 1rem; border: 1px solid var(--line); border-radius: 6px; background: #0a0a0a; }
+    .reach-kicker, .note, .office { color: var(--muted); font-size: .88rem; }
+    .office a { color: var(--go); }
+    .wren-log { max-height: 28vh; overflow: auto; margin: .4rem 0 .6rem; }
+    .wmsg { margin: 0 0 .55rem; }
+    .wmsg span { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--go); }
+    .wmsg p { margin: .15rem 0 0; white-space: pre-wrap; }
+    #reach-form { display: grid; grid-template-columns: 1fr auto; gap: .4rem; }
+    pre.say { white-space: pre-wrap; font: inherit; background: #12161a; border: 1px solid var(--line); border-radius: 4px; padding: .8rem; }
+    .banner { border: 1px solid var(--go); padding: .7rem .85rem; border-radius: 6px; margin: 0 0 1rem; }
+    label { margin-top: .45rem; }
+    .loop { display: flex; flex-wrap: wrap; gap: .3rem; margin: .4rem 0 1rem; }
+    .loop span {
+      border: 1px solid var(--line); border-radius: 4px;
+      padding: .25rem .55rem; font-size: .75rem; color: var(--muted);
+    }
+    .loop span.on { background: var(--go); color: #111; border-color: var(--go); }
+    .shop-card.current { border-color: var(--go); }
+    .obj { cursor: pointer; }
+    .obj p.ans { display: none; margin: .4rem 0 0; }
+    .obj.open p.ans { display: block; }
+    #add-shop { display: grid; gap: .35rem; }
+    .sku-card.reg { border-color: var(--go); }
+    .sku-card .cut { color: var(--go); font-weight: 650; }
+    @media (max-width: 640px) {
+      .menu-row em { width: 100%; }
+      #now-strip { position: static; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <div>VOIDD Labs <strong>Closer portal</strong></div>
+    <div>VOIDD Labs <strong>Closer desk</strong></div>
     <nav>
       <a href="portal.html" class="on">Desk</a>
       <a href="terms.html">Terms</a>
@@ -42,80 +65,226 @@
     </nav>
   </header>
   <main>
-    <h1>Your desk</h1>
-    <p class="sub" id="who-line">$7,500 once. You close. We install. The shop calls.</p>
-    <div id="reach"></div>
-    <div id="tabs">
-      <button type="button" class="on" data-pane="ask">Ask</button>
-      <button type="button" data-pane="pack">Full pack</button>
+    <h1 id="desk-h1">You sell. We install. The shop calls.</h1>
+    <p class="sub" id="who-line">$7,500 Lead Response · 20% after they pay us · handshake is not a check.</p>
+    <p class="banner hid" id="confirm-banner">
+      Confirm this email. If mail did not send, copy the link and open it — no code, no invented password.
+      <span class="row" style="margin-top:.4rem">
+        <button type="button" class="ghost" id="copy-confirm">Copy confirm link</button>
+        <button type="button" class="ghost" id="resend-confirm">New link</button>
+      </span>
+    </p>
+    <div id="now-strip">
+      <p class="reach-kicker" id="now-kicker">Next</p>
+      <p id="now-title">Add one shop with a live website</p>
+      <p class="sub" id="now-body">No site = walk.</p>
+      <p class="row" id="now-actions"></p>
     </div>
-    <section id="pane-ask">
-      <div id="log"></div>
-      <form id="composer"><input id="q" placeholder="e.g. When do I get paid?" /><button type="submit">Ask</button></form>
+    <div id="menus">
+      <div class="menu-row">
+        <em>Start</em>
+        <button type="button" class="on" data-pane="home">Home</button>
+        <button type="button" data-pane="packages">Packages</button>
+        <button type="button" data-pane="pay">Pay</button>
+      </div>
+      <div class="menu-row">
+        <em>Work</em>
+        <button type="button" data-pane="today">Today</button>
+        <button type="button" data-pane="shops">Shops</button>
+        <button type="button" data-pane="qualify">Qualify</button>
+        <button type="button" data-pane="calls">Call</button>
+        <button type="button" data-pane="texts">Text</button>
+        <button type="button" data-pane="collect">Collect</button>
+      </div>
+      <div class="menu-row">
+        <em>Say</em>
+        <button type="button" data-pane="say">Pitch</button>
+        <button type="button" data-pane="objections">Objections</button>
+        <button type="button" data-pane="services">Services</button>
+        <button type="button" data-pane="pack">Answers</button>
+        <button type="button" data-pane="wren">Wren</button>
+        <button type="button" data-pane="office">Office</button>
+      </div>
+    </div>
+    <section id="pane-home">
+      <article class="card"><h2>What this is</h2>
+        <p>VOIDD Labs installs <b>after-hours Lead Response</b> on a shop that already has a website. A visitor leaves name and phone when the shop can’t pick up. It hits the inbox they actually check. They are never told they’re booked. <b>The shop calls.</b> You close. We install. You do not install.</p>
+        <p>One time. Not ads. Not a new site. Not a call center. No website = walk.</p></article>
+      <article class="card"><h2>How you get paid</h2>
+        <p><b>Shop pays VOIDD, not you.</b> When that money is in, your 20% shows <b>on your account</b> (Lead Response: $1,500 of $7,500). We <b>issue it to you after it clears</b>. Handshake is not a check. $0 issued until then.</p></article>
+      <article class="card"><h2>Register for what you sell</h2>
+        <p class="note">Start with Lead Response. Intake and Ops are the same shop, later. You do not quote $75k as a product.</p>
+        <div id="home-skus"></div>
+        <p class="row" style="margin-top:.7rem"><button type="button" id="go-desk">Open the desk</button></p></article>
+      <article class="card"><h2>Then what</h2>
+        <p>You find the shops. We do not send a lead list. Add a live URL. Four questions. One prepared call. One follow-up, then stop. Fill collect 1–11. Text the office 786-660-1778. They create the login.</p></article>
+    </section>
+    <section id="pane-packages" class="hid">
+      <p class="sub">Tap Register on a package you will sell. Office sees it. Lead Response is the one that pays this week.</p>
+      <div id="pkg-list"></div>
+      <article class="card"><h2>Not for sale</h2>
+        <p>A new website. Ads / SEO / Google ranking. We answer the phone. A lead-volume guarantee. $75k as in-house. A password you made up.</p></article>
+    </section>
+    <section id="pane-pay" class="hid">
+      <article class="card"><h2>When money moves</h2>
+        <ol>
+          <li>Send collect. Invoice the shop (email below). They pay <b>VOIDD Labs</b>, not you.</li>
+          <li>We install. They call a test lead.</li>
+          <li>You may report that they paid. Do not type card numbers. Office gets the full pack + pay note.</li>
+          <li>When VOIDD has the money, your 20% is <b>on your account</b>. We issue it after that payment clears.</li>
+        </ol>
+        <p class="note" id="pay-stats">$0 paid. Handshake is not a check.</p></article>
+      <div id="deal-list"></div>
+      <article class="card"><h2>Email the shop an invoice</h2>
+        <p class="note">No card box on this desk. Card numbers to a closer is how you get robbed. They pay VOIDD: 786-660-1778.</p>
+        <label>Which deal</label><select id="inv-deal"></select>
+        <label>Shop email</label><input id="inv-email" type="email" placeholder="owner@shop.com" />
+        <p class="row"><button type="button" id="inv-mail">Open email to shop</button>
+          <button type="button" class="ghost" id="inv-copy">Copy invoice</button></p>
+        <pre class="say hid" id="inv-out"></pre></article>
+      <article class="card"><h2>Report that they paid VOIDD</h2>
+        <p class="note">This is not taking a card. Office still has to mark paid.</p>
+        <label>Deal</label><select id="pay-deal"></select>
+        <label>How they paid VOIDD</label>
+        <select id="pay-method"><option value="zelle">Zelle</option><option value="wire">Wire</option><option value="check">Check</option><option value="other">Other (not a card number)</option></select>
+        <label>Amount they sent (dollars)</label><input id="pay-amt" inputmode="numeric" placeholder="7500" />
+        <label>Reference (memo / last name — not a card)</label><input id="pay-ref" placeholder="Zelle from Coastal Air" />
+        <p class="row"><button type="button" id="pay-report">Report to office</button></p>
+        <p class="note" id="pay-report-err"></p></article>
+    </section>
+    <section id="pane-today" class="hid">
+      <p class="note" id="today-stats"></p>
+      <div class="loop"><span data-step="0">1 Find</span><span data-step="1">2 Qualify</span><span data-step="2">3 Call</span><span data-step="3">4 Follow once</span><span data-step="4">5 Collect → office</span></div>
+      <article class="card"><h2>In play</h2><p id="active-shop">No shop in play — add one.</p>
+        <p class="note">One live site at a time. Finish or walk. Then add the next.</p></article>
+      <article class="card"><h2>Who is worth a call</h2><ul>
+        <li>Live website. No site = walk.</li>
+        <li>They miss work after hours or on a job.</li>
+        <li>Prefer 2+ trucks or they already pay for ads.</li>
+        <li>HVAC, plumbing, electrical, garage, auto, similar.</li></ul></article>
+      <article class="card"><h2>Do not stall</h2>
+        <p>Do not write a custom pitch. Take the prepared call. One voicemail, one follow-up, then stop. If they want ranking, a new site, or you on their phone — walk.</p></article>
+    </section>
+    <section id="pane-shops" class="hid">
+      <p class="sub">Your board. Stays on this login. Add a live URL or you have nothing to work.</p>
+      <form class="card" id="add-shop">
+        <h2>Add a shop</h2>
+        <label>Shop name</label><input id="shop-name" placeholder="Coastal Air" />
+        <label>Live website URL</label><input id="shop-url" required placeholder="https://…" />
+        <label>Owner cell (if you have it)</label><input id="shop-phone" type="tel" />
+        <label>Note</label><input id="shop-note" placeholder="saw the van / ads / two trucks" />
+        <p class="row"><button type="submit">Add and qualify</button></p>
+      </form>
+      <div id="shop-list"></div>
+    </section>
+    <section id="pane-qualify" class="hid">
+      <p class="sub" id="qualify-who">Add a shop first.</p>
+      <p class="note">Any No walks the shop. You do not invent a different SKU to keep the conversation going.</p>
+      <div id="qualify-qs"></div>
+    </section>
+    <section id="pane-calls" class="hid">
+      <p class="sub">Take these. One minute, then quiet.</p>
+      <article class="card"><h2>First call</h2>
+        <pre class="say" id="c1" data-fill>Hi, this is [you] with VOIDD Labs in Miami.
+
+I’m not selling ads or a new website. Quick: when you’re on a job or after hours, what happens to people on your site?
+
+[listen]
+
+We install after-hours lead response on the site you already have. They leave a name and number. It hits the phone you actually look at. They’re not told they’re booked. You call them. Seventy-five hundred, one time. We don’t answer the phone for you.
+
+If that isn’t you, I’ll let you go. If it is, I need your live URL and who can edit the page.</pre>
+        <p class="row"><button type="button" class="ghost" data-copy="c1">Copy</button></p></article>
+      <article class="card"><h2>They say we already have a form</h2>
+        <pre class="say" id="c2" data-fill>Most of those sit in a folder nobody opens, or they sound booked.
+
+Ours hits the phone you actually check, never tells them they have an appointment, and we don’t leave until you called a test one yourself. That’s the install, not a widget.
+
+If you’re happy with the box you have, we’re good — I won’t keep calling.</pre>
+        <p class="row"><button type="button" class="ghost" data-copy="c2">Copy</button></p></article>
+      <article class="card"><h2>Voicemail — once</h2>
+        <pre class="say" id="c3" data-fill>Hi [name], [you] at VOIDD Labs. Not ads. When you can’t pick up, people on your site can still leave a name — you call them. Seventy-five hundred once. I’ll try you once more later this week; if it’s not useful I won’t keep ringing. 786-660-1778.</pre>
+        <p class="row"><button type="button" class="ghost" data-copy="c3">Copy</button></p></article>
+      <article class="card"><h2>Spanish — 60 seconds</h2>
+        <pre class="say" id="c5" data-fill>Cuando no puedes contestar, la gente en tu página deja nombre y teléfono. Te llega al correo o WhatsApp que sí revisas. No les decimos que ya tienen cita. Tú los llamas. Lo instalamos en la web que ya tienes. Siete mil quinientos, una vez. Nosotros no contestamos el teléfono por ti.</pre>
+        <p class="row"><button type="button" class="ghost" data-copy="c5">Copy</button></p></article>
+    </section>
+    <section id="pane-texts" class="hid">
+      <p class="sub">Only if they asked, or as the one follow-up after voicemail. Then stop.</p>
+      <article class="card"><h2>They asked you to text</h2>
+        <pre class="say" id="t1" data-fill>Hi [name] — [you] at VOIDD Labs. After-hours names on the site you already have. You call. $7,500 once. Not ads, not a new site. If you want the collect list I’ll send it. If not, I won’t follow up.</pre>
+        <p class="row"><button type="button" class="ghost" data-copy="t1">Copy</button></p></article>
+      <article class="card"><h2>One follow-up, then stop</h2>
+        <pre class="say" id="t2" data-fill>[name] — last note from me. Same offer: after-hours names on the site you already have, you call, seventy-five hundred once. If you want the collect list, text me. If not, I won’t pester you.</pre>
+        <p class="row"><button type="button" class="ghost" data-copy="t2">Copy</button></p></article>
+      <article class="card"><h2>Send collect to the office</h2>
+        <pre class="say" id="t3">Pack is on Collect. Copy it there, then Text the office. Do not invent a shop password.</pre>
+        <p class="row"><button type="button" class="ghost" data-copy="t3">Copy</button></p></article>
+    </section>
+    <section id="pane-collect" class="hid">
+      <p class="sub">Numbered. URL cannot be blank. Text this pack to 786-660-1778 when it’s full. They create the login.</p>
+      <form class="card" id="collect-form">
+        <label>1. Live website URL</label><input id="f1" required placeholder="https://…" />
+        <label>2. Shop name</label><input id="f2" />
+        <label>3. Owner cell</label><input id="f3" type="tel" />
+        <label>4. Who can edit the page</label><input id="f4" />
+        <label>5. Wix / WordPress / other</label><input id="f5" />
+        <label>6. Email or WhatsApp they actually check</label><input id="f6" />
+        <label>7. Hours</label><input id="f7" />
+        <label>8. Service area</label><input id="f8" />
+        <label>9. What the visitor should leave</label><input id="f9" placeholder="name, phone, what they need" />
+        <label>10. When we may edit</label><input id="f10" />
+        <label>11. They create the login (yes)</label><input id="f11" placeholder="Yes — they set it. We don’t invent passwords." />
+        <p class="row">
+          <button type="button" id="copyCollect">Copy pack</button>
+          <a class="btn ghost" id="smsPack" href="sms:+17866601778">Text the office</a>
+          <button type="button" class="ghost" id="markSent">Marked sent</button>
+        </p>
+        <pre class="say hid" id="collect-out"></pre>
+      </form>
+    </section>
+    <section id="pane-say" class="hid">
+      <article class="card">
+        <h2>60 seconds — English</h2>
+        <pre class="say" id="pitch">When you can’t pick up, people on your site still leave a name. It hits the phone you actually look at. They’re not told they’re booked. You call. We install it on the site you already have — looks like your page — and we don’t leave until you called a test lead. Seventy-five hundred, one time. We don’t answer the phone for you.</pre>
+        <p class="row"><button type="button" class="ghost" data-copy="pitch">Copy</button></p>
+        <h2>Español</h2>
+        <pre class="say" id="pitchEs">Cuando no puedes contestar, la gente en tu página deja nombre y teléfono. Te llega al correo o WhatsApp que sí revisas. No les decimos que ya tienen cita. Tú los llamas. Lo instalamos en la web que ya tienes, con tu mismo estilo, y no nos vamos hasta que tú llamaste un pedido de prueba. Siete mil quinientos, una vez. Nosotros no contestamos el teléfono por ti.</pre>
+        <p class="row"><button type="button" class="ghost" data-copy="pitchEs">Copy</button></p>
+      </article>
+    </section>
+    <section id="pane-objections" class="hid">
+      <p class="sub">Tap one. Say that. If it is a walk, walk.</p>
+      <article class="card obj" onclick="this.classList.toggle('open')"><p><b>We already have a form.</b></p><p class="ans">Most sit in a box nobody opens, or they sound booked. Ours notifies the inbox they check. It does not book them. We stay until they called a test lead.</p></article>
+      <article class="card obj" onclick="this.classList.toggle('open')"><p><b>Get us Google leads / ads / SEO.</b></p><p class="ans">No. We catch people already on the site when they can’t pick up. If they want traffic, walk.</p></article>
+      <article class="card obj" onclick="this.classList.toggle('open')"><p><b>Build a new site.</b></p><p class="ans">Not this package. Walk.</p></article>
+      <article class="card obj" onclick="this.classList.toggle('open')"><p><b>Answer the phone for us.</b></p><p class="ans">No. They call the visitor. We do not run a call center.</p></article>
+      <article class="card obj" onclick="this.classList.toggle('open')"><p><b>Guarantee 20 jobs a week.</b></p><p class="ans">No. Walk rather than lie.</p></article>
+      <article class="card obj" onclick="this.classList.toggle('open')"><p><b>Too much / cheaper widget.</b></p><p class="ans">One time, their existing site, we don’t leave until they called a test lead. Don’t discount.</p></article>
+      <article class="card obj" onclick="this.classList.toggle('open')"><p><b>I can do that in Wix.</b></p><p class="ans">Wix’s box does not notify the phone they actually check, stop a double job, keep the visitor from thinking they’re booked, or sit until they called a test lead. That’s the install.</p></article>
+      <article class="card obj" onclick="this.classList.toggle('open')"><p><b>Tonight / rush.</b></p><p class="ans">Need URL, notify inbox they check, login they create. You still collect 1–11. You do not invent a password.</p></article>
+    </section>
+    <section id="pane-services" class="hid">
+      <article class="card"><h2>What you sell</h2>
+        <p>After-hours Lead Response on a shop’s <em>existing</em> website. $7,500 one time. Visitor leaves name and phone when they can’t pick up. The shop calls.</p></article>
+      <article class="card"><h2>Pay</h2>
+        <p>20% after the shop pays VOIDD for an accepted install. $1,500 on $7,500. Handshake is not a check.</p></article>
     </section>
     <section id="pane-pack" class="hid">
-      <input id="find" type="search" placeholder="Search the pack…" />
+      <input id="find" type="search" placeholder="Search answers…" autocomplete="off" />
+      <p id="count" class="note"></p>
       <div id="list"></div>
+    </section>
+    <section id="pane-wren" class="hid"><div id="reach"></div></section>
+    <section id="pane-office" class="hid">
+      <article class="card"><h2>Office</h2>
+        <p>Danny · Miami · 786-660-1778</p>
+        <p class="row"><a class="btn" href="tel:+17866601778">Call</a> <a class="btn ghost" href="sms:+17866601778">Text</a></p>
+        <p class="note">Send a full collect pack. URL cannot be blank. Do not send a shop password you made up.</p></article>
     </section>
   </main>
   <script src="closer.js"></script>
-  <script>
-    VOIDDCloser.needAuth();
-    document.getElementById("out").onclick = function (e) { e.preventDefault(); VOIDDCloser.clear(); location.replace("index.html"); };
-    var s = VOIDDCloser.session() || {};
-    if (s.name) document.getElementById("who-line").textContent = s.name + " · " + (s.phone || "");
-    document.getElementById("reach").innerHTML = VOIDDCloser.contactHtml();
-    VOIDDCloser.bindContact(document.getElementById("reach"));
-    var pack = { items: [], pitch: "", collect: "", phone: "786-660-1778" };
-    function esc(t) { return String(t).replace(/[&<>]/g, function (c) { return ({ "&":"&amp;","<":"&lt;",">":"&gt;" })[c]; }); }
-    function add(kind, html) {
-      var m = document.createElement("div"); m.className = "msg"; m.innerHTML = html;
-      document.getElementById("log").appendChild(m);
-      document.getElementById("log").scrollTop = 99999;
-    }
-    function score(q, it) {
-      var w = q.toLowerCase().split(/\s+/).filter(function (x) { return x.length > 2; });
-      var hay = (it.q + " " + it.a).toLowerCase(); var n = 0;
-      w.forEach(function (x) { if (hay.indexOf(x) >= 0) n++; });
-      return n;
-    }
-    function ask(q) {
-      q = (q || "").trim(); if (!q) return;
-      add("me", "<b>You</b><p>" + esc(q) + "</p>");
-      var ranked = pack.items.map(function (it) { return { it: it, s: score(q, it) }; }).filter(function (x) { return x.s > 0; });
-      ranked.sort(function (a, b) { return b.s - a.s; });
-      if (!ranked.length || ranked[0].s < 1) {
-        add("desk", "<p>Not in the pack. Call or text Danny " + esc(pack.phone) + ".</p><p>" + esc(pack.pitch) + "</p>");
-      } else {
-        var h = "";
-        ranked.slice(0, 3).forEach(function (x) { h += "<p><b>" + esc(x.it.q) + "</b><br>" + esc(x.it.a) + "</p>"; });
-        add("desk", h);
-      }
-      document.getElementById("q").value = "";
-    }
-    document.getElementById("composer").onsubmit = function (e) { e.preventDefault(); ask(document.getElementById("q").value); };
-    document.getElementById("tabs").onclick = function (e) {
-      var b = e.target.closest("button"); if (!b) return;
-      document.querySelectorAll("#tabs button").forEach(function (x) { x.classList.toggle("on", x === b); });
-      var p = b.getAttribute("data-pane");
-      document.getElementById("pane-ask").classList.toggle("hid", p !== "ask");
-      document.getElementById("pane-pack").classList.toggle("hid", p !== "pack");
-    };
-    document.getElementById("find").oninput = function () {
-      var q = this.value.toLowerCase(); var list = document.getElementById("list"); list.innerHTML = "";
-      pack.items.forEach(function (it) {
-        if (q && (it.q + it.a).toLowerCase().indexOf(q) < 0) return;
-        var d = document.createElement("article"); d.className = "card";
-        d.innerHTML = "<p><b></b></p><p></p>";
-        d.querySelector("b").textContent = it.q; d.querySelectorAll("p")[1].textContent = it.a;
-        list.appendChild(d);
-      });
-    };
-    fetch("qa.json").then(function (r) { return r.json(); }).then(function (j) {
-      pack = j;
-      add("desk", "<p>" + esc(j.pitch || "") + "</p><p>Ask how much, when you get paid, what to collect. Call 786-660-1778 if it is not in the pack.</p>");
-      document.getElementById("find").dispatchEvent(new Event("input"));
-    });
-  </script>
+  <script src="desk.js"></script>
+  <script>VOIDDCloser.bindDesk(document);</script>
 </body>
 </html>
