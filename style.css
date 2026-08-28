@@ -12,20 +12,20 @@
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  font: 16px/1.5 "Segoe UI", Calibri, system-ui, sans-serif;
+  font: 16px/1.55 "Segoe UI", Calibri, system-ui, sans-serif;
   color: var(--ink);
-  background: var(--bg);
+  background: #0c0c0d;
   letter-spacing: 0.01em;
 }
 header {
-  padding: 0.85rem 1.25rem;
+  padding: 1rem 1.6rem;
   border-bottom: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 0.6rem;
   flex-wrap: wrap;
-  background: #000;
+  background: #080808;
 }
 header strong { color: var(--go); font-weight: 600; }
 nav a {
@@ -37,16 +37,16 @@ nav a {
   text-transform: uppercase;
 }
 nav a.on, nav a:hover { color: var(--ink); }
-main { max-width: 52rem; margin: 0 auto; padding: 1.4rem 1.15rem 3.5rem; }
-h1 { font-size: 1.55rem; font-weight: 600; letter-spacing: -0.02em; margin: 0.15rem 0 0.45rem; }
+main { max-width: 40rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+h1 { font-size: 1.75rem; font-weight: 650; letter-spacing: -0.03em; margin: 0.2rem 0 0.5rem; }
 h2 { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 650; }
 .sub { color: var(--muted); margin: 0 0 1.15rem; }
 .card {
-  background: var(--panel);
+  background: #111214;
   border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 1rem 1.1rem;
-  margin: 0.65rem 0;
+  border-radius: 10px;
+  padding: 1.15rem 1.25rem;
+  margin: 0.85rem 0;
 }
 label { display: block; font-size: 0.78rem; color: var(--muted); margin: 0.55rem 0 0.2rem; }
 input, select, textarea {
