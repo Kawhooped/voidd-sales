@@ -25,15 +25,11 @@
       });
     });
   };
-  C.SKUS = [
-    {
-      id: "7500",
-      name: "Lead Response",
-      price: "$7,500",
-      cut: "$1,500 after the shop pays us",
-      blurb: "When nobody can pick up, people on your site leave a name and number. That reaches you. You call. They are not booked. Night names on their site get to a phone they check. Shop calls."
-    }
-  ];
+  // BUGFIX 2026-08-28: this file used to overwrite C.SKUS with a single
+  // hardcoded legacy "Lead Response" entry, clobbering the real SKUS array
+  // (Intake, Ops) already defined by closer.js on every page load, including
+  // this live production Pages site. Removed — closer.js is the single
+  // source of truth for SKUS. See voidd-sales-platform repo, commit d22d84b.
   var host = document.getElementById("home-skus");
   if (host && !document.getElementById("what-we-install")) {
     var art = document.createElement("article");
