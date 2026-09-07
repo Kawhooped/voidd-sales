@@ -4,43 +4,107 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>VOIDD store</title>
+  <meta name="description" content="VOIDD Labs. Free tools. Digital things. Miami.">
   <style>
-    :root { --bg:#070b09; --ink:#e8ffe8; --lime:#c8ff3d; --dim:#7a9a7a; --gold:#e6b400; --line:rgba(200,255,61,.28); }
+    :root {
+      --bg: #080a08;
+      --ink: #eef6e8;
+      --dim: #7d9478;
+      --lime: #c8ff3d;
+      --line: color-mix(in oklab, var(--lime) 28%, transparent);
+      --gold: #e6b400;
+    }
     * { box-sizing: border-box; }
-    body { margin:0; background:var(--bg); color:var(--ink); font:18px/1.5 system-ui,sans-serif; }
-    header { padding:1.2rem 1.2rem .4rem; max-width:42rem; margin:0 auto; }
-    .mark { display:inline-block; font:700 .72rem/1 system-ui; letter-spacing:.2em; color:#111; background:var(--lime); padding:.35rem .55rem; border-radius:4px; text-decoration:none; }
-    h1 { font-size:1.6rem; margin:.7rem 0 .3rem; }
-    .muted { color:var(--dim); }
-    main { max-width:42rem; margin:0 auto; padding:0 1.2rem 4rem; }
-    .card { border:1px solid var(--line); border-radius:14px; padding:1rem 1.1rem; margin:.8rem 0; }
-    a { color:var(--gold); }
-    .price { color:var(--lime); font-weight:700; }
+    html { hanging-punctuation: first last; }
+    body {
+      margin: 0; min-height: 100dvh; background: var(--bg); color: var(--ink);
+      font: 17px/1.5 system-ui, sans-serif;
+    }
+    body::before {
+      content: "";
+      position: fixed; inset: -20% auto auto -10%;
+      width: 70vw; height: 70vw; border-radius: 50%;
+      background: radial-gradient(circle, #16301c 0%, transparent 62%);
+      pointer-events: none; z-index: 0;
+    }
+    .skip {
+      position: absolute; left: .6rem; top: .6rem; z-index: 5;
+      transform: translateY(-8rem); padding: .4rem .7rem;
+      background: var(--lime); color: #111; border-radius: 999px;
+    }
+    .skip:focus { transform: none; }
+    header, main, footer { position: relative; z-index: 1; max-width: 64rem; margin: 0 auto; padding: 1.2rem; }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .mark {
+      font: 700 .7rem/1 system-ui; letter-spacing: .22em; color: #111;
+      background: var(--lime); padding: .4rem .55rem; border-radius: 4px; text-decoration: none;
+    }
+    nav a { color: var(--dim); text-decoration: none; margin-left: 1rem; font-size: .9rem; }
+    nav a:hover, nav a:focus-visible { color: var(--lime); }
+    h1 {
+      font-size: clamp(2.4rem, 7vw, 5.2rem); line-height: .9; letter-spacing: -.04em;
+      font-weight: 750; margin: 1.6rem 0 .6rem; text-wrap: balance; max-width: 12ch;
+    }
+    .lede { max-width: 36rem; color: var(--dim); font-size: 1.05rem; text-wrap: pretty; }
+    .bento {
+      display: grid; gap: .8rem; margin: 2rem 0;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: auto auto;
+    }
+    .tile {
+      border: 1px solid var(--line); border-radius: 1.1rem; padding: 1.15rem 1.2rem;
+      background: color-mix(in oklab, #0c140f 88%, black);
+      min-height: 8rem;
+    }
+    .tile.wide { grid-column: 1; grid-row: 1 / span 2; }
+    .tile h2 { margin: 0 0 .4rem; font-size: 1.15rem; }
+    .price { color: var(--lime); font-weight: 700; font-variant-numeric: tabular-nums; }
+    a.btn {
+      display: inline-block; margin-top: .7rem; background: var(--lime); color: #111;
+      text-decoration: none; font-weight: 700; padding: .45rem .8rem; border-radius: 999px;
+    }
+    a.ghost { background: transparent; color: var(--gold); border: 1px solid var(--line); }
+    footer { color: var(--dim); font-size: .88rem; padding-bottom: 3rem; }
+    @media (max-width: 720px) {
+      .bento { grid-template-columns: 1fr; }
+      .tile.wide { grid-column: auto; grid-row: auto; }
+      nav a { margin-left: .6rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
   </style>
 </head>
 <body>
-<header>
-  <a class="mark" href="store.html">VOIDD</a>
-  <h1>Store</h1>
-  <p class="muted">Digital things. Miami. Checkout on itch or Gumroad — then you still land here.</p>
-</header>
-<main>
-  <div class="card">
-    <b>Free tools</b>
-    <p>Permit search, Windows ping, PC install. $0.</p>
-    <p><a href="https://kawhooped.github.io/tools-for-everyone/">Open tools</a></p>
-  </div>
-  <div class="card">
-    <b>Permit feed</b> <span class="price">$12</span>
-    <p>Unzip. Check a sample permit without calling city hall. Same zip as Gumroad — not a second product.</p>
-    <p class="muted">Buy link: you Publish on Gumroad, paste the URL into this page.</p>
-  </div>
-  <div class="card">
-    <b>Dignity Coin Rush</b>
-    <p>A few minutes of hold-and-sweep in the browser.</p>
-    <p class="muted">Buy/play: you Save on itch, paste the URL here.</p>
-  </div>
-  <p class="muted">VOIDD Labs · 786-660-1778 · <a href="firm.html">Lead Response</a></p>
-</main>
+  <a class="skip" href="#shop">Skip to shop</a>
+  <header>
+    <div class="top">
+      <a class="mark" href="store.html">VOIDD</a>
+      <nav>
+        <a href="https://kawhooped.github.io/tools-for-everyone/">Tools</a>
+        <a href="firm.html">Shops</a>
+      </nav>
+    </div>
+    <h1>Free tools. Digital things.</h1>
+    <p class="lede">Miami. Checkout on itch or Gumroad. This page is home — other stores point back here. Same product, not a second listing.</p>
+  </header>
+  <main id="shop">
+    <div class="bento">
+      <article class="tile wide">
+        <h2>Free tools</h2>
+        <p>Permit search, Windows ping, PC install. $0. Lime mark on those pages is this store.</p>
+        <a class="btn" href="https://kawhooped.github.io/tools-for-everyone/">Open tools</a>
+      </article>
+      <article class="tile">
+        <h2>Permit feed <span class="price">$12</span></h2>
+        <p>Unzip. Sample permits. No city-hall call.</p>
+        <p class="lede">Gumroad link after you Publish.</p>
+      </article>
+      <article class="tile">
+        <h2>Dignity Coin Rush</h2>
+        <p>A few minutes of hold-and-sweep in the browser.</p>
+        <p class="lede">itch link after you Save.</p>
+      </article>
+    </div>
+  </main>
+  <footer>VOIDD Labs · 786-660-1778 · sole prop</footer>
 </body>
 </html>
