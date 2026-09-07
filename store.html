@@ -4,107 +4,137 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>VOIDD store</title>
-  <meta name="description" content="VOIDD Labs. Free tools. Digital things. Miami.">
+  <meta name="description" content="VOIDD Labs, Miami. Free tools. Digital zips. Home for listings on itch and Gumroad.">
   <style>
     :root {
-      --bg: #080a08;
-      --ink: #eef6e8;
-      --dim: #7d9478;
+      --bg: #070907;
+      --ink: #f3f8ee;
+      --dim: #8aa086;
       --lime: #c8ff3d;
-      --line: color-mix(in oklab, var(--lime) 28%, transparent);
+      --line: color-mix(in oklab, var(--lime) 26%, transparent);
       --gold: #e6b400;
+      --panel: #0c110d;
     }
     * { box-sizing: border-box; }
     html { hanging-punctuation: first last; }
     body {
-      margin: 0; min-height: 100dvh; background: var(--bg); color: var(--ink);
-      font: 17px/1.5 system-ui, sans-serif;
+      margin: 0; min-height: 100dvh; color: var(--ink); background: var(--bg);
+      font: 16px/1.5 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
     }
     body::before {
       content: "";
-      position: fixed; inset: -20% auto auto -10%;
-      width: 70vw; height: 70vw; border-radius: 50%;
-      background: radial-gradient(circle, #16301c 0%, transparent 62%);
-      pointer-events: none; z-index: 0;
+      position: fixed; inset: -30% -20% auto auto; width: 55vw; height: 55vw;
+      background: radial-gradient(circle at 30% 30%, #1c3d24, transparent 68%);
+      pointer-events: none;
     }
     .skip {
-      position: absolute; left: .6rem; top: .6rem; z-index: 5;
-      transform: translateY(-8rem); padding: .4rem .7rem;
-      background: var(--lime); color: #111; border-radius: 999px;
+      position: absolute; left: .7rem; top: .7rem; z-index: 9;
+      transform: translateY(-120%); padding: .4rem .75rem;
+      background: var(--lime); color: #111; border-radius: 999px; font-weight: 700;
     }
     .skip:focus { transform: none; }
-    header, main, footer { position: relative; z-index: 1; max-width: 64rem; margin: 0 auto; padding: 1.2rem; }
+    .wrap { position: relative; max-width: 68rem; margin: 0 auto; padding: 1.1rem 1.2rem 3.5rem; }
     .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
     .mark {
-      font: 700 .7rem/1 system-ui; letter-spacing: .22em; color: #111;
-      background: var(--lime); padding: .4rem .55rem; border-radius: 4px; text-decoration: none;
+      font: 700 .68rem/1 system-ui; letter-spacing: .24em; color: #111;
+      background: var(--lime); padding: .42rem .58rem; border-radius: 3px; text-decoration: none;
     }
-    nav a { color: var(--dim); text-decoration: none; margin-left: 1rem; font-size: .9rem; }
+    nav a {
+      color: var(--dim); text-decoration: none; margin-left: 1.1rem; font-size: .82rem;
+      letter-spacing: .08em; text-transform: uppercase;
+    }
     nav a:hover, nav a:focus-visible { color: var(--lime); }
-    h1 {
-      font-size: clamp(2.4rem, 7vw, 5.2rem); line-height: .9; letter-spacing: -.04em;
-      font-weight: 750; margin: 1.6rem 0 .6rem; text-wrap: balance; max-width: 12ch;
+    .eye {
+      margin: 2.2rem 0 0; color: var(--lime); font-size: .72rem; letter-spacing: .2em;
+      text-transform: uppercase; font-weight: 700;
     }
-    .lede { max-width: 36rem; color: var(--dim); font-size: 1.05rem; text-wrap: pretty; }
+    h1 {
+      font: 700 clamp(2.6rem, 8vw, 5.8rem)/.88 "Iowan Old Style", Palatino, Georgia, serif;
+      letter-spacing: -.045em; margin: .35rem 0 .8rem; max-width: 11ch; text-wrap: balance;
+    }
+    .lede { max-width: 34rem; color: var(--dim); font-size: 1.06rem; text-wrap: pretty; }
     .bento {
-      display: grid; gap: .8rem; margin: 2rem 0;
-      grid-template-columns: 1.4fr 1fr;
-      grid-template-rows: auto auto;
+      display: grid; gap: .85rem; margin: 2.2rem 0 1.5rem;
+      grid-template-columns: 1.45fr 1fr 1fr;
+      grid-template-areas: "free permit dignity";
     }
     .tile {
-      border: 1px solid var(--line); border-radius: 1.1rem; padding: 1.15rem 1.2rem;
-      background: color-mix(in oklab, #0c140f 88%, black);
-      min-height: 8rem;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 1.2rem;
+      padding: 1.25rem 1.3rem 1.35rem; display: flex; flex-direction: column; min-height: 14rem;
+      transition: border-color .15s, transform .15s;
     }
-    .tile.wide { grid-column: 1; grid-row: 1 / span 2; }
-    .tile h2 { margin: 0 0 .4rem; font-size: 1.15rem; }
-    .price { color: var(--lime); font-weight: 700; font-variant-numeric: tabular-nums; }
-    a.btn {
-      display: inline-block; margin-top: .7rem; background: var(--lime); color: #111;
-      text-decoration: none; font-weight: 700; padding: .45rem .8rem; border-radius: 999px;
+    .tile:hover { border-color: var(--lime); transform: translateY(-2px); }
+    .tile.free { grid-area: free; min-height: 18rem; }
+    .n { font-size: .68rem; letter-spacing: .16em; color: var(--dim); text-transform: uppercase; }
+    .tile h2 { margin: .45rem 0 .4rem; font-size: 1.35rem; letter-spacing: -.02em; }
+    .tile p { color: var(--dim); margin: 0 0 .6rem; flex: 1; }
+    .price { color: var(--lime); font-weight: 750; font-variant-numeric: tabular-nums; }
+    .btn {
+      align-self: flex-start; background: var(--lime); color: #111; text-decoration: none;
+      font-weight: 750; padding: .5rem .9rem; border-radius: 999px; margin-top: auto;
     }
-    a.ghost { background: transparent; color: var(--gold); border: 1px solid var(--line); }
-    footer { color: var(--dim); font-size: .88rem; padding-bottom: 3rem; }
-    @media (max-width: 720px) {
-      .bento { grid-template-columns: 1fr; }
-      .tile.wide { grid-column: auto; grid-row: auto; }
-      nav a { margin-left: .6rem; }
+    .btn:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+    .wait { color: var(--gold); font-size: .88rem; }
+    .demo {
+      margin-top: .8rem; height: 9rem; border: 0; width: 100%; border-radius: .7rem;
+      background: #050805; pointer-events: auto;
     }
-    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+    footer { color: var(--dim); font-size: .88rem; display: flex; flex-wrap: wrap; gap: .8rem 1.4rem; }
+    footer a { color: var(--gold); }
+    @media (max-width: 860px) {
+      .bento { grid-template-columns: 1fr; grid-template-areas: "free" "permit" "dignity"; }
+      .tile, .tile.free { min-height: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tile { transition: none; }
+      .tile:hover { transform: none; }
+    }
   </style>
 </head>
 <body>
   <a class="skip" href="#shop">Skip to shop</a>
-  <header>
-    <div class="top">
-      <a class="mark" href="store.html">VOIDD</a>
-      <nav>
-        <a href="https://kawhooped.github.io/tools-for-everyone/">Tools</a>
-        <a href="firm.html">Shops</a>
-      </nav>
-    </div>
-    <h1>Free tools. Digital things.</h1>
-    <p class="lede">Miami. Checkout on itch or Gumroad. This page is home — other stores point back here. Same product, not a second listing.</p>
-  </header>
-  <main id="shop">
-    <div class="bento">
-      <article class="tile wide">
-        <h2>Free tools</h2>
-        <p>Permit search, Windows ping, PC install. $0. Lime mark on those pages is this store.</p>
-        <a class="btn" href="https://kawhooped.github.io/tools-for-everyone/">Open tools</a>
-      </article>
-      <article class="tile">
-        <h2>Permit feed <span class="price">$12</span></h2>
-        <p>Unzip. Sample permits. No city-hall call.</p>
-        <p class="lede">Gumroad link after you Publish.</p>
-      </article>
-      <article class="tile">
-        <h2>Dignity Coin Rush</h2>
-        <p>A few minutes of hold-and-sweep in the browser.</p>
-        <p class="lede">itch link after you Save.</p>
-      </article>
-    </div>
-  </main>
-  <footer>VOIDD Labs · 786-660-1778 · sole prop</footer>
+  <div class="wrap">
+    <header>
+      <div class="top">
+        <a class="mark" href="store.html">VOIDD</a>
+        <nav>
+          <a href="https://kawhooped.github.io/tools-for-everyone/">Tools</a>
+          <a href="firm.html">Shops</a>
+          <a href="tel:+17866601778">Call</a>
+        </nav>
+      </div>
+      <p class="eye">Miami · digital</p>
+      <h1>Free tools. Paid zips.</h1>
+      <p class="lede">This is home. itch and Gumroad are shelves — same item, last line of those listings points here. You buy there. No second product.</p>
+    </header>
+    <main id="shop">
+      <div class="bento">
+        <article class="tile free">
+          <span class="n">00 · $0</span>
+          <h2>Tools for everyone</h2>
+          <p>Permit search, Windows ping, PC install. Lime VOIDD on those pages is this store.</p>
+          <iframe class="demo" title="Permit feed demo" src="https://kawhooped.github.io/tools-for-everyone/permit-feed/"></iframe>
+          <a class="btn" href="https://kawhooped.github.io/tools-for-everyone/">Use free tools</a>
+        </article>
+        <article class="tile">
+          <span class="n">01 · file</span>
+          <h2>Permit feed <span class="price">$12</span></h2>
+          <p>Unzip. Search sample building permits without calling city hall.</p>
+          <p class="wait">Gumroad after Publish.</p>
+        </article>
+        <article class="tile">
+          <span class="n">02 · play</span>
+          <h2>Dignity Coin Rush</h2>
+          <p>A few minutes of hold-and-sweep in the browser. No install.</p>
+          <p class="wait">itch after Save.</p>
+        </article>
+      </div>
+    </main>
+    <footer>
+      <span>VOIDD Labs · sole prop</span>
+      <a href="tel:+17866601778">786-660-1778</a>
+      <a href="https://github.com/Kawhooped/voidd-sales">Source</a>
+    </footer>
+  </div>
 </body>
 </html>
