@@ -6,65 +6,25 @@
   <title>VOIDD license · $0 MIT demos · 5000 USD exclusive</title>
   <meta name="description" content="VOIDD Labs two-layer license. Browser demos are MIT. Exclusive commercial pack is 5000 USD, one buyer. Miami.">
   <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/license.html">
+  <link rel="icon" href="favicon.png" sizes="96x96">
+  <link rel="stylesheet" href="gold.css">
   <style>
-    :root {
-      --bg: #0a0804;
-      --ink: #f7f1dc;
-      --dim: #a8986a;
-      --gold: #e6b400;
-      --line: color-mix(in oklab, var(--gold) 32%, transparent);
-      --panel: #120e08;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; min-height: 100dvh; color: var(--ink); background: var(--bg);
-      font: 16px/1.5 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
-    }
-    .skip {
-      position: absolute; left: .7rem; top: .7rem; z-index: 9;
-      transform: translateY(-120%); padding: .4rem .75rem;
-      background: var(--gold); color: #111; border-radius: 999px; font-weight: 700;
-    }
-    .skip:focus { transform: none; }
-    .wrap { max-width: 40rem; margin: 0 auto; padding: 1.1rem 1.2rem 3.5rem; }
+    .wrap { position: relative; max-width: 40rem; margin: 0 auto; padding: 1.2rem 1.2rem 3.5rem; }
     .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-    .mark {
-      font: 700 .68rem/1 system-ui; letter-spacing: .24em; color: #111;
-      background: var(--gold); padding: .42rem .58rem; border-radius: 3px; text-decoration: none;
+    h1 { max-width: none; margin-top: 1.8rem; }
+    h2 { font-size: 1.05rem; margin: 1.5rem 0 0.35rem; }
+    .ingot {
+      margin-top: 1.4rem;
+      background:
+        linear-gradient(160deg, color-mix(in oklab, var(--gold) 12%, transparent), transparent 42%),
+        var(--panel);
+      border: 1px solid color-mix(in oklab, var(--gold) 55%, transparent);
+      border-radius: 0.4rem;
+      padding: 1.2rem 1.25rem;
+      box-shadow: inset 0 1px 0 color-mix(in oklab, var(--gold-hot) 30%, transparent);
     }
-    nav a {
-      color: var(--dim); text-decoration: none; margin-left: 1.1rem; font-size: .82rem;
-      letter-spacing: .08em; text-transform: uppercase;
-    }
-    nav a:hover, nav a:focus-visible { color: var(--gold); }
-    h1 {
-      font: 700 clamp(2.2rem, 7vw, 4.2rem)/.9 "Iowan Old Style", Palatino, Georgia, serif;
-      letter-spacing: -.04em; margin: 1.6rem 0 .6rem; color: var(--gold);
-    }
-    h2 { font-size: 1.05rem; color: var(--gold); margin: 1.5rem 0 .35rem; }
-    p { color: var(--dim); }
-    .gold {
-      background: var(--panel); border: 1px solid var(--line);
-      border-radius: 1.2rem; padding: 1.2rem 1.25rem;
-    }
-    .shout {
-      margin: 1.5rem 0;
-      padding: 1.15rem 1.2rem 1.25rem;
-      border-left: 4px solid var(--gold);
-      background: color-mix(in oklab, var(--gold) 10%, var(--panel));
-    }
-    .shout .k {
-      font: 700 .68rem/1 system-ui; letter-spacing: .22em; text-transform: uppercase;
-      color: var(--gold); margin: 0 0 .55rem;
-    }
-    .shout p {
-      margin: 0; color: var(--ink);
-      font: 700 clamp(1.05rem, 2.8vw, 1.35rem)/1.25 "Iowan Old Style", Palatino, Georgia, serif;
-    }
-    footer { margin-top: 2rem; color: var(--dim); font-size: .88rem; display: flex; flex-wrap: wrap; gap: .8rem 1.4rem; }
-    footer a { color: var(--gold); }
+    footer { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
   </style>
-  <script src="hit.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#license">Skip to license</a>
@@ -84,11 +44,7 @@
       <p>Two layers. Do not mix them.</p>
       <h2>Demo · $0 · MIT</h2>
       <p>The tools on this store in the browser are MIT. Personal use. Copy the HTML. Keep the copyright line.</p>
-      <aside class="shout">
-        <p class="k">Grace</p>
-        <p>Given that we are being gracious, please remember this virtue so that you can give me free things too.</p>
-      </aside>
-      <div class="gold">
+      <div class="ingot">
         <h2>Exclusive · $5,000 · commercial</h2>
         <p>One buyer. Source zip of the tools pack. Commercial right to use and ship it. VOIDD does not sell another exclusive on that pack while yours is live. Public demos stay up.</p>
         <p>Call <a href="tel:+17866601778">786-660-1778</a>. Danny confirms. No invented invoice.</p>
