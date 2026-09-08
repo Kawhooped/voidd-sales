@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Permit feed</title>
+<style>
+  body { margin:0; background:#10081a; color:#f4f1e8; font:14px/1.45 ui-sans-serif,system-ui; padding:18px; }
+  h1 { font-size:18px; color:#e8c872; margin:0 0 8px; }
+  p, .muted { color:#c9b8e8; max-width:56ch; }
+  input { width:min(420px,100%); padding:8px 10px; border-radius:8px; border:1px solid #4a3a62; background:#1a1028; color:#f4f1e8; }
+  .row { border:1px solid #3a2a52; border-radius:10px; padding:10px 12px; margin:8px 0; background:#160e22; }
+  .row b { color:#7dffc3; }
+  .shop { margin-top:1.2rem; font:13px system-ui; }
+  a { color:#e6b400; }
+</style>
+</head>
+<body>
+<h1>Permit feed</h1>
+<p>Search the sample public permits. No account. No call to city hall. This is not a live feed for every city.</p>
+<input id="q" placeholder="address, permit, owner, work…">
+<div id="out" class="muted">loading…</div>
+<p class="shop"><a href="../../store.html">VOIDD store</a> · <a href="../../license.html">License</a></p>
+<script>
+fetch("mep.json").then(r => r.ok ? r.json() : Promise.reject()).then(d => {
+  const rows = d.rows || [];
+  const out = document.getElementById("out");
+  function show(list) {
+    out.innerHTML = list.slice(0, 40).map(r =>
+      `<div class="row"><b>${r.permit || ""}</b> · ${r.status || ""}<div>${r.address || ""}</div><div>${(r.work_type || "")} — ${(r.work || "").slice(0, 180)}</div></div>`
+    ).join("") || "no rows";
+  }
+  show(rows);
+  document.getElementById("q").oninput = e => {
+    const t = e.target.value.toLowerCase();
+    show(rows.filter(r => JSON.stringify(r).toLowerCase().includes(t)));
+  };
+}).catch(() => { document.getElementById("out").textContent = "Sample data not on this copy yet. Open Desktop/CODE/tools-for-everyone/permit-feed/index.html"; });
+</script>
+</body>
+</html>

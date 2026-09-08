@@ -4,90 +4,99 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>VOIDD store</title>
-  <meta name="description" content="VOIDD Labs, Miami. Free tools. Digital zips. Home for listings on itch and Gumroad.">
+  <meta name="description" content="VOIDD Labs, Miami. Gold exclusive. $0 tool demos. Paid commercial license.">
   <style>
     :root {
-      --bg: #070907;
-      --ink: #f3f8ee;
-      --dim: #8aa086;
+      --bg: #0a0804;
+      --ink: #f7f1dc;
+      --dim: #a8986a;
       --lime: #c8ff3d;
-      --line: color-mix(in oklab, var(--lime) 26%, transparent);
       --gold: #e6b400;
-      --panel: #0c110d;
+      --line: color-mix(in oklab, var(--gold) 32%, transparent);
+      --panel: #120e08;
     }
     * { box-sizing: border-box; }
-    html { hanging-punctuation: first last; }
     body {
       margin: 0; min-height: 100dvh; color: var(--ink); background: var(--bg);
       font: 16px/1.5 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
     }
     body::before {
       content: "";
-      position: fixed; inset: -30% -20% auto auto; width: 55vw; height: 55vw;
-      background: radial-gradient(circle at 30% 30%, #1c3d24, transparent 68%);
+      position: fixed; inset: -28% auto auto -18%; width: 58vw; height: 58vw;
+      background: radial-gradient(circle at 40% 40%, color-mix(in oklab, var(--gold) 28%, transparent), transparent 68%);
       pointer-events: none;
     }
     .skip {
       position: absolute; left: .7rem; top: .7rem; z-index: 9;
       transform: translateY(-120%); padding: .4rem .75rem;
-      background: var(--lime); color: #111; border-radius: 999px; font-weight: 700;
+      background: var(--gold); color: #111; border-radius: 999px; font-weight: 700;
     }
     .skip:focus { transform: none; }
     .wrap { position: relative; max-width: 68rem; margin: 0 auto; padding: 1.1rem 1.2rem 3.5rem; }
     .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
     .mark {
       font: 700 .68rem/1 system-ui; letter-spacing: .24em; color: #111;
-      background: var(--lime); padding: .42rem .58rem; border-radius: 3px; text-decoration: none;
+      background: var(--gold); padding: .42rem .58rem; border-radius: 3px; text-decoration: none;
     }
     nav a {
       color: var(--dim); text-decoration: none; margin-left: 1.1rem; font-size: .82rem;
       letter-spacing: .08em; text-transform: uppercase;
     }
-    nav a:hover, nav a:focus-visible { color: var(--lime); }
+    nav a:hover, nav a:focus-visible { color: var(--gold); }
     .eye {
-      margin: 2.2rem 0 0; color: var(--lime); font-size: .72rem; letter-spacing: .2em;
+      margin: 2.2rem 0 0; color: var(--gold); font-size: .72rem; letter-spacing: .2em;
       text-transform: uppercase; font-weight: 700;
     }
     h1 {
       font: 700 clamp(2.6rem, 8vw, 5.8rem)/.88 "Iowan Old Style", Palatino, Georgia, serif;
-      letter-spacing: -.045em; margin: .35rem 0 .8rem; max-width: 11ch; text-wrap: balance;
+      letter-spacing: -.045em; margin: .35rem 0 .8rem; max-width: 12ch; text-wrap: balance;
+      color: var(--gold);
     }
-    .lede { max-width: 34rem; color: var(--dim); font-size: 1.06rem; text-wrap: pretty; }
+    .lede { max-width: 36rem; color: var(--dim); font-size: 1.06rem; text-wrap: pretty; }
     .bento {
-      display: grid; gap: .85rem; margin: 2.2rem 0 1.5rem;
-      grid-template-columns: 1.45fr 1fr 1fr;
-      grid-template-areas: "free permit dignity";
+      display: grid; gap: .85rem; margin: 2.2rem 0 1.2rem;
+      grid-template-columns: 1.35fr 1fr 1fr;
+      grid-template-areas: "gold permit dignity";
     }
     .tile {
       background: var(--panel); border: 1px solid var(--line); border-radius: 1.2rem;
       padding: 1.25rem 1.3rem 1.35rem; display: flex; flex-direction: column; min-height: 14rem;
-      transition: border-color .15s, transform .15s;
     }
-    .tile:hover { border-color: var(--lime); transform: translateY(-2px); }
-    .tile.free { grid-area: free; min-height: 18rem; }
+    .tile:hover { border-color: var(--gold); }
+    .tile.gold {
+      grid-area: gold; min-height: 18rem;
+      box-shadow: 0 0 2.4rem color-mix(in oklab, var(--gold) 22%, transparent);
+      border-color: color-mix(in oklab, var(--gold) 55%, transparent);
+    }
     .n { font-size: .68rem; letter-spacing: .16em; color: var(--dim); text-transform: uppercase; }
     .tile h2 { margin: .45rem 0 .4rem; font-size: 1.35rem; letter-spacing: -.02em; }
     .tile p { color: var(--dim); margin: 0 0 .6rem; flex: 1; }
-    .price { color: var(--lime); font-weight: 750; font-variant-numeric: tabular-nums; }
+    .price { color: var(--gold); font-weight: 750; font-variant-numeric: tabular-nums; }
     .btn {
-      align-self: flex-start; background: var(--lime); color: #111; text-decoration: none;
+      align-self: flex-start; background: var(--gold); color: #111; text-decoration: none;
       font-weight: 750; padding: .5rem .9rem; border-radius: 999px; margin-top: auto;
     }
-    .btn:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
     .wait { color: var(--gold); font-size: .88rem; }
-    .demo {
-      margin-top: .8rem; height: 9rem; border: 0; width: 100%; border-radius: .7rem;
-      background: #050805; pointer-events: auto;
+    .tools {
+      display: grid; gap: .65rem; margin: 0 0 1.6rem;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     }
+    .tools h2 {
+      grid-column: 1 / -1; margin: .4rem 0 .2rem;
+      font: 700 .72rem/1 system-ui; letter-spacing: .18em; text-transform: uppercase; color: var(--gold);
+    }
+    .tool {
+      background: var(--panel); border: 1px solid var(--line); border-radius: .9rem;
+      padding: .9rem 1rem; text-decoration: none; color: inherit;
+    }
+    .tool b { display: block; color: var(--ink); margin-bottom: .25rem; }
+    .tool span { color: var(--dim); font-size: .88rem; }
+    .tool:hover { border-color: var(--gold); }
     footer { color: var(--dim); font-size: .88rem; display: flex; flex-wrap: wrap; gap: .8rem 1.4rem; }
     footer a { color: var(--gold); }
     @media (max-width: 860px) {
-      .bento { grid-template-columns: 1fr; grid-template-areas: "free" "permit" "dignity"; }
-      .tile, .tile.free { min-height: 0; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .tile { transition: none; }
-      .tile:hover { transform: none; }
+      .bento { grid-template-columns: 1fr; grid-template-areas: "gold" "permit" "dignity"; }
+      .tile, .tile.gold { min-height: 0; }
     }
   </style>
 </head>
@@ -98,40 +107,54 @@
       <div class="top">
         <a class="mark" href="store.html">VOIDD</a>
         <nav>
-          <a href="https://kawhooped.github.io/tools-for-everyone/">Tools</a>
+          <a href="tools/">Tools</a>
+          <a href="license.html">License</a>
           <a href="firm.html">Shops</a>
           <a href="tel:+17866601778">Call</a>
         </nav>
       </div>
-      <p class="eye">Miami · digital</p>
-      <h1>Free tools. Paid zips.</h1>
-      <p class="lede">This is home. itch and Gumroad are shelves — same item, last line of those listings points here. You buy there. No second product.</p>
+      <p class="eye">Miami · gold</p>
+      <h1>Pure gold.</h1>
+      <p class="lede">Demo tools are $0 in the browser. Exclusive commercial access is the gold — one buyer, the whole pack, $5,000. You call. No server. No mill.</p>
     </header>
     <main id="shop">
       <div class="bento">
-        <article class="tile free">
-          <span class="n">00 · $0</span>
-          <h2>Tools for everyone</h2>
-          <p>Permit search, Windows ping, PC install. Lime VOIDD on those pages is this store.</p>
-          <iframe class="demo" title="Permit feed demo" src="https://kawhooped.github.io/tools-for-everyone/permit-feed/"></iframe>
-          <a class="btn" href="https://kawhooped.github.io/tools-for-everyone/">Use free tools</a>
+        <article class="tile gold">
+          <span class="n">GOLD · exclusive</span>
+          <h2>Tools pack <span class="price">$5,000</span></h2>
+          <p>One buyer. Commercial license. Source zip. We do not sell another exclusive on this pack while yours is live. Public demos stay $0.</p>
+          <a class="btn" href="tel:+17866601778">Call 786-660-1778</a>
         </article>
         <article class="tile">
           <span class="n">01 · file</span>
           <h2>Permit feed <span class="price">$12</span></h2>
           <p>Unzip. Search sample building permits without calling city hall.</p>
-          <p class="wait">Gumroad after Publish.</p>
+          <p class="wait">Gumroad after you Publish.</p>
         </article>
         <article class="tile">
           <span class="n">02 · play</span>
           <h2>Dignity Coin Rush</h2>
           <p>A few minutes of hold-and-sweep in the browser. No install.</p>
-          <p class="wait">itch after Save.</p>
+          <p class="wait">itch after you Save.</p>
         </article>
+      </div>
+      <div class="tools">
+        <h2>Demos · $0 MIT</h2>
+        <a class="tool" href="tools/permit-feed/"><b>Permit feed</b><span>Search sample permits</span></a>
+        <a class="tool" href="tools/windows-ping/"><b>Windows ping</b><span>Toast, no focus steal</span></a>
+        <a class="tool" href="tools/pc-install/"><b>PC install</b><span>Name it. Winget installs</span></a>
+        <a class="tool" href="tools/sprite-studio/"><b>Sprite studio</b><span>Library. Export JSON</span></a>
+        <a class="tool" href="tools/code-exporter/"><b>Code exporter</b><span>Paste. Download HTML</span></a>
+        <a class="tool" href="tools/melody/"><b>Melody</b><span>Make a loop. WAV</span></a>
+        <a class="tool" href="tools/artist-workshop/"><b>Artist workshop</b><span>Draw. PNG</span></a>
+        <a class="tool" href="tools/living-library/"><b>Living library</b><span>Chapters in the browser</span></a>
+        <a class="tool" href="tools/prompt-pack/"><b>Prompt pack</b><span>Copy a build prompt</span></a>
+        <a class="tool" href="tools/lyric-randomizer/"><b>Lyric randomizer</b><span>Shuffle. JSON</span></a>
       </div>
     </main>
     <footer>
       <span>VOIDD Labs · sole prop</span>
+      <a href="license.html">License</a>
       <a href="tel:+17866601778">786-660-1778</a>
       <a href="https://github.com/Kawhooped/voidd-sales">Source</a>
     </footer>
