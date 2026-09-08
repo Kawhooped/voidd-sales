@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VOIDD visits · no cookies</title>
+  <meta name="description" content="VOIDD Labs visit counts. No cookies. No fingerprint. Raw IP is not on this page.">
+  <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/stats.html">
+  <style>
+    :root { --bg:#0a0804; --ink:#f7f1dc; --dim:#a8986a; --gold:#e6b400; --line:color-mix(in oklab, var(--gold) 32%, transparent); --panel:#120e08; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui,sans-serif; }
+    main { max-width:40rem; margin:0 auto; padding:1.4rem 1.2rem 4rem; }
+    a { color:var(--gold); }
+    .mark { font:700 .68rem/1 system-ui; letter-spacing:.24em; color:#111; background:var(--gold); padding:.42rem .58rem; border-radius:3px; text-decoration:none; }
+    h1 { color:var(--gold); font:700 clamp(1.8rem,5vw,2.6rem)/1.05 "Iowan Old Style",Palatino,Georgia,serif; }
+    h2 { color:var(--gold); font-size:1rem; }
+    p, li { color:var(--dim); }
+    .panel { background:var(--panel); border:1px solid var(--line); border-radius:1rem; padding:1rem 1.1rem; margin:1rem 0; }
+    pre { color:var(--ink); white-space:pre-wrap; font-size:.85rem; }
+  </style>
+  <script src="hit.js" defer></script>
+</head>
+<body>
+<main>
+  <p><a class="mark" href="store.html">VOIDD</a></p>
+  <h1>Visits</h1>
+  <p>No cookies. No localStorage ID. No canvas fingerprint. No session replay. No ad pixel.</p>
+  <div class="panel">
+    <h2>What this page can see</h2>
+    <p>GitHub Pages is a static host. It does not give us visitor IPs. A hit from this public site reaches Station only if the browser can open <code>127.0.0.1:8934</code> — that is you on this PC, not a customer on the internet.</p>
+    <p>Customer counts need a cookieless collector we own (Cloudflare Web Analytics) or GoatCounter. Until that URL exists, the live log is local.</p>
+  </div>
+  <div class="panel">
+    <h2>Local log (this PC)</h2>
+    <pre id="sum">loading…</pre>
+  </div>
+  <div class="panel">
+    <h2>We refuse</h2>
+    <ul>
+      <li>Third-party cookies and GA4</li>
+      <li>Fingerprinting (canvas, fonts, WebGL, SSD timing)</li>
+      <li>CNAME cloaking, bounce tracking, evercookies</li>
+      <li>Clarity / Hotjar session replay</li>
+      <li>Meta or Google ads pixels</li>
+    </ul>
+  </div>
+  <p><a href="store.html">Store</a> · <a href="license.html">License</a></p>
+</main>
+<script>
+fetch("http://127.0.0.1:8934/api/hit?sum=1").then(function (r) { return r.json(); }).then(function (j) {
+  document.getElementById("sum").textContent = JSON.stringify(j, null, 2);
+}).catch(function () {
+  document.getElementById("sum").textContent = "Station not reachable from this browser. Open stats on the PC with Station up.";
+});
+</script>
+</body>
+</html>
