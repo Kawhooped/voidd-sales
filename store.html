@@ -6,100 +6,66 @@
   <title>VOIDD store · $0 demos · 5000 USD exclusive</title>
   <meta name="description" content="VOIDD Labs, Miami. Gold exclusive. $0 tool demos. Paid commercial license.">
   <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/store.html">
-  <script src="hit.js" defer></script>
+  <link rel="icon" href="favicon.png" sizes="96x96">
+  <link rel="stylesheet" href="gold.css">
   <style>
-    :root {
-      --bg: #0a0804;
-      --ink: #f7f1dc;
-      --dim: #a8986a;
-      --lime: #c8ff3d;
-      --gold: #e6b400;
-      --line: color-mix(in oklab, var(--gold) 32%, transparent);
-      --panel: #120e08;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; min-height: 100dvh; color: var(--ink); background: var(--bg);
-      font: 16px/1.5 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
-    }
-    body::before {
-      content: "";
-      position: fixed; inset: -28% auto auto -18%; width: 58vw; height: 58vw;
-      background: radial-gradient(circle at 40% 40%, color-mix(in oklab, var(--gold) 28%, transparent), transparent 68%);
-      pointer-events: none;
-    }
-    .skip {
-      position: absolute; left: .7rem; top: .7rem; z-index: 9;
-      transform: translateY(-120%); padding: .4rem .75rem;
-      background: var(--gold); color: #111; border-radius: 999px; font-weight: 700;
-    }
-    .skip:focus { transform: none; }
-    .wrap { position: relative; max-width: 68rem; margin: 0 auto; padding: 1.1rem 1.2rem 3.5rem; }
+    .wrap { position: relative; max-width: 68rem; margin: 0 auto; padding: 1.2rem 1.2rem 3.5rem; }
     .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-    .mark {
-      font: 700 .68rem/1 system-ui; letter-spacing: .24em; color: #111;
-      background: var(--gold); padding: .42rem .58rem; border-radius: 3px; text-decoration: none;
-    }
-    nav a {
-      color: var(--dim); text-decoration: none; margin-left: 1.1rem; font-size: .82rem;
-      letter-spacing: .08em; text-transform: uppercase;
-    }
-    nav a:hover, nav a:focus-visible { color: var(--gold); }
     .eye {
-      margin: 2.2rem 0 0; color: var(--gold); font-size: .72rem; letter-spacing: .2em;
-      text-transform: uppercase; font-weight: 700;
+      margin: 2.4rem 0 0; color: var(--gold); font-size: 0.7rem;
+      letter-spacing: 0.28em; text-transform: uppercase; font-weight: 700;
     }
-    h1 {
-      font: 700 clamp(2.6rem, 8vw, 5.8rem)/.88 "Iowan Old Style", Palatino, Georgia, serif;
-      letter-spacing: -.045em; margin: .35rem 0 .8rem; max-width: 12ch; text-wrap: balance;
-      color: var(--gold);
+    .lede { max-width: 34rem; color: var(--dim); font-size: 1.06rem; text-wrap: pretty; }
+    .rule {
+      height: 1px; margin: 2rem 0 0;
+      background: linear-gradient(90deg, var(--gold), transparent 70%);
+      opacity: 0.55;
     }
-    .lede { max-width: 36rem; color: var(--dim); font-size: 1.06rem; text-wrap: pretty; }
     .bento {
-      display: grid; gap: .85rem; margin: 2.2rem 0 1.2rem;
-      grid-template-columns: 1.35fr 1fr 1fr;
+      display: grid; gap: 0.9rem; margin: 1.6rem 0 1.3rem;
+      grid-template-columns: 1.4fr 1fr 1fr;
       grid-template-areas: "gold permit dignity";
     }
     .tile {
-      background: var(--panel); border: 1px solid var(--line); border-radius: 1.2rem;
-      padding: 1.25rem 1.3rem 1.35rem; display: flex; flex-direction: column; min-height: 14rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 0.4rem;
+      padding: 1.3rem 1.35rem 1.4rem;
+      display: flex; flex-direction: column; min-height: 14rem;
     }
     .tile:hover { border-color: var(--gold); }
-    .tile.gold {
+    .tile.ingot {
       grid-area: gold; min-height: 18rem;
-      box-shadow: 0 0 2.4rem color-mix(in oklab, var(--gold) 22%, transparent);
-      border-color: color-mix(in oklab, var(--gold) 55%, transparent);
+      border-color: color-mix(in oklab, var(--gold) 60%, transparent);
+      box-shadow: inset 0 1px 0 color-mix(in oklab, var(--gold-hot) 35%, transparent), 0 0 2.8rem var(--shadow);
+      background:
+        linear-gradient(160deg, color-mix(in oklab, var(--gold) 12%, transparent), transparent 42%),
+        var(--panel);
     }
-    .n { font-size: .68rem; letter-spacing: .16em; color: var(--dim); text-transform: uppercase; }
-    .tile h2 { margin: .45rem 0 .4rem; font-size: 1.35rem; letter-spacing: -.02em; }
-    .tile p { color: var(--dim); margin: 0 0 .6rem; flex: 1; }
-    .price { color: var(--gold); font-weight: 750; font-variant-numeric: tabular-nums; }
-    .btn {
-      align-self: flex-start; background: var(--gold); color: #111; text-decoration: none;
-      font-weight: 750; padding: .5rem .9rem; border-radius: 999px; margin-top: auto;
-    }
-    .btn.ghost { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
-    .wait { color: var(--gold); font-size: .88rem; }
+    .n { font-size: 0.66rem; letter-spacing: 0.18em; color: var(--dim); text-transform: uppercase; }
+    .tile h2 { margin: 0.5rem 0 0.4rem; font-size: 1.35rem; letter-spacing: -0.02em; }
+    .tile p { margin: 0 0 0.6rem; flex: 1; }
+    .price { color: var(--gold-hot); font-weight: 750; font-variant-numeric: tabular-nums; }
+    .wait { color: var(--gold); font-size: 0.88rem; }
     .tools {
-      display: grid; gap: .65rem; margin: 0 0 1.6rem;
+      display: grid; gap: 0.65rem; margin: 0 0 1.8rem;
       grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     }
     .tools h2 {
-      grid-column: 1 / -1; margin: .4rem 0 .2rem;
-      font: 700 .72rem/1 system-ui; letter-spacing: .18em; text-transform: uppercase; color: var(--gold);
+      grid-column: 1 / -1; margin: 0.5rem 0 0.2rem;
+      font: 700 0.7rem/1 system-ui; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
     }
     .tool {
-      background: var(--panel); border: 1px solid var(--line); border-radius: .9rem;
-      padding: .9rem 1rem; text-decoration: none; color: inherit;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 0.35rem;
+      padding: 0.95rem 1rem; text-decoration: none; color: inherit;
     }
-    .tool b { display: block; color: var(--ink); margin-bottom: .25rem; }
-    .tool span { color: var(--dim); font-size: .88rem; }
+    .tool b { display: block; color: var(--ink); margin-bottom: 0.25rem; }
+    .tool span { color: var(--dim); font-size: 0.88rem; }
     .tool:hover { border-color: var(--gold); }
-    footer { color: var(--dim); font-size: .88rem; display: flex; flex-wrap: wrap; gap: .8rem 1.4rem; }
-    footer a { color: var(--gold); }
+    footer { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
     @media (max-width: 860px) {
       .bento { grid-template-columns: 1fr; grid-template-areas: "gold" "permit" "dignity"; }
-      .tile, .tile.gold { min-height: 0; }
+      .tile, .tile.ingot { min-height: 0; }
     }
   </style>
 </head>
@@ -116,14 +82,15 @@
           <a href="tel:+17866601778">Call</a>
         </nav>
       </div>
-      <p class="eye">Miami · gold</p>
+      <p class="eye">Miami</p>
       <h1>Pure gold.</h1>
-      <p class="lede">Demo tools are $0 in the browser. Exclusive commercial access is the gold — one buyer, the whole pack, $5,000. You call. No server. No mill.</p>
+      <p class="lede">Demo tools are $0 in the browser. Exclusive commercial access is one buyer, the whole pack, $5,000. You call.</p>
+      <div class="rule"></div>
     </header>
     <main id="shop">
       <div class="bento">
-        <article class="tile gold">
-          <span class="n">GOLD · exclusive</span>
+        <article class="tile ingot">
+          <span class="n">Exclusive</span>
           <h2>Tools pack <span class="price">$5,000</span></h2>
           <p>One buyer. Commercial license. Source zip. We do not sell another exclusive on this pack while yours is live. Public demos stay $0.</p>
           <a class="btn" href="tel:+17866601778">Call 786-660-1778</a>
@@ -144,15 +111,6 @@
       <div class="tools">
         <h2>Demos · $0 MIT</h2>
         <a class="tool" href="tools/permit-feed/"><b>Permit feed</b><span>Search sample permits</span></a>
-        <a class="tool" href="tools/windows-ping/"><b>Windows ping</b><span>Toast, no focus steal</span></a>
-        <a class="tool" href="tools/pc-install/"><b>PC install</b><span>Name it. Winget installs</span></a>
-        <a class="tool" href="tools/sprite-studio/"><b>Sprite studio</b><span>Library. Export JSON</span></a>
-        <a class="tool" href="tools/code-exporter/"><b>Code exporter</b><span>Paste. Download HTML</span></a>
-        <a class="tool" href="tools/melody/"><b>Melody</b><span>Make a loop. WAV</span></a>
-        <a class="tool" href="tools/artist-workshop/"><b>Artist workshop</b><span>Draw. PNG</span></a>
-        <a class="tool" href="tools/living-library/"><b>Living library</b><span>Chapters in the browser</span></a>
-        <a class="tool" href="tools/prompt-pack/"><b>Prompt pack</b><span>Copy a build prompt</span></a>
-        <a class="tool" href="tools/lyric-randomizer/"><b>Lyric randomizer</b><span>Shuffle. JSON</span></a>
       </div>
     </main>
     <footer>
