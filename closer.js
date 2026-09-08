@@ -55,7 +55,9 @@
   function packAnswer(q) {
     const raw = String(q || "").toLowerCase();
     const words = raw.split(/\W+/).filter(function (w) { return w.length > 2; });
-    if (/\b(how much|price|cost|7500|7,?500|1500)\b/.test(raw)) words.push("how", "much");
+    if (/\b(how much|price|cost|7500|7,?500|1500)\b/.test(raw)) {
+      return "Call the office 786-660-1778 for the number. Do not invent a price on this page.";
+    }
     if (/\b(paid|pay|payment|commission)\b/.test(raw)) words.push("when", "get", "paid");
     if (/\b(leads?|list)\b/.test(raw)) words.push("send", "leads");
     if (/\b(website|site)\b/.test(raw)) words.push("website");
@@ -195,7 +197,7 @@
       log.appendChild(d);
       log.scrollTop = 99999;
     }
-    add("Wren", "I’m Wren. You sell. We install. Ask me the price, the pack, or what to say. Don’t invent a case study. Today tells you the next move.");
+    add("Wren", "I’m Wren. You sell. We install. Ask me the pack or what to say. Don’t invent a case study or a price. Today tells you the next move.");
     form.onsubmit = function (e) {
       e.preventDefault();
       const t = (root.querySelector("#reach-text").value || "").trim();
@@ -218,21 +220,21 @@
     {
       id: "7500",
       name: "Lead Response",
-      price: "$7,500",
-      cut: "$1,500 after the shop pays us",
+      price: "Quoted on the call",
+      cut: "20% after the shop pays us",
       blurb: "The one you sell first. Form on their existing website. Visitor leaves name and phone when they can’t pick up. Shop calls. We install. No site = walk.",
     },
     {
       id: "10000",
       name: "Intake",
-      price: "$10,000",
+      price: "Quoted on the call",
       cut: "20% after the shop pays us",
       blurb: "Same shop, after Lead Response is live on their URL. Truck does not roll until address, system, access, agreement, and photos are in.",
     },
     {
       id: "20000",
       name: "Ops",
-      price: "$20,000",
+      price: "Quoted on the call",
       cut: "20% after the shop pays us",
       blurb: "Same shop, after Intake. Jobs: scheduled → dispatched → on site → done on one board.",
     },

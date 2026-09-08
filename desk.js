@@ -224,7 +224,7 @@ function you() {
     }
     const stats = document.getElementById("today-stats");
     if (stats) {
-      stats.textContent = m.open + " in play \u00b7 " + m.sent + " sent \u00b7 " + m.walked + " walked \u00b7 $1,500 after they pay us";
+      stats.textContent = m.open + " in play \u00b7 " + m.sent + " sent \u00b7 " + m.walked + " walked \u00b7 20% after they pay us";
     }
     document.querySelectorAll(".loop span[data-step]").forEach(function (el) {
       el.classList.toggle("on", Number(el.getAttribute("data-step")) === m.step);

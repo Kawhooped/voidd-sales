@@ -66,7 +66,7 @@
   </header>
   <main>
     <h1 id="desk-h1">You sell. We install. The shop calls.</h1>
-    <p class="sub" id="who-line">$7,500 Lead Response · 20% after they pay us · handshake is not a check.</p>
+    <p class="sub" id="who-line">Lead Response · 20% after they pay us · handshake is not a check. Numbers on the call.</p>
     <p class="banner hid" id="confirm-banner">
       Confirm this email. If mail did not send, copy the link and open it — no code, no invented password.
       <span class="row" style="margin-top:.4rem">
@@ -111,9 +111,9 @@
         <p>VOIDD Labs installs <b>after-hours Lead Response</b> on a shop that already has a website. A visitor leaves name and phone when the shop can’t pick up. It hits the inbox they actually check. They are never told they’re booked. <b>The shop calls.</b> You close. We install. You do not install.</p>
         <p>One time. Not ads. Not a new site. Not a call center. No website = walk.</p></article>
       <article class="card"><h2>How you get paid</h2>
-        <p><b>Shop pays VOIDD, not you.</b> When that money is in, your 20% shows <b>on your account</b> (Lead Response: $1,500 of $7,500). We <b>issue it to you after it clears</b>. Handshake is not a check. $0 issued until then.</p></article>
+        <p><b>Shop pays VOIDD, not you.</b> When that money is in, your 20% shows <b>on your account</b>. We <b>issue it to you after it clears</b>. Handshake is not a check. Nothing issued until then.</p></article>
       <article class="card"><h2>Register for what you sell</h2>
-        <p class="note">Start with Lead Response. Intake and Ops are the same shop, later. You do not quote $75k as a product.</p>
+        <p class="note">Start with Lead Response. Intake and Ops are the same shop, later. You do not quote a later package as this week’s product.</p>
         <div id="home-skus"></div>
         <p class="row" style="margin-top:.7rem"><button type="button" id="go-desk">Open the desk</button></p></article>
       <article class="card"><h2>Then what</h2>
@@ -123,7 +123,7 @@
       <p class="sub">Tap Register on a package you will sell. Office sees it. Lead Response is the one that pays this week.</p>
       <div id="pkg-list"></div>
       <article class="card"><h2>Not for sale</h2>
-        <p>A new website. Ads / SEO / Google ranking. We answer the phone. A lead-volume guarantee. $75k as in-house. A password you made up.</p></article>
+        <p>A new website. Ads / SEO / Google ranking. We answer the phone. A lead-volume guarantee. A later package as in-house. A password you made up.</p></article>
     </section>
     <section id="pane-pay" class="hid">
       <article class="card"><h2>When money moves</h2>
@@ -133,7 +133,7 @@
           <li>You may report that they paid. Do not type card numbers. Office gets the full pack + pay note.</li>
           <li>When VOIDD has the money, your 20% is <b>on your account</b>. We issue it after that payment clears.</li>
         </ol>
-        <p class="note" id="pay-stats">$0 paid. Handshake is not a check.</p></article>
+        <p class="note" id="pay-stats">Nothing paid yet. Handshake is not a check.</p></article>
       <div id="deal-list"></div>
       <article class="card"><h2>Email the shop an invoice</h2>
         <p class="note">No card box on this desk. Card numbers to a closer is how you get robbed. They pay VOIDD: 786-660-1778.</p>
@@ -147,7 +147,7 @@
         <label>Deal</label><select id="pay-deal"></select>
         <label>How they paid VOIDD</label>
         <select id="pay-method"><option value="zelle">Zelle</option><option value="wire">Wire</option><option value="check">Check</option><option value="other">Other (not a card number)</option></select>
-        <label>Amount they sent (dollars)</label><input id="pay-amt" inputmode="numeric" placeholder="7500" />
+        <label>Amount they sent (dollars)</label><input id="pay-amt" inputmode="numeric" placeholder="quoted amount" />
         <label>Reference (memo / last name — not a card)</label><input id="pay-ref" placeholder="Zelle from Coastal Air" />
         <p class="row"><button type="button" id="pay-report">Report to office</button></p>
         <p class="note" id="pay-report-err"></p></article>
@@ -191,7 +191,7 @@ I’m not selling ads or a new website. Quick: when you’re on a job or after h
 
 [listen]
 
-We install after-hours lead response on the site you already have. They leave a name and number. It hits the phone you actually look at. They’re not told they’re booked. You call them. Seventy-five hundred, one time. We don’t answer the phone for you.
+We install after-hours lead response on the site you already have. They leave a name and number. It hits the phone you actually look at. They’re not told they’re booked. You call them. One time — office quotes the number. We don’t answer the phone for you.
 
 If that isn’t you, I’ll let you go. If it is, I need your live URL and who can edit the page.</pre>
         <p class="row"><button type="button" class="ghost" data-copy="c1">Copy</button></p></article>
@@ -203,19 +203,19 @@ Ours hits the phone you actually check, never tells them they have an appointmen
 If you’re happy with the box you have, we’re good — I won’t keep calling.</pre>
         <p class="row"><button type="button" class="ghost" data-copy="c2">Copy</button></p></article>
       <article class="card"><h2>Voicemail — once</h2>
-        <pre class="say" id="c3" data-fill>Hi [name], [you] at VOIDD Labs. Not ads. When you can’t pick up, people on your site can still leave a name — you call them. Seventy-five hundred once. I’ll try you once more later this week; if it’s not useful I won’t keep ringing. 786-660-1778.</pre>
+        <pre class="say" id="c3" data-fill>Hi [name], [you] at VOIDD Labs. Not ads. When you can’t pick up, people on your site can still leave a name — you call them. One time. I’ll try you once more later this week; if it’s not useful I won’t keep ringing. 786-660-1778.</pre>
         <p class="row"><button type="button" class="ghost" data-copy="c3">Copy</button></p></article>
       <article class="card"><h2>Spanish — 60 seconds</h2>
-        <pre class="say" id="c5" data-fill>Cuando no puedes contestar, la gente en tu página deja nombre y teléfono. Te llega al correo o WhatsApp que sí revisas. No les decimos que ya tienen cita. Tú los llamas. Lo instalamos en la web que ya tienes. Siete mil quinientos, una vez. Nosotros no contestamos el teléfono por ti.</pre>
+        <pre class="say" id="c5" data-fill>Cuando no puedes contestar, la gente en tu página deja nombre y teléfono. Te llega al correo o WhatsApp que sí revisas. No les decimos que ya tienen cita. Tú los llamas. Lo instalamos en la web que ya tienes. Una vez; la oficina da el número. Nosotros no contestamos el teléfono por ti.</pre>
         <p class="row"><button type="button" class="ghost" data-copy="c5">Copy</button></p></article>
     </section>
     <section id="pane-texts" class="hid">
       <p class="sub">Only if they asked, or as the one follow-up after voicemail. Then stop.</p>
       <article class="card"><h2>They asked you to text</h2>
-        <pre class="say" id="t1" data-fill>Hi [name] — [you] at VOIDD Labs. After-hours names on the site you already have. You call. $7,500 once. Not ads, not a new site. If you want the collect list I’ll send it. If not, I won’t follow up.</pre>
+        <pre class="say" id="t1" data-fill>Hi [name] — [you] at VOIDD Labs. After-hours names on the site you already have. You call. One time. Not ads, not a new site. If you want the collect list I’ll send it. If not, I won’t follow up.</pre>
         <p class="row"><button type="button" class="ghost" data-copy="t1">Copy</button></p></article>
       <article class="card"><h2>One follow-up, then stop</h2>
-        <pre class="say" id="t2" data-fill>[name] — last note from me. Same offer: after-hours names on the site you already have, you call, seventy-five hundred once. If you want the collect list, text me. If not, I won’t pester you.</pre>
+        <pre class="say" id="t2" data-fill>[name] — last note from me. Same offer: after-hours names on the site you already have, you call, one time. If you want the collect list, text me. If not, I won’t pester you.</pre>
         <p class="row"><button type="button" class="ghost" data-copy="t2">Copy</button></p></article>
       <article class="card"><h2>Send collect to the office</h2>
         <pre class="say" id="t3">Pack is on Collect. Copy it there, then Text the office. Do not invent a shop password.</pre>
@@ -246,10 +246,10 @@ If you’re happy with the box you have, we’re good — I won’t keep calling
     <section id="pane-say" class="hid">
       <article class="card">
         <h2>60 seconds — English</h2>
-        <pre class="say" id="pitch">When you can’t pick up, people on your site still leave a name. It hits the phone you actually look at. They’re not told they’re booked. You call. We install it on the site you already have — looks like your page — and we don’t leave until you called a test lead. Seventy-five hundred, one time. We don’t answer the phone for you.</pre>
+        <pre class="say" id="pitch">When you can’t pick up, people on your site still leave a name. It hits the phone you actually look at. They’re not told they’re booked. You call. We install it on the site you already have — looks like your page — and we don’t leave until you called a test lead. One time — office quotes the number. We don’t answer the phone for you.</pre>
         <p class="row"><button type="button" class="ghost" data-copy="pitch">Copy</button></p>
         <h2>Español</h2>
-        <pre class="say" id="pitchEs">Cuando no puedes contestar, la gente en tu página deja nombre y teléfono. Te llega al correo o WhatsApp que sí revisas. No les decimos que ya tienen cita. Tú los llamas. Lo instalamos en la web que ya tienes, con tu mismo estilo, y no nos vamos hasta que tú llamaste un pedido de prueba. Siete mil quinientos, una vez. Nosotros no contestamos el teléfono por ti.</pre>
+        <pre class="say" id="pitchEs">Cuando no puedes contestar, la gente en tu página deja nombre y teléfono. Te llega al correo o WhatsApp que sí revisas. No les decimos que ya tienen cita. Tú los llamas. Lo instalamos en la web que ya tienes, con tu mismo estilo, y no nos vamos hasta que tú llamaste un pedido de prueba. Una vez; la oficina da el número. Nosotros no contestamos el teléfono por ti.</pre>
         <p class="row"><button type="button" class="ghost" data-copy="pitchEs">Copy</button></p>
       </article>
     </section>
@@ -266,9 +266,9 @@ If you’re happy with the box you have, we’re good — I won’t keep calling
     </section>
     <section id="pane-services" class="hid">
       <article class="card"><h2>What you sell</h2>
-        <p>After-hours Lead Response on a shop’s <em>existing</em> website. $7,500 one time. Visitor leaves name and phone when they can’t pick up. The shop calls.</p></article>
+        <p>After-hours Lead Response on a shop’s <em>existing</em> website. One time. Visitor leaves name and phone when they can’t pick up. The shop calls.</p></article>
       <article class="card"><h2>Pay</h2>
-        <p>20% after the shop pays VOIDD for an accepted install. $1,500 on $7,500. Handshake is not a check.</p></article>
+        <p>20% after the shop pays VOIDD for an accepted install. Handshake is not a check.</p></article>
     </section>
     <section id="pane-pack" class="hid">
       <input id="find" type="search" placeholder="Search answers…" autocomplete="off" />
