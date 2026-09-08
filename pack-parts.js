@@ -36,7 +36,7 @@
     art.className = "card";
     art.id = "what-we-install";
     art.innerHTML = "<h2>What we install</h2>"
-      + "<p class=\"note\">Say this after they understand the $7,500. Not the first sentence.</p>"
+      + "<p class=\"note\">Say this after they understand the quote. Not the first sentence.</p>"
       + "<ol>"
       + "<li>On a page they already had — their type, colors, button</li>"
       + "<li>After hours: can’t reach us → leave name + phone</li>"
@@ -56,7 +56,7 @@
     cmp.className = "card";
     cmp.id = "outside-world";
     cmp.innerHTML = "<h2>If they compare</h2>"
-      + "<p><b>Jobber / Housecall / a $59 app:</b> that’s a subscription. This is a one-time install on the site they already have. Don’t discount.</p>"
+      + "<p><b>Jobber / Housecall / a monthly app:</b> that’s a subscription. This is a one-time install on the site they already have. Don’t discount.</p>"
       + "<p><b>A form / Wix:</b> the box does not hit the phone they check, stop a double job, or sit until they called a test lead.</p>"
       + "<p><b>An answering service:</b> that’s the phone. We catch people already on their website. If they want a receptionist, walk.</p>";
     host.parentNode.appendChild(cmp);
