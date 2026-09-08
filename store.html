@@ -3,111 +3,120 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VOIDD store · $0 demos · 5000 USD exclusive</title>
-  <meta name="description" content="VOIDD Labs, Miami. Gold exclusive. $0 tool demos. Paid commercial license.">
+  <title>VOIDD Labs · tools pack</title>
+  <meta name="description" content="VOIDD Labs, Miami. Free browser demos. Exclusive commercial tools pack, $5,000, one buyer. Call to start.">
   <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/store.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="gold.css">
   <style>
-    .wrap { position: relative; max-width: 68rem; margin: 0 auto; padding: 1.2rem 1.2rem 3.5rem; }
-    .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-    .eye {
-      margin: 2.4rem 0 0; color: var(--gold); font-size: 0.7rem;
-      letter-spacing: 0.28em; text-transform: uppercase; font-weight: 700;
-    }
-    .lede { max-width: 34rem; color: var(--dim); font-size: 1.06rem; text-wrap: pretty; }
-    .rule {
-      height: 1px; margin: 2rem 0 0;
-      background: linear-gradient(90deg, var(--gold), transparent 70%);
-      opacity: 0.55;
-    }
-    .bento {
-      display: grid; gap: 0.9rem; margin: 1.6rem 0 1.3rem;
-      grid-template-columns: 1.4fr 1fr;
-      grid-template-areas: "gold permit";
+    .wrap { max-width: 58rem; margin: 0 auto; padding: 1.15rem 1.15rem 3.2rem; }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .place { margin: 1.6rem 0 0; color: var(--dim); font-size: 0.88rem; }
+    .lede { max-width: 38rem; font-size: 1.05rem; }
+    .prices {
+      display: grid; gap: 0.85rem; margin: 1.5rem 0 1.8rem;
+      grid-template-columns: 1fr 1.15fr;
     }
     .tile {
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 0.4rem;
-      padding: 1.3rem 1.35rem 1.4rem;
-      display: flex; flex-direction: column; min-height: 14rem;
+      border-radius: 8px;
+      padding: 1.15rem 1.2rem 1.25rem;
+      display: flex; flex-direction: column;
     }
-    .tile:hover { border-color: var(--gold); }
-    .tile.ingot {
-      grid-area: gold; min-height: 18rem;
-      border-color: color-mix(in oklab, var(--gold) 60%, transparent);
-      box-shadow: inset 0 1px 0 color-mix(in oklab, var(--gold-hot) 35%, transparent), 0 0 2.8rem var(--shadow);
-      background:
-        linear-gradient(160deg, color-mix(in oklab, var(--gold) 12%, transparent), transparent 42%),
-        var(--panel);
-    }
-    .n { font-size: 0.66rem; letter-spacing: 0.18em; color: var(--dim); text-transform: uppercase; }
-    .tile h2 { margin: 0.5rem 0 0.4rem; font-size: 1.35rem; letter-spacing: -0.02em; }
-    .tile p { margin: 0 0 0.6rem; flex: 1; }
-    .price { color: var(--gold-hot); font-weight: 750; font-variant-numeric: tabular-nums; }
-    .tools {
-      display: grid; gap: 0.65rem; margin: 0 0 1.8rem;
-      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-    }
-    .tools h2 {
-      grid-column: 1 / -1; margin: 0.5rem 0 0.2rem;
-      font: 700 0.7rem/1 system-ui; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
-    }
-    .tool {
-      background: var(--panel); border: 1px solid var(--line); border-radius: 0.35rem;
-      padding: 0.95rem 1rem; text-decoration: none; color: inherit;
-    }
-    .tool b { display: block; color: var(--ink); margin-bottom: 0.25rem; }
-    .tool span { color: var(--dim); font-size: 0.88rem; }
-    .tool:hover { border-color: var(--gold); }
+    .n { font-size: 0.75rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.08em; }
+    .tile h2 { margin: 0.4rem 0 0.45rem; font-size: 1.2rem; }
+    .tile p { margin: 0 0 0.7rem; }
+    .price { font-variant-numeric: tabular-nums; }
+    .inc { margin: 0 0 1.8rem; }
+    .inc h2 { margin: 0 0 0.55rem; }
+    .inc ul { margin: 0; padding-left: 1.15rem; color: var(--dim); }
+    .inc li { margin: 0.3rem 0; }
+    .how { margin: 0 0 1.8rem; }
+    .how ol { margin: 0; padding-left: 1.15rem; color: var(--dim); }
+    .how li { margin: 0.35rem 0; }
+    .faq { margin: 0 0 1.5rem; }
+    .faq details { border-top: 1px solid var(--line); padding: 0.7rem 0; }
+    .faq summary { cursor: pointer; color: var(--ink); font-weight: 650; }
+    .faq p { margin: 0.4rem 0 0; max-width: 46rem; }
     footer { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
-    @media (max-width: 860px) {
-      .bento { grid-template-columns: 1fr; grid-template-areas: "gold" "permit"; }
-      .tile, .tile.ingot { min-height: 0; }
+    @media (max-width: 720px) {
+      .prices { grid-template-columns: 1fr; }
+      nav a { margin-left: 0.75rem; }
     }
   </style>
 </head>
 <body>
-  <a class="skip" href="#shop">Skip to shop</a>
+  <a class="skip" href="#shop">Skip to pricing</a>
   <div class="wrap">
     <header>
       <div class="top">
-        <a class="mark" href="store.html">VOIDD</a>
+        <a class="mark" href="store.html">VOIDD Labs</a>
         <nav>
+          <a href="store.html" aria-current="page">Store</a>
           <a href="tools/">Tools</a>
           <a href="license.html">License</a>
-          <a href="firm.html">Shops</a>
-          <a href="tel:+17866601778">Call</a>
+          <a href="tel:+17866601778">Contact</a>
         </nav>
       </div>
-      <p class="eye">Miami</p>
-      <h1>Pure gold.</h1>
-      <p class="lede">Demo tools are $0 in the browser. Exclusive commercial access is one buyer, the whole pack, $5,000. You call.</p>
-      <div class="rule"></div>
+      <p class="place">Miami · sole prop</p>
+      <h1>Browser tools and one commercial license.</h1>
+      <p class="lede">Try the demo in the browser. The exclusive pack is $5,000 for one buyer. Call to start the paperwork. No card on this site.</p>
     </header>
     <main id="shop">
-      <div class="bento">
-        <article class="tile ingot">
-          <span class="n">Exclusive</span>
-          <h2>Tools pack <span class="price">$5,000</span></h2>
-          <p>One buyer. Commercial license. Source zip. We do not sell another exclusive on this pack while yours is live. Public demos stay $0.</p>
-          <a class="btn" href="tel:+17866601778">Call 786-660-1778</a>
-        </article>
+      <div class="prices">
         <article class="tile">
-          <span class="n">01 · file</span>
-          <h2>Permit feed</h2>
-          <p>Search sample building permits. No account. No city hall. Demo is $0.</p>
+          <span class="n">Demo</span>
+          <h2>Permit feed <span class="price">$0</span></h2>
+          <p>Search a sample of public Chicago building permits. No account. Not a live feed for every city.</p>
           <a class="btn ghost" href="tools/permit-feed/">Open demo</a>
         </article>
+        <article class="tile">
+          <span class="n">Exclusive</span>
+          <h2>Tools pack <span class="price">$5,000</span></h2>
+          <p>One buyer. Source zip. Commercial right to use and ship the pack. We do not sell another exclusive on it while yours is live. Public demos stay up.</p>
+          <a class="btn" href="tel:+17866601778">Call 786-660-1778</a>
+        </article>
       </div>
-      <div class="tools">
-        <h2>Demos · $0 MIT</h2>
-        <a class="tool" href="tools/permit-feed/"><b>Permit feed</b><span>Search sample permits</span></a>
-      </div>
+      <section class="inc">
+        <h2>What you get</h2>
+        <ul>
+          <li>Public demo: Permit feed, 32 sample rows, MIT HTML you can copy.</li>
+          <li>Exclusive: source zip of the tools pack, commercial use, one live buyer at a time.</li>
+          <li>Danny confirms the sale. Invoice follows the call. No invented checkout.</li>
+        </ul>
+      </section>
+      <section class="how">
+        <h2>How a purchase works</h2>
+        <ol>
+          <li>Open the demo. See if the tool is useful.</li>
+          <li>Call 786-660-1778.</li>
+          <li>Danny confirms. Paperwork and invoice, not a self-serve cart.</li>
+          <li>You get the zip. Public demos stay on this site.</li>
+        </ol>
+      </section>
+      <section class="faq">
+        <h2>FAQ</h2>
+        <details>
+          <summary>Is this a live permit product for every city?</summary>
+          <p>No. The demo searches a Chicago sample. Cities publish their own open data. The exclusive is the pack, not a national API.</p>
+        </details>
+        <details>
+          <summary>Why is there no Buy button?</summary>
+          <p>The exclusive is one buyer. That is a call and an invoice, not a card form. Demos are free in the browser.</p>
+        </details>
+        <details>
+          <summary>What does exclusive mean?</summary>
+          <p>While your commercial license is live, VOIDD does not sell another exclusive on that same pack. Public $0 demos remain public.</p>
+        </details>
+        <details>
+          <summary>Who is VOIDD Labs?</summary>
+          <p>Sole prop in Miami. Phone 786-660-1778. Source for the public pages is on GitHub.</p>
+        </details>
+      </section>
     </main>
     <footer>
-      <span>VOIDD Labs · sole prop</span>
+      <span>VOIDD Labs · Miami</span>
       <a href="license.html">License</a>
       <a href="tel:+17866601778">786-660-1778</a>
       <a href="https://github.com/Kawhooped/voidd-sales">Source</a>
