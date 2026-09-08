@@ -1,40 +1,98 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Permit feed</title>
-<style>
-  body { margin:0; background:#10081a; color:#f4f1e8; font:14px/1.45 ui-sans-serif,system-ui; padding:18px; }
-  h1 { font-size:18px; color:#e8c872; margin:0 0 8px; }
-  p, .muted { color:#c9b8e8; max-width:56ch; }
-  input { width:min(420px,100%); padding:8px 10px; border-radius:8px; border:1px solid #4a3a62; background:#1a1028; color:#f4f1e8; }
-  .row { border:1px solid #3a2a52; border-radius:10px; padding:10px 12px; margin:8px 0; background:#160e22; }
-  .row b { color:#7dffc3; }
-  .shop { margin-top:1.2rem; font:13px system-ui; }
-  a { color:#e6b400; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Permit feed · VOIDD</title>
+  <meta name="description" content="Search sample Chicago building permits. Demo. Not a live city feed.">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../gold.css">
+  <style>
+    .wrap { max-width: 40rem; margin: 0 auto; padding: 1.2rem 1.2rem 3.5rem; }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    h1 { max-width: none; font-size: clamp(1.8rem, 6vw, 3rem); }
+    label { display: block; margin: 1rem 0 0.35rem; color: var(--gold); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; }
+    input {
+      width: 100%; padding: 0.55rem 0.7rem; border-radius: 0.35rem;
+      border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+      font: inherit;
+    }
+    #out { margin-top: 1rem; }
+    .row {
+      border: 1px solid var(--line); border-radius: 0.35rem;
+      padding: 0.75rem 0.85rem; margin: 0.55rem 0; background: var(--panel);
+    }
+    .row b { color: var(--gold-hot); }
+    .muted { color: var(--dim); }
+    footer { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+  </style>
 </head>
 <body>
-<h1>Permit feed</h1>
-<p>Search the sample public permits. No account. No call to city hall. This is not a live feed for every city.</p>
-<input id="q" placeholder="address, permit, owner, work…">
-<div id="out" class="muted">loading…</div>
-<p class="shop"><a href="../../store.html">VOIDD store</a> · <a href="../../license.html">License</a></p>
-<script>
-fetch("mep.json").then(r => r.ok ? r.json() : Promise.reject()).then(d => {
-  const rows = d.rows || [];
-  const out = document.getElementById("out");
-  function show(list) {
-    out.innerHTML = list.slice(0, 40).map(r =>
-      `<div class="row"><b>${r.permit || ""}</b> · ${r.status || ""}<div>${r.address || ""}</div><div>${(r.work_type || "")} — ${(r.work || "").slice(0, 180)}</div></div>`
-    ).join("") || "no rows";
-  }
-  show(rows);
-  document.getElementById("q").oninput = e => {
-    const t = e.target.value.toLowerCase();
-    show(rows.filter(r => JSON.stringify(r).toLowerCase().includes(t)));
-  };
-}).catch(() => { document.getElementById("out").textContent = "Sample data not on this copy yet. Open Desktop/CODE/tools-for-everyone/permit-feed/index.html"; });
-</script>
+  <a class="skip" href="#q">Skip to search</a>
+  <div class="wrap">
+    <header>
+      <div class="top">
+        <a class="mark" href="../../store.html">VOIDD</a>
+        <nav>
+          <a href="../../store.html">Store</a>
+          <a href="../">Tools</a>
+          <a href="../../license.html">License</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <h1>Permit feed</h1>
+      <p>Search the sample public permits. No account. No call to city hall. This is not a live feed for every city.</p>
+      <label for="q">Search</label>
+      <input id="q" type="search" placeholder="address, permit, owner, work…">
+      <div id="out" class="muted">loading…</div>
+    </main>
+    <footer>
+      <a href="../../store.html">VOIDD store</a>
+      <a href="../../license.html">License</a>
+    </footer>
+  </div>
+  <script>
+    function text(el, value) { el.textContent = value == null ? "" : String(value); }
+    function rowEl(r) {
+      const row = document.createElement("div");
+      row.className = "row";
+      const b = document.createElement("b");
+      text(b, r.permit || "");
+      row.append(b, document.createTextNode(" · " + (r.status || "")));
+      const addr = document.createElement("div");
+      text(addr, r.address || "");
+      const work = document.createElement("div");
+      const kind = r.work_type || "";
+      const desc = String(r.work || "").slice(0, 180);
+      text(work, kind ? kind + " — " + desc : desc);
+      row.append(addr, work);
+      return row;
+    }
+    fetch("mep.json").then(r => r.ok ? r.json() : Promise.reject()).then(d => {
+      const rows = d.rows || [];
+      const out = document.getElementById("out");
+      function show(list) {
+        out.replaceChildren();
+        const slice = list.slice(0, 40);
+        if (!slice.length) {
+          out.className = "muted";
+          text(out, "no rows");
+          return;
+        }
+        out.className = "";
+        for (const r of slice) out.append(rowEl(r));
+      }
+      show(rows);
+      document.getElementById("q").addEventListener("input", e => {
+        const t = e.target.value.toLowerCase();
+        show(rows.filter(r => JSON.stringify(r).toLowerCase().includes(t)));
+      });
+    }).catch(() => {
+      const out = document.getElementById("out");
+      out.className = "muted";
+      text(out, "Sample data is missing from this copy. Need mep.json next to this page.");
+    });
+  </script>
 </body>
 </html>

@@ -4,22 +4,46 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>VOIDD tools</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../gold.css">
   <style>
-    body { margin:0; background:#0a0804; color:#f7f1dc; font:16px/1.5 system-ui,sans-serif; }
-    main { max-width:40rem; margin:0 auto; padding:1.4rem 1.2rem 4rem; }
-    a { color:#e6b400; }
-    h1 { color:#e6b400; }
-    .card { border:1px solid color-mix(in oklab,#e6b400 32%, transparent); border-radius:14px; padding:1rem 1.1rem; margin:.8rem 0; }
-    .muted { color:#a8986a; }
+    .wrap { max-width: 40rem; margin: 0 auto; padding: 1.2rem 1.2rem 4rem; }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    h1 { max-width: none; font-size: clamp(1.8rem, 6vw, 3rem); }
+    .card {
+      border: 1px solid var(--line); border-radius: 0.4rem;
+      padding: 1rem 1.1rem; margin: 0.8rem 0; background: var(--panel);
+    }
+    .card a { color: var(--gold-hot); }
+    footer { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
   </style>
 </head>
 <body>
-<main>
-  <p><a href="../store.html">← Store</a></p>
-  <h1>Demos · $0</h1>
-  <p class="muted">MIT in the browser. Exclusive commercial pack is on the store.</p>
-  <div class="card"><b><a href="permit-feed/">Permit feed</a></b><p>Search sample building permits. Not a live city feed.</p></div>
-  <p class="muted"><a href="../license.html">License</a> · exclusive $5,000 · call 786-660-1778</p>
-</main>
+  <a class="skip" href="#list">Skip to list</a>
+  <div class="wrap">
+    <header>
+      <div class="top">
+        <a class="mark" href="../store.html">VOIDD</a>
+        <nav>
+          <a href="../store.html">Store</a>
+          <a href="../license.html">License</a>
+          <a href="tel:+17866601778">Call</a>
+        </nav>
+      </div>
+    </header>
+    <main id="list">
+      <h1>Demos · $0</h1>
+      <p>MIT in the browser. Exclusive commercial pack is on the store.</p>
+      <div class="card">
+        <b><a href="permit-feed/">Permit feed</a></b>
+        <p>Search sample building permits. Not a live city feed.</p>
+      </div>
+    </main>
+    <footer>
+      <a href="../license.html">License</a>
+      <span>exclusive $5,000</span>
+      <a href="tel:+17866601778">786-660-1778</a>
+    </footer>
+  </div>
 </body>
 </html>
