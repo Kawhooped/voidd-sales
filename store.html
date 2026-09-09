@@ -39,10 +39,23 @@
     .faq summary { cursor: pointer; color: var(--ink); font-weight: 650; }
     .faq p { margin: 0.4rem 0 0; max-width: 46rem; }
     footer { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+    .chat {
+      position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 8;
+      max-width: 22rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.85rem 1rem 1rem;
+      box-shadow: 0 12px 40px var(--shadow);
+    }
+    .chat b { display: block; color: var(--gold); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .chat p { margin: 0 0 0.7rem; color: var(--ink); }
+    .chat .btn { margin-top: 0; }
     @media (max-width: 720px) {
       .prices { grid-template-columns: 1fr; }
       nav a { margin-left: 0.75rem; }
     }
+    @media (min-width: 720px) { .chat { left: auto; width: 22rem; } }
   </style>
 </head>
 <body>
@@ -55,7 +68,7 @@
           <a href="store.html" aria-current="page">Store</a>
           <a href="tools/">Tools</a>
           <a href="license.html">License</a>
-          <a href="tel:+17866601778">Contact</a>
+          <a href="call.html">Call</a>
         </nav>
       </div>
       <p class="place">Miami · sole prop</p>
@@ -74,7 +87,7 @@
           <span class="n">Exclusive</span>
           <h2>Tools pack</h2>
           <p>One buyer. Source zip. Commercial right to use and ship the pack. We do not sell another exclusive on it while yours is live. Public demos stay up.</p>
-          <a class="btn" href="tel:+17866601778">Call 786-660-1778</a>
+          <a class="btn" href="call.html">Call 786-660-1778</a>
         </article>
       </div>
       <section class="inc">
@@ -117,9 +130,14 @@
     <footer>
       <span>VOIDD Labs · Miami</span>
       <a href="license.html">License</a>
-      <a href="tel:+17866601778">786-660-1778</a>
+      <a href="call.html">786-660-1778</a>
       <a href="https://github.com/Kawhooped/voidd-sales">Source</a>
     </footer>
   </div>
+  <aside class="chat" aria-live="polite">
+    <b>Danny</b>
+    <p>You’re on the store. Call if you want the pack. This site cannot see who you are.</p>
+    <a class="btn" href="call.html">Open the number</a>
+  </aside>
 </body>
 </html>
