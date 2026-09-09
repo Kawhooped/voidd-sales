@@ -15,7 +15,7 @@
     .lede { max-width: 38rem; font-size: 1.05rem; }
     .prices {
       display: grid; gap: 0.85rem; margin: 1.5rem 0 1.8rem;
-      grid-template-columns: 1fr 1.15fr;
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     }
     .tile {
       background: var(--panel);
@@ -52,7 +52,6 @@
     .chat p { margin: 0 0 0.7rem; color: var(--ink); }
     .chat .btn { margin-top: 0; }
     @media (max-width: 720px) {
-      .prices { grid-template-columns: 1fr; }
       nav a { margin-left: 0.75rem; }
     }
     @media (min-width: 720px) { .chat { left: auto; width: 22rem; } }
@@ -73,10 +72,16 @@
       </div>
       <p class="place">Miami · sole prop</p>
       <h1>Browser tools and one commercial license.</h1>
-      <p class="lede">Try the demo in the browser. The exclusive pack is one buyer. Call to start the paperwork. No card on this site.</p>
+      <p class="lede">Try the demos in the browser. The exclusive pack is one buyer. Call to start the paperwork. No card on this site.</p>
     </header>
     <main id="shop">
       <div class="prices">
+        <article class="tile">
+          <span class="n">Farm</span>
+          <h2>30 simple tools</h2>
+          <p>One page. Add, convert, count, wait. MIT. No account.</p>
+          <a class="btn ghost" href="tools/simple/">Open farm</a>
+        </article>
         <article class="tile">
           <span class="n">Demo</span>
           <h2>Permit feed</h2>
@@ -93,6 +98,7 @@
       <section class="inc">
         <h2>What you get</h2>
         <ul>
+          <li>Public farm: 30 simple tools on one page, MIT.</li>
           <li>Public demo: Permit feed, 32 sample rows, MIT HTML you can copy.</li>
           <li>Exclusive: source zip of the tools pack, commercial use, one live buyer at a time.</li>
           <li>Danny confirms the sale. Invoice follows the call. No invented checkout.</li>
@@ -101,7 +107,7 @@
       <section class="how">
         <h2>How a purchase works</h2>
         <ol>
-          <li>Open the demo. See if the tool is useful.</li>
+          <li>Open the demos. See if the tools are useful.</li>
           <li>Call 786-660-1778.</li>
           <li>Danny confirms. Paperwork and invoice, not a self-serve cart.</li>
           <li>You get the zip. Public demos stay on this site.</li>
