@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>30 simple tools · farm</title>
+  <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/farm.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    :root { --bg:#0c0c0b; --ink:#ece8df; --dim:#9b9588; --gold:#c4b07a; --line:#2a2824; --panel:#161512; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.4 system-ui, sans-serif; }
+    main { max-width: 72rem; margin: 0 auto; padding: 1rem 1rem 3rem; }
+    h1 { font-size: 1.15rem; margin: 0 0 .3rem; }
+    .muted { color: var(--dim); font-size: .88rem; margin: 0 0 1rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: .7rem; }
+    .t { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: .75rem .85rem; }
+    .t h2 { margin: 0 0 .45rem; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
+    input, textarea { width: 100%; margin: .15rem 0; padding: .35rem .45rem; border: 1px solid var(--line); background: #0c0c0b; color: var(--ink); border-radius: 4px; font: inherit; }
+    button { margin-top: .3rem; padding: .3rem .6rem; border: 0; border-radius: 4px; background: var(--gold); color: #111; font-weight: 650; cursor: pointer; }
+    .out { margin: .4rem 0 0; color: var(--gold); min-height: 1.2em; word-break: break-word; }
+    a { color: var(--gold); }
+  </style>
+</head>
+<body>
+<main>
+  <h1>30 simple tools</h1>
+  <p class="muted">Farm. MIT. No account. No AI. One page, not 30 websites. <a href="store.html">Store</a> · <a href="call.html">Call</a></p>
+  <div class="grid" id="g"></div>
+</main>
+<script>
+const tools = [
+  ["Add", "n n", (a,b)=> +a + +b],
+  ["Subtract", "n n", (a,b)=> +a - +b],
+  ["Multiply", "n n", (a,b)=> +a * +b],
+  ["Divide", "n n", (a,b)=> +b===0 ? "÷0" : +a / +b],
+  ["Percent", "n of", (a,b)=> (+a/100)*+b],
+  ["Coin", "", ()=> Math.random()<.5 ? "heads" : "tails"],
+  ["Die", "", ()=> 1 + Math.floor(Math.random()*6)],
+  ["Random 1–n", "n", a=> { const n=+a|0; return n<1?"need n": (1+Math.floor(Math.random()*n)); }],
+  ["Wait seconds", "n", a=> "timer in the box below"],
+  ["Chars", "text", a=> String(a).length],
+  ["Words", "text", a=> String(a).trim() ? String(a).trim().split(/\s+/).length : 0],
+  ["UPPER", "text", a=> String(a).toUpperCase()],
+  ["lower", "text", a=> String(a).toLowerCase()],
+  ["Reverse", "text", a=> [...String(a)].reverse().join("")],
+  ["Trim", "text", a=> String(a).trim()],
+  ["C → F", "n", a=> (+a * 9/5) + 32],
+  ["F → C", "n", a=> (+a - 32) * 5/9],
+  ["kg → lb", "n", a=> +a * 2.20462],
+  ["lb → kg", "n", a=> +a / 2.20462],
+  ["km → mi", "n", a=> +a * 0.621371],
+  ["mi → km", "n", a=> +a / 0.621371],
+  ["Tip 15%", "n", a=> +a * 0.15],
+  ["Unix now", "", ()=> Math.floor(Date.now()/1000)],
+  ["Slug", "text", a=> String(a).toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")],
+  ["Lines", "text", a=> String(a).split(/\n/).length],
+  ["Sort lines", "text", a=> String(a).split(/\n/).sort().join("\n")],
+  ["Unique lines", "text", a=> [...new Set(String(a).split(/\n"))].join("\n")],
+  ["Repeat ×n", "text n", (a,b)=> String(a).repeat(Math.max(0, Math.min(200, +b|0)))],
+  ["Spaces→one", "text", a=> String(a).replace(/\s+/g," ").trim()],
+  ["Note", "text", a=> { try { localStorage.setItem("voidd-simple-note", a); } catch(e){} return "saved here"; }],
+];
+
+const g = document.getElementById("g");
+tools.forEach((row, i) => {
+  const [name, ph] = row;
+  const el = document.createElement("article");
+  el.className = "t";
+  el.innerHTML = `<h2>${i+1}. ${name}</h2>` +
+    (ph.includes("text") && !ph.includes("n") ? `<textarea data-a rows="2" placeholder="${ph}"></textarea>` :
+      ph ? `<input data-a placeholder="${ph.split(" ")[0]||""}">` + (ph.split(" ").length>1 ? `<input data-b placeholder="${ph.split(" ")[1]}">` : "") : "") +
+    `<button type="button" data-go>Go</button><div class="out" data-out></div>`;
+  if (name === "Note") {
+    try { el.querySelector("[data-a]").value = localStorage.getItem("voidd-simple-note") || ""; } catch(e){}
+  }
+  if (name === "Wait seconds") {
+    el.querySelector("[data-go]").onclick = () => {
+      const n = Math.max(0, Math.min(120, +el.querySelector("[data-a]").value || 0));
+      const out = el.querySelector("[data-out]");
+      let left = n;
+      out.textContent = left + "s";
+      const t = setInterval(() => { left--; out.textContent = left + "s"; if (left<=0) { clearInterval(t); out.textContent = "now"; } }, 1000);
+    };
+  } else {
+    el.querySelector("[data-go]").onclick = () => {
+      const a = el.querySelector("[data-a]") ? el.querySelector("[data-a]").value : "";
+      const b = el.querySelector("[data-b]") ? el.querySelector("[data-b]").value : "";
+      const fn = row[2];
+      const r = fn.length > 1 ? fn(a,b) : (fn.length===1 ? fn(a) : fn());
+      el.querySelector("[data-out]").textContent = r;
+    };
+  }
+  g.appendChild(el);
+});
+</script>
+</body>
+</html>
