@@ -56,21 +56,20 @@ const tools = [
   ["Slug", "text", a=> String(a).toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")],
   ["Lines", "text", a=> String(a).split(/\n/).length],
   ["Sort lines", "text", a=> String(a).split(/\n/).sort().join("\n")],
-  ["Unique lines", "text", a=> [...new Set(String(a).split(/\n"))].join("\n")],
+  ["Unique lines", "text", a=> [...new Set(String(a).split(/\n/))].join("\n")],
   ["Repeat ×n", "text n", (a,b)=> String(a).repeat(Math.max(0, Math.min(200, +b|0)))],
   ["Spaces→one", "text", a=> String(a).replace(/\s+/g," ").trim()],
   ["Note", "text", a=> { try { localStorage.setItem("voidd-simple-note", a); } catch(e){} return "saved here"; }],
 ];
-
 const g = document.getElementById("g");
 tools.forEach((row, i) => {
   const [name, ph] = row;
   const el = document.createElement("article");
   el.className = "t";
-  el.innerHTML = `<h2>${i+1}. ${name}</h2>` +
-    (ph.includes("text") && !ph.includes("n") ? `<textarea data-a rows="2" placeholder="${ph}"></textarea>` :
-      ph ? `<input data-a placeholder="${ph.split(" ")[0]||""}">` + (ph.split(" ").length>1 ? `<input data-b placeholder="${ph.split(" ")[1]}">` : "") : "") +
-    `<button type="button" data-go>Go</button><div class="out" data-out></div>`;
+  el.innerHTML = "<h2>"+(i+1)+". "+name+"</h2>" +
+    (ph.includes("text") && !ph.includes("n") ? "<textarea data-a rows=2 placeholder='"+ph+"'></textarea>" :
+      ph ? "<input data-a placeholder='"+(ph.split(" ")[0]||"")+"'>" + (ph.split(" ").length>1 ? "<input data-b placeholder='"+ph.split(" ")[1]+"'>" : "") : "") +
+    "<button type=button data-go>Go</button><div class=out data-out></div>";
   if (name === "Note") {
     try { el.querySelector("[data-a]").value = localStorage.getItem("voidd-simple-note") || ""; } catch(e){}
   }
