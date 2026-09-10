@@ -2,42 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Tools · VOIDD Labs</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../gold.css">
-  <style>
-    .wrap { max-width: 40rem; margin: 0 auto; padding: 1.15rem 1.15rem 4rem; }
-    .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-    h1 { max-width: none; }
-    .card {
-      border: 1px solid var(--line); border-radius: 8px;
-      padding: 1rem 1.1rem; margin: 0.8rem 0; background: var(--panel);
-    }
-    .card a { color: var(--gold-hot); }
-    footer { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
-  </style>
 </head>
 <body>
-  <a class="skip" href="#list">Skip to list</a>
   <div class="wrap">
     <header>
       <div class="top">
         <a class="mark" href="../index.html">VOIDD Labs</a>
         <nav>
           <a href="../index.html">Work</a>
+          <a href="../farm.html" aria-current="page">Tools</a>
           <a href="../store.html">Shop</a>
-          <a href="../farm.html">Farm</a>
           <a href="../call.html">Call</a>
         </nav>
       </div>
+      <p class="place">Demos</p>
+      <h1>Same tools.</h1>
+      <p class="lede">They live on one page.</p>
     </header>
-    <main id="list">
-      <h1>Demos</h1>
-      <p>In the browser. Free.</p>
-      <div class="card">
-        <b><a href="../farm.html">30 simple tools</a></b>
-        <p>Farm of tiny tools. One page. Add, convert, count, wait.</p>
+    <main>
+      <div class="grid">
+        <article class="tile">
+          <span class="n">Free</span>
+          <h2>30 simple tools</h2>
+          <p>One page. No account.</p>
+          <a class="btn" href="../farm.html">Open tools</a>
+        </article>
       </div>
     </main>
     <footer>
