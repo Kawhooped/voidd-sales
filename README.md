@@ -1,32 +1,24 @@
-# VOIDD Labs — portfolio and shop
+# VOIDD Labs — portfolio
 
-Miami. Games, browser tools, and a shop.
-Not a closer desk. Lead Response / $7,500 sales is dead.
+Miami. Games and browser tools. A shop may sit on the same site later.
+No closers. No commission desk. No $7,500 Lead Response.
 
 Live: https://kawhooped.github.io/voidd-sales/
 Shop: https://kawhooped.github.io/voidd-sales/store.html
 Farm: https://kawhooped.github.io/voidd-sales/farm.html
 
-## What this repo is
+## Pages
 
-Public Pages site for VOIDD work.
+- `/` — work
+- `/store.html` — shop (early)
+- `/farm.html` — public tools
+- `/call.html` — phone
 
-- Portfolio — games, tools, demos you can open in a browser
-- Shop — store page for what is actually for sale
-- Source for those pages lives here
-
-## What this repo is not
-
-- Not a lead-response product
-- Not a closer portal or recruiting desk
-- Not Intake / Ops SKUs
-
-Old closer files (`portal.html`, `desk.js`, `closer.js`, QA json) are leftover. Do not treat them as the product.
+If someone buys, they buy on the site. Nobody else sells this for a cut.
 
 ## Branch / write
 
 Branch: `dd-main`.
-Grok MCP writes this repo. ChatGPT GitHub write is 403 — do not retry ChatGPT PUT.
-Pages deploys on push to `dd-main`.
+Grok MCP writes this repo. Pages deploys on push to `dd-main`.
 
 Danny Aguiar · Miami · 786-660-1778

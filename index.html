@@ -1,132 +1,86 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VOIDD Labs · Closer portal</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VOIDD Labs · Work</title>
+  <meta name="description" content="VOIDD Labs, Miami. Portfolio of games and browser tools. Not a sales desk.">
+  <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="gold.css">
   <style>
-    main { max-width: 28rem; }
-    .reach { margin-top: 1.2rem; }
-    .reach-kicker, .note { color: var(--muted); font-size: .88rem; }
-    .nums { display: flex; flex-wrap: wrap; gap: .4rem; margin: .4rem 0 .7rem; }
-    .nums a {
-      display: inline-block; background: var(--go); color: #111; font-weight: 700;
-      text-decoration: none; border-radius: 4px; padding: .65rem .9rem;
+    .wrap { max-width: 58rem; margin: 0 auto; padding: 1.15rem 1.15rem 3.2rem; }
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .place { margin: 1.6rem 0 0; color: var(--dim); font-size: 0.88rem; }
+    .lede { max-width: 38rem; font-size: 1.05rem; }
+    .grid {
+      display: grid; gap: 0.85rem; margin: 1.6rem 0 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     }
-    .nums a.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
-    #reach-form { display: grid; gap: .4rem; }
-    .okline { color: #9cba7a; }
-    .err { color: var(--bad); }
-    .toggle { color: var(--muted); font-size: .9rem; }
+    .tile {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.15rem 1.2rem 1.25rem;
+      display: flex; flex-direction: column;
+    }
+    .n { font-size: 0.75rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.08em; }
+    .tile h2 { margin: 0.4rem 0 0.45rem; font-size: 1.2rem; }
+    .tile p { margin: 0 0 0.7rem; }
+    footer { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
   </style>
 </head>
 <body>
-  <header>
-    <div>VOIDD Labs <strong>Closer portal</strong></div>
-    <nav>
-      <a href="index.html" class="on">Join</a>
-      <a href="terms.html">Terms</a>
-    </nav>
-  </header>
-  <main>
-    <h1>You sell. We install. You keep the cut.</h1>
-    <p class="sub">You sell Lead Response. We install. The shop calls. Sign up, then the desk. Numbers are on the call, not this page.</p>
-
-    <form class="card" id="up">
-      <p><b>Create your account</b> — you pick the password. We don’t invent one.</p>
-      <label>Name</label>
-      <input id="name" name="name" autocomplete="name" required />
-      <label>Phone</label>
-      <input id="phone" name="phone" type="tel" autocomplete="tel" required />
-      <label>Email</label>
-      <input id="email" name="email" type="email" autocomplete="email" required />
-      <label>Password (you create, 6+)</label>
-      <input id="password" name="password" type="password" autocomplete="new-password" minlength="6" required />
-      <p><label style="display:flex;gap:.5rem;align-items:flex-start;margin-top:.6rem">
-        <input id="terms" type="checkbox" style="width:auto;margin-top:.2rem" />
-        <span>I am 18+, independent (1099), and I accept the <a href="terms.html">closer terms</a>: 20% after the shop pays VOIDD, no leads supplied, no exclusive, no website = walk, handshake is not a check.</span>
-      </label></p>
-      <p class="row"><button type="submit">Get started</button></p>
-      <p id="up-err" class="err"></p>
-    </form>
-
-    <form class="card" id="in">
-      <p><b>Already in?</b></p>
-      <label>Email</label>
-      <input id="in-email" type="email" autocomplete="username" />
-      <label>Password</label>
-      <input id="in-pass" type="password" autocomplete="current-password" />
-      <p class="row"><button type="submit" class="ghost">Log in</button></p>
-      <p id="in-err" class="err"></p>
-    </form>
-
-    <form class="card" id="pw">
-      <p><b>Set a new password</b> — same email and phone you signed up with. You pick it. We don’t invent one. This page and the local desk do not share accounts.</p>
-      <label>Email</label>
-      <input id="pw-email" type="email" autocomplete="username" />
-      <label>Phone</label>
-      <input id="pw-phone" type="tel" autocomplete="tel" />
-      <label>New password (you create, 6+)</label>
-      <input id="pw-pass" type="password" autocomplete="new-password" minlength="6" />
-      <p class="row"><button type="submit" class="ghost">Save password</button></p>
-      <p id="pw-err" class="err"></p>
-    </form>
-
-    <div id="reach"></div>
-  </main>
-  <script src="closer.js"></script>
-  <script>
-    if (VOIDDCloser.session()) location.replace("portal.html");
-    document.getElementById("reach").innerHTML = VOIDDCloser.wrenHtml();
-    VOIDDCloser.bindWren(document.getElementById("reach"));
-    if (!VOIDDCloser.LOCAL) {
-      var note = document.createElement("p");
-      note.className = "note";
-      note.textContent = "This Pages copy keeps you in this browser. We do not store the password here. The local desk on :8875 is the real account.";
-      document.getElementById("up").appendChild(note);
-    }
-
-    document.getElementById("up").onsubmit = function (e) {
-      e.preventDefault();
-      const err = document.getElementById("up-err");
-      err.textContent = "";
-      VOIDDCloser.signup({
-        name: document.getElementById("name").value,
-        phone: document.getElementById("phone").value,
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value,
-        terms: document.getElementById("terms").checked,
-      }).then(function (j) {
-        if (j && j.ok) location.replace("portal.html");
-        else err.textContent = (j && j.error) || "Couldn’t start. Call 786-660-1778.";
-      });
-    };
-    document.getElementById("in").onsubmit = function (e) {
-      e.preventDefault();
-      const err = document.getElementById("in-err");
-      err.textContent = "";
-      VOIDDCloser.login({
-        email: document.getElementById("in-email").value,
-        password: document.getElementById("in-pass").value,
-      }).then(function (j) {
-        if (j && j.ok) location.replace("portal.html");
-        else err.textContent = (j && j.error) || "Call 786-660-1778.";
-      });
-    };
-    document.getElementById("pw").onsubmit = function (e) {
-      e.preventDefault();
-      const err = document.getElementById("pw-err");
-      err.textContent = "";
-      VOIDDCloser.setPassword({
-        email: document.getElementById("pw-email").value,
-        phone: document.getElementById("pw-phone").value,
-        password: document.getElementById("pw-pass").value,
-      }).then(function (j) {
-        if (j && j.ok) location.replace("portal.html");
-        else err.textContent = (j && j.error) || "Call 786-660-1778.";
-      });
-    };
-  </script>
+  <a class="skip" href="#work">Skip to work</a>
+  <div class="wrap">
+    <header>
+      <div class="top">
+        <a class="mark" href="index.html">VOIDD Labs</a>
+        <nav>
+          <a href="index.html" aria-current="page">Work</a>
+          <a href="store.html">Shop</a>
+          <a href="farm.html">Farm</a>
+          <a href="call.html">Call</a>
+        </nav>
+      </div>
+      <p class="place">Miami · portfolio</p>
+      <h1>Games and tools. That’s the site.</h1>
+      <p class="lede">Work I built. Open it in the browser. A shop may sit next to this later — you buy it here, no salesperson.</p>
+    </header>
+    <main id="work">
+      <div class="grid">
+        <article class="tile">
+          <span class="n">Tools</span>
+          <h2>30 simple tools</h2>
+          <p>One page. Add, convert, count, wait. MIT. No account.</p>
+          <a class="btn ghost" href="farm.html">Open farm</a>
+        </article>
+        <article class="tile">
+          <span class="n">Demo</span>
+          <h2>Permit feed</h2>
+          <p>Search a sample of public Chicago building permits.</p>
+          <a class="btn ghost" href="tools/permit-feed/">Open demo</a>
+        </article>
+        <article class="tile">
+          <span class="n">Games</span>
+          <h2>Arcade</h2>
+          <p>HTML games cabinet. Dignity Coin Rush lives in the farm too.</p>
+          <a class="btn ghost" href="https://github.com/Kawhooped/arcade">GitHub</a>
+        </article>
+        <article class="tile">
+          <span class="n">Shop</span>
+          <h2>Store</h2>
+          <p>Early shelf. Nothing here is a closer pitch or a $7,500 package.</p>
+          <a class="btn" href="store.html">Open shop</a>
+        </article>
+      </div>
+    </main>
+    <footer>
+      <span>VOIDD Labs · Miami</span>
+      <a href="license.html">License</a>
+      <a href="call.html">786-660-1778</a>
+      <a href="https://github.com/Kawhooped">GitHub</a>
+    </footer>
+  </div>
 </body>
 </html>
