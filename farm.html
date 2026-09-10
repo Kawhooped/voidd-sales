@@ -2,32 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>30 simple tools · farm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tools · VOIDD Labs</title>
   <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/farm.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <style>
-    :root { --bg:#0c0c0b; --ink:#ece8df; --dim:#9b9588; --gold:#c4b07a; --line:#2a2824; --panel:#161512; }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.4 system-ui, sans-serif; }
-    main { max-width: 72rem; margin: 0 auto; padding: 1rem 1rem 3rem; }
-    h1 { font-size: 1.15rem; margin: 0 0 .3rem; }
-    .muted { color: var(--dim); font-size: .88rem; margin: 0 0 1rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: .7rem; }
-    .t { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: .75rem .85rem; }
-    .t h2 { margin: 0 0 .45rem; font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
-    input, textarea { width: 100%; margin: .15rem 0; padding: .35rem .45rem; border: 1px solid var(--line); background: #0c0c0b; color: var(--ink); border-radius: 4px; font: inherit; }
-    button { margin-top: .3rem; padding: .3rem .6rem; border: 0; border-radius: 4px; background: var(--gold); color: #111; font-weight: 650; cursor: pointer; }
-    .out { margin: .4rem 0 0; color: var(--gold); min-height: 1.2em; word-break: break-word; }
-    a { color: var(--gold); }
-  </style>
+  <link rel="stylesheet" href="gold.css">
 </head>
 <body>
-<main>
-  <h1>30 simple tools</h1>
-  <p class="muted">Farm. MIT. No account. No AI. One page, not 30 websites. <a href="store.html">Store</a> · <a href="call.html">Call</a></p>
-  <div class="grid" id="g"></div>
-</main>
+  <a class="skip" href="#g">Skip to tools</a>
+  <div class="wrap wide">
+    <header>
+      <div class="top">
+        <a class="mark" href="index.html">VOIDD Labs</a>
+        <nav>
+          <a href="index.html">Work</a>
+          <a href="farm.html" aria-current="page">Tools</a>
+          <a href="store.html">Shop</a>
+          <a href="call.html">Call</a>
+        </nav>
+      </div>
+      <p class="place">Free · MIT</p>
+      <h1>30 simple tools.</h1>
+      <p class="lede">One page. No account.</p>
+    </header>
+    <main>
+      <div class="farm-grid" id="g"></div>
+    </main>
+    <footer>
+      <span>VOIDD Labs</span>
+      <a href="license.html">License</a>
+      <a href="call.html">786-660-1778</a>
+    </footer>
+  </div>
 <script>
 const tools = [
   ["Add", "n n", (a,b)=> +a + +b],
@@ -68,8 +74,8 @@ tools.forEach((row, i) => {
   el.className = "t";
   el.innerHTML = "<h2>"+(i+1)+". "+name+"</h2>" +
     (ph.includes("text") && !ph.includes("n") ? "<textarea data-a rows=2 placeholder='"+ph+"'></textarea>" :
-      ph ? "<input data-a placeholder='"+(ph.split(" ")[0]||"")+"'>" + (ph.split(" ").length>1 ? "<input data-b placeholder='"+ph.split(" ")[1]+"'>" : "") : "") +
-    "<button type=button data-go>Go</button><div class=out data-out></div>";
+      ph ? "<input data-a inputmode='"+(ph.indexOf("n")>=0 && !ph.includes("text") ? "decimal" : "text")+"' placeholder='"+(ph.split(" ")[0]||"")+"'>" + (ph.split(" ").length>1 ? "<input data-b inputmode='"+(ph.split(" ")[1]==="n"||ph.split(" ")[1]==="of"?"decimal":"text")+"' placeholder='"+ph.split(" ")[1]+"'>" : "") : "") +
+    "<button type=button class='btn' data-go>Go</button><div class=out data-out></div>";
   if (name === "Note") {
     try { el.querySelector("[data-a]").value = localStorage.getItem("voidd-simple-note") || ""; } catch(e){}
   }
