@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bean · VOIDD</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#07070e;--ink:#e8e0f0;--dim:#8a8498;--neon:#e84cff;--amber:#ffb24a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:ui-monospace,Menlo,monospace;overflow:hidden;touch-action:none;user-select:none}
+#wrap{height:100%;display:flex;flex-direction:column;max-width:980px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px 4px;gap:8px}
+header h1{margin:0;font-size:13px;letter-spacing:.12em}
+header h1 a{color:inherit;text-decoration:none}
+header h1 span{color:var(--neon)}
+#clock{color:var(--amber);font-size:12px}
+#needs{display:grid;grid-template-columns:64px 1fr;gap:2px 8px;font-size:10px;color:var(--dim);min-width:160px}
+.bar{height:7px;background:#1c1c28;border:1px solid #2a2a3a}
+.bar>i{display:block;height:100%}
+#stage{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;background:#05050a}
+canvas{image-rendering:pixelated;width:100%;height:auto;max-height:100%}
+#prompt{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);background:#0c0c14ee;border:1px solid #e84cff66;color:#f4e8ff;font-size:12px;padding:6px 10px;border-radius:4px;pointer-events:none;opacity:0}
+#prompt.show{opacity:1}
+#hudline{padding:4px 12px 0;font-size:11px;color:var(--dim);min-height:20px}
+#pad{display:grid;grid-template-columns:132px 1fr auto;align-items:center;gap:8px;padding:8px 12px 16px}
+.dpad{display:grid;grid-template-columns:40px 40px 40px;grid-template-rows:40px 40px 40px;width:120px;height:120px}
+.dpad button,#act{background:#1a1a28;color:var(--ink);border:1px solid #34344a;border-radius:8px;font:700 13px inherit}
+.dpad button:active,#act:active,.held{background:#2c2c44;border-color:var(--neon)}
+.dpad .u{grid-column:2;grid-row:1}.dpad .l{grid-column:1;grid-row:2}.dpad .r{grid-column:3;grid-row:2}.dpad .d{grid-column:2;grid-row:3}
+#act{width:84px;height:84px;border-radius:50%;font-size:14px;color:#ffd9ff;border-color:#e84cff88;background:#241428}
+#act:disabled{opacity:.35}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <header>
+    <h1><a href="index.html">BEAN</a> <span>// 未来</span></h1>
+    <div id="clock">05:40  DAWN</div>
+    <div id="needs">
+      <span>ENERGY</span><div class="bar"><i id="b-energy" style="width:70%;background:#6ad0ff"></i></div>
+      <span>HUNGER</span><div class="bar"><i id="b-hunger" style="width:55%;background:#ffb24a"></i></div>
+      <span>FOCUS</span><div class="bar"><i id="b-focus" style="width:40%;background:#e84cff"></i></div>
+    </div>
+  </header>
+  <div id="stage"><canvas id="c" width="480" height="180"></canvas><div id="prompt"></div></div>
+  <div id="hudline">The city stays in the window. This room is the game.</div>
+  <div id="pad">
+    <div class="dpad">
+      <button class="u" data-dir="up">▲</button>
+      <button class="l" data-dir="left">◀</button>
+      <button class="r" data-dir="right">▶</button>
+      <button class="d" data-dir="down">▼</button>
+    </div>
+    <div></div>
+    <button id="act" disabled>ACT</button>
+  </div>
+</div>
+<script>
+const W=480,H=180,GROUND=148,canvas=document.getElementById("c"),ctx=canvas.getContext("2d");
+ctx.imageSmoothingEnabled=false;
+const clockEl=document.getElementById("clock"),promptEl=document.getElementById("prompt"),hudEl=document.getElementById("hudline"),actBtn=document.getElementById("act");
+const needs={energy:72,hunger:58,focus:41};let minutes=5*60+40,busy=null;
+const sprites=[
+ {id:"window",x:18,y:28,w:36,h:44,kind:"window"},{id:"shelfL",x:58,y:30,w:22,h:40,kind:"shelf"},
+ {id:"neon",x:92,y:22,w:36,h:14,kind:"neon"},{id:"bed",x:22,y:108,w:70,h:28,kind:"bed",solid:true},
+ {id:"nightstand",x:94,y:120,w:16,h:16,kind:"box",solid:true},{id:"fridge",x:140,y:86,w:22,h:50,kind:"fridge",solid:true},
+ {id:"counter",x:164,y:118,w:58,h:18,kind:"counter",solid:true},{id:"lamp",x:186,y:36,w:8,h:28,kind:"lamp"},
+ {id:"stove",x:226,y:100,w:28,h:36,kind:"stove",solid:true},{id:"desk",x:272,y:116,w:52,h:20,kind:"desk",solid:true},
+ {id:"monitor",x:286,y:92,w:28,h:24,kind:"monitor"},{id:"chair",x:292,y:128,w:16,h:16,kind:"chair"},
+ {id:"toilet",x:352,y:116,w:18,h:20,kind:"toilet",solid:true},{id:"sink",x:374,y:110,w:18,h:26,kind:"sink",solid:true},
+ {id:"shower",x:398,y:78,w:28,h:58,kind:"shower",solid:true},{id:"plant",x:438,y:116,w:14,h:20,kind:"plant"},
+ {id:"door",x:456,y:78,w:18,h:70,kind:"door"}
+];
+const hotspots=[
+ {x:22,y:100,w:70,h:48,verb:"SLEEP",act:"sleep",near:"the bed. Collapse."},
+ {x:136,y:86,w:40,h:62,verb:"EAT",act:"eat",near:"the fridge. Eat something questionable."},
+ {x:268,y:90,w:60,h:58,verb:"WORK",act:"work",near:"the desk. Pretend the city needs you."},
+ {x:348,y:78,w:80,h:70,verb:"WASH",act:"wash",near:"the bath. Rinse the night off."},
+ {x:14,y:28,w:44,h:90,verb:"LOOK",act:"look",near:"the window. The city is wallpaper."},
+ {x:448,y:78,w:28,h:70,verb:"DOOR",act:"leave",near:"the door. Street slice is later."}
+];
+const bean={x:70,y:GROUND-24,w:12,h:24,vx:0,facing:1,frame:0};
+const keys=Object.create(null),held=Object.create(null);
+window.addEventListener("keydown",e=>{keys[e.key.toLowerCase()]=true;if(["arrowleft","arrowright","arrowup","arrowdown"," "].includes(e.key.toLowerCase()))e.preventDefault();if(e.key===" "||e.key==="Enter"||e.key.toLowerCase()==="e")tryAct()});
+window.addEventListener("keyup",e=>{keys[e.key.toLowerCase()]=false});
+document.querySelectorAll(".dpad button").forEach(btn=>{const dir=btn.dataset.dir;const on=ev=>{ev.preventDefault();held[dir]=true;btn.classList.add("held")};const off=ev=>{ev.preventDefault();held[dir]=false;btn.classList.remove("held")};btn.addEventListener("pointerdown",on);btn.addEventListener("pointerup",off);btn.addEventListener("pointercancel",off);btn.addEventListener("pointerleave",off)});
+actBtn.addEventListener("click",tryAct);
+function period(m){const h=Math.floor((m%1440)/60);if(h>=5&&h<8)return"DAWN";if(h>=8&&h<18)return"DAY";if(h>=18&&h<23)return"NIGHT";return"LATE"}
+function pad(n){return String(n).padStart(2,"0")}
+function clockLabel(){const m=((minutes%1440)+1440)%1440;return pad(Math.floor(m/60))+":"+pad(m%60)+"  "+period(m)}
+function tintForPeriod(){switch(period(minutes)){case"DAWN":return[40,12,28,0.18];case"DAY":return[20,30,50,0.06];case"NIGHT":return[10,8,40,0.28];default:return[4,6,22,0.42]}}
+function currentHotspot(){const cx=bean.x+bean.w/2,cy=bean.y+bean.h/2;return hotspots.find(h=>cx>h.x&&cx<h.x+h.w&&cy>h.y-8&&cy<h.y+h.h)||null}
+function tryAct(){if(busy)return;const hs=currentHotspot();if(!hs)return;if(hs.act==="leave"){hudEl.textContent="Not yet. The street is a later room. Stay in here.";return}const map={sleep:{dur:2.8,label:"sleeping",skip:180,energy:34,hunger:-6,focus:8,line:"Bean drops. The neon keeps watch."},eat:{dur:1.6,label:"eating",skip:20,energy:4,hunger:28,focus:-2,line:"Cold leftovers. Fine."},work:{dur:2.4,label:"working",skip:50,energy:-10,hunger:-6,focus:26,line:"Emails to CORP-X. None of them matter."},wash:{dur:1.8,label:"washing",skip:15,energy:6,hunger:0,focus:6,line:"Water pressure is a luxury here."},look:{dur:1.4,label:"looking",skip:8,energy:1,hunger:0,focus:4,line:"Wallpaper city. Pretty. Not the game."}};const a=map[hs.act];busy={kind:hs.act,t:0,...a};hudEl.textContent=a.line}
+function clampNeeds(){needs.energy=Math.max(0,Math.min(100,needs.energy));needs.hunger=Math.max(0,Math.min(100,needs.hunger));needs.focus=Math.max(0,Math.min(100,needs.focus))}
+function solidsAt(nx,ny){const box={x:nx,y:ny,w:bean.w,h:bean.h};for(const s of sprites){if(!s.solid)continue;if(box.x<s.x+s.w&&box.x+box.w>s.x&&box.y<s.y+s.h&&box.y+box.h>s.y)return true}if(nx<8||nx+bean.w>472)return true;return false}
+let last=performance.now();
+function tick(now){const dt=Math.min(0.033,(now-last)/1000);last=now;if(!busy){let ax=0;if(keys.arrowleft||keys.a||held.left)ax-=1;if(keys.arrowright||keys.d||held.right)ax+=1;bean.vx=ax*70;if(ax)bean.facing=ax;const nx=bean.x+bean.vx*dt;if(!solidsAt(nx,bean.y))bean.x=nx;bean.frame+=Math.abs(bean.vx)*dt*0.2;minutes+=dt*1.15;needs.energy-=dt*0.55;needs.hunger-=dt*0.42;needs.focus-=dt*0.28;if(needs.energy<12)needs.focus-=dt*0.2;if(needs.hunger<12)needs.energy-=dt*0.15}else{busy.t+=dt;minutes+=dt*(busy.skip/busy.dur);if(busy.t>=busy.dur){needs.energy+=busy.energy;needs.hunger+=busy.hunger;needs.focus+=busy.focus;busy=null}}clampNeeds();const hs=currentHotspot();if(busy){promptEl.textContent=busy.label.toUpperCase()+"…";promptEl.classList.add("show");actBtn.disabled=true}else if(hs){promptEl.textContent=hs.near;promptEl.classList.add("show");actBtn.disabled=false;actBtn.textContent=hs.verb}else{promptEl.classList.remove("show");actBtn.disabled=true;actBtn.textContent="ACT"}clockEl.textContent=clockLabel();document.getElementById("b-energy").style.width=needs.energy+"%";document.getElementById("b-hunger").style.width=needs.hunger+"%";document.getElementById("b-focus").style.width=needs.focus+"%";draw();requestAnimationFrame(tick)}
+function px(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(x|0,y|0,w|0,h|0)}
+function drawRoom(){px(0,0,W,H,"#1a1428");px(128,18,132,130,"#24182a");px(260,18,84,130,"#1c1a26");px(344,18,136,130,"#163036");px(0,0,W,18,"#12101a");px(0,16,W,2,"#2a2438");px(0,GROUND,W,H-GROUND,"#3a2a22");px(0,GROUND,W,3,"#5a4030");for(let x=0;x<W;x+=16)px(x,GROUND+10,14,2,"#2e2018");px(0,GROUND-4,W,4,"#2a1e28");px(128,18,3,GROUND-18,"#120e18");px(260,18,3,GROUND-18,"#120e18");px(344,18,3,GROUND-18,"#0c181c")}
+function drawCityInWindow(x,y,w,h){px(x,y,w,h,"#1a1030");const p=period(minutes);if(p==="DAWN")px(x,y,w,h*0.45,"#ff6b4a");else if(p==="DAY")px(x,y,w,h*0.4,"#6a9ad8");else if(p==="NIGHT")px(x,y,w,h*0.35,"#24185a");else px(x,y,w,h*0.3,"#0c0820");px(x+4,y+18,6,h-18,"#2a2048");px(x+12,y+10,8,h-10,"#34285a");px(x+22,y+16,5,h-16,"#2c2250");if(p!=="DAY"){px(x+13,y+16,2,2,"#ffd36a");px(x+17,y+22,2,2,"#6ad0ff");px(x+23,y+20,2,2,"#e84cff")}}
+function drawSprites(){const flicker=0.5+0.5*Math.sin(performance.now()/180);for(const s of sprites){switch(s.kind){case"window":px(s.x-2,s.y-2,s.w+4,s.h+4,"#3a3048");drawCityInWindow(s.x,s.y,s.w,s.h);px(s.x+s.w/2-1,s.y,2,s.h,"#2a2438");break;case"shelf":px(s.x,s.y,s.w,s.h,"#4a3028");px(s.x+2,s.y+4,s.w-4,8,"#2a1820");px(s.x+2,s.y+16,s.w-4,8,"#2a1820");px(s.x+2,s.y+28,s.w-4,8,"#2a1820");px(s.x+4,s.y+6,6,4,"#c45a8a");px(s.x+12,s.y+18,6,4,"#6ad0ff");break;case"neon":px(s.x,s.y,s.w,s.h,"#2a1030");ctx.fillStyle=flicker>0.3?"#ff4cf0":"#a02090";ctx.font="bold 10px monospace";ctx.fillText("未来",s.x+4,s.y+11);break;case"bed":px(s.x,s.y+10,s.w,s.h-10,"#3a2a48");px(s.x+4,s.y+6,s.w-8,16,"#6a4a88");px(s.x+6,s.y,18,12,"#d8c8e8");px(s.x,s.y+8,4,s.h-8,"#2a1a30");break;case"box":px(s.x,s.y,s.w,s.h,"#4a3030");px(s.x+4,s.y-6,8,6,"#ffb24a");break;case"fridge":px(s.x,s.y,s.w,s.h,"#c8d0d8");px(s.x+2,s.y+2,s.w-4,20,"#e8eef4");px(s.x+2,s.y+24,s.w-4,22,"#b8c0c8");px(s.x+s.w-5,s.y+8,2,8,"#889098");px(s.x+6,s.y+6,8,4,"#6ad0ff");break;case"counter":px(s.x,s.y,s.w,s.h,"#5a3a28");px(s.x,s.y,s.w,4,"#8a5a38");px(s.x+8,s.y-8,10,8,"#e8e0d0");px(s.x+24,s.y-6,8,6,"#6ad0a0");break;case"lamp":px(s.x+3,s.y,2,s.h,"#2a2430");px(s.x,s.y+s.h-4,s.w,4,"#ffd36a");ctx.fillStyle="rgba(255,200,80,"+(0.12+0.08*flicker)+")";ctx.fillRect(s.x-16,s.y+s.h,40,80);break;case"stove":px(s.x,s.y,s.w,s.h,"#303038");px(s.x+4,s.y+4,8,8,"#1a1a20");px(s.x+16,s.y+4,8,8,"#1a1a20");if(busy&&busy.kind==="eat")px(s.x+8,s.y-6,10,6,"#ff6a3a");break;case"desk":px(s.x,s.y,s.w,s.h,"#4a3020");px(s.x,s.y,s.w,3,"#6a4830");break;case"monitor":px(s.x,s.y,s.w,s.h,"#1a1a22");px(s.x+2,s.y+2,s.w-4,s.h-8,busy&&busy.kind==="work"?"#6ad0ff":"#243048");px(s.x+10,s.y+s.h-6,8,6,"#2a2a30");break;case"chair":px(s.x,s.y,s.w,s.h,"#2a2030");px(s.x+2,s.y-10,12,12,"#3a3048");break;case"toilet":px(s.x,s.y,s.w,s.h,"#d0d8dc");px(s.x+2,s.y-6,14,8,"#e8eef0");break;case"sink":px(s.x,s.y,s.w,s.h,"#b8c4c8");px(s.x+4,s.y+4,10,8,"#88a0a8");px(s.x+8,s.y-8,2,8,"#889098");break;case"shower":px(s.x,s.y,s.w,s.h,"#2a5860");px(s.x+2,s.y+2,s.w-4,s.h-4,"#1a3840");px(s.x+4,s.y+6,s.w-8,4,"#8ad0d8");if(busy&&busy.kind==="wash"){for(let i=0;i<6;i++)px(s.x+8+(i%3)*4,s.y+16+i*6,2,6,"#a8e8f0")}break;case"plant":px(s.x+4,s.y+10,6,10,"#6a4030");px(s.x,s.y,6,12,"#3a8848");px(s.x+6,s.y+2,8,10,"#2a7038");break;case"door":px(s.x,s.y,s.w,s.h,"#3a2040");px(s.x+2,s.y+2,s.w-4,s.h-4,"#2a1830");px(s.x+12,s.y+34,3,6,"#ffb24a");break}}}
+function drawBean(){const x=bean.x|0,y=bean.y|0,walk=Math.abs(bean.vx)>4,bob=walk?((bean.frame|0)%2):0;if(busy&&busy.kind==="sleep"){px(x-4,GROUND-14,22,10,"#6a4a88");px(x,GROUND-18,10,8,"#f0d0b0");px(x+2,GROUND-20,8,4,"#1a1210");px(x+16,GROUND-28,8,6,"#e8e0f0");ctx.fillStyle="#e8e0f0";ctx.font="8px monospace";ctx.fillText("z",x+22,GROUND-30);return}px(x-1,GROUND-2,14,3,"#00000055");px(x+2,y+16+bob,3,8-bob,"#1a2030");px(x+7,y+16+(walk?1-bob:0),3,8-(walk?1-bob:0),"#1a2030");px(x+1,y+8,10,10,"#2a8890");px(x+2,y,8,8,"#f0d0b0");px(x+2,y-2,8,4,"#1a1210");px(bean.facing>=0?x+7:x+3,y+3,2,2,"#1a1210");if(busy&&busy.kind==="work")px(x+10,y+10,6,3,"#f0d0b0");else px(bean.facing>=0?x+10:x-2,y+10+bob,3,6,"#f0d0b0")}
+function drawTint(){const[r,g,b,a]=tintForPeriod();ctx.fillStyle=`rgba(${r},${g},${b},${a})`;ctx.fillRect(0,0,W,H);if(period(minutes)==="LATE"){ctx.fillStyle="rgba(180,200,255,0.25)";const t=performance.now()/30;for(let i=0;i<8;i++)ctx.fillRect(20+((i*13+t)|0)%34,30+((i*17+t*2)|0)%40,1,6)}}
+function draw(){drawRoom();drawSprites();drawBean();drawTint()}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
