@@ -1,6 +1,6 @@
-# VOIDD Labs — portfolio
+# VOIDD Labs
 
-Miami. Browser tools. Shop later.
+Miami. Tools, blog, shop later.
 
 Live: https://kawhooped.github.io/voidd-sales/
 
