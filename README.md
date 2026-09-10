@@ -1,14 +1,32 @@
-VOIDD Labs closer portal.
+# VOIDD Labs — portfolio and shop
 
-Pages: https://kawhooped.github.io/voidd-sales/
-Local desk: http://127.0.0.1:8875/portal
+Miami. Games, browser tools, and a shop.
+Not a closer desk. Lead Response / $7,500 sales is dead.
 
-GitHub must include desk.js with portal.html. Without it, Pages is a stub and the desk throws.
+Live: https://kawhooped.github.io/voidd-sales/
+Shop: https://kawhooped.github.io/voidd-sales/store.html
+Farm: https://kawhooped.github.io/voidd-sales/farm.html
 
-Pages does not store the closer password. Same-browser roster only. Real accounts are the local :8875 desk.
+## What this repo is
 
-Talk on the PC writes git. Branch dd-main. ChatGPT GitHub write is 403 — Grok MCP writes.
+Public Pages site for VOIDD work.
 
-This week the closer cards show Lead Response $7,500 only. Intake and Ops are parked.
+- Portfolio — games, tools, demos you can open in a browser
+- Shop — store page for what is actually for sale
+- Source for those pages lives here
+
+## What this repo is not
+
+- Not a lead-response product
+- Not a closer portal or recruiting desk
+- Not Intake / Ops SKUs
+
+Old closer files (`portal.html`, `desk.js`, `closer.js`, QA json) are leftover. Do not treat them as the product.
+
+## Branch / write
+
+Branch: `dd-main`.
+Grok MCP writes this repo. ChatGPT GitHub write is 403 — do not retry ChatGPT PUT.
+Pages deploys on push to `dd-main`.
 
 Danny Aguiar · Miami · 786-660-1778
