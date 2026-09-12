@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GHOST TURK — VOIDD</title>
+<style>
+:root{--v:#0a0a0f;--c:#22d3ee;--f:#d946ef;--g:#facc15;--ink:#f4f4f5;--dim:#a1a1aa}
+*{box-sizing:border-box;margin:0}
+body{background:var(--v);color:var(--ink);font-family:ui-monospace,Menlo,monospace;padding:12px 12px 48px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:11px;letter-spacing:.14em}
+h1{font-size:22px;letter-spacing:.06em}h1 b{color:transparent;background:linear-gradient(90deg,#d946ef,#22d3ee);-webkit-background-clip:text;background-clip:text}
+p{color:var(--dim);font-size:12px;margin:6px 0 10px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:420px}
+.stat{border:1px solid #222;padding:6px;font-size:11px}
+.board{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;aspect-ratio:1;max-width:420px;margin:10px 0;background:#08080c;padding:5px;border:1px solid rgba(34,211,238,.25)}
+.cell{position:relative;background:#0c0c14;border:1px solid #1a1a22;min-height:36px;touch-action:manipulation}
+.cell.legal{box-shadow:inset 0 0 0 1px #22d3ee}
+.who{position:absolute;inset:0;display:grid;place-items:center;font-size:20px}
+.hp{position:absolute;bottom:2px;left:0;right:0;display:flex;justify-content:center;gap:2px}
+.hp i{width:4px;height:3px;background:#fff}
+.wrap{position:relative;max-width:420px}
+.ov{position:absolute;inset:5px;display:none;place-items:center;background:#08080cd4;text-align:center}
+.ov.on{display:grid}
+button{background:0;color:var(--ink);border:1px solid #333;padding:8px 10px;font:inherit}
+#log{font-size:11px;color:var(--dim);min-height:72px}
+</style>
+</head>
+<body>
+<div class="top"><span>GT · VOIDD</span><span id="pill">GRID-07</span></div>
+<h1>GHOST <b>TURK</b></h1>
+<p>Move one. Purps multiply. Ghosts never die.</p>
+<div class="stats"><div class="stat" id="stSide">PLAYER</div><div class="stat" id="stThreat">4</div><div class="stat" id="stAnchor">2</div><div class="stat" id="stGhost">2</div></div>
+<div class="wrap"><div class="board" id="board"></div><div class="ov" id="ov"><div><b id="ovT"></b><br><button id="ovR">RESET</button></div></div></div>
+<button id="rs">RESET</button>
+<div id="log"></div>
+<script>
+const S=7,D=[[0,-1],[0,1],[-1,0],[1,0]],SP={dough:"🤖",ghost:"👻",purp:"👽",turk:"😒"};
+let st,busy=0,ep=0,tm=0;
+const $=id=>document.getElementById(id);
+const rng=a=>a[Math.random()*a.length|0];
+function sh(a){for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
+const inb=(x,y)=>x>=0&&y>=0&&x<S&&y<S;
+const liv=t=>st.e.filter(e=>e.hp>0&&!e.ban&&(!t||e.t===t));
+const at=(x,y)=>st.e.find(e=>!e.ban&&e.hp>0&&e.x===x&&e.y===y);
+function empty(x,y){const o=[];for(const[dx,dy]of D){const nx=x+dx,ny=y+dy;if(inb(nx,ny)&&!at(nx,ny))o.push({x:nx,y:ny})}return o}
+function log(m){st.log.unshift(m);st.log=st.log.slice(0,6);$("log").textContent=st.log.join(" · ")}
+function fresh(){return{turn:"player",i:1,sel:null,out:null,log:["ONLINE"],e:[
+{id:"d1",t:"dough",x:1,y:5,hp:3,m:3},{id:"d2",t:"dough",x:5,y:5,hp:3,m:3},
+{id:"g1",t:"ghost",x:1,y:4,hp:1,m:1,ban:0},{id:"g2",t:"ghost",x:5,y:4,hp:1,m:1,ban:0},
+{id:"p1",t:"purp",x:1,y:1,hp:2,m:2},{id:"p2",t:"purp",x:3,y:1,hp:2,m:2},{id:"p3",t:"purp",x:5,y:1,hp:2,m:2},
+{id:"tk",t:"turk",x:3,y:3,hp:6,m:6}]}}
+function end(){if(!liv("dough").length){st.out="lose";log("DOUGH_COLLAPSE");return 1}if(!liv("purp").length&&!liv("turk").length){st.out="win";log("TURK_DELETED");return 1}return 0}
+function hits(map,ok){for(const[id,n]of Object.entries(map)){const e=st.e.find(x=>x.id===id);if(e&&ok.includes(e.t))e.hp-=n}st.e=st.e.filter(e=>e.t==="ghost"||e.hp>0)}
+function fear(){const tk=liv("turk")[0];if(!tk)return;if(!liv("ghost").some(g=>Math.abs(g.x-tk.x)+Math.abs(g.y-tk.y)===1))return;log("FEAR");
+st.e.filter(e=>!e.ban&&e.hp>0&&Math.abs(e.x-tk.x)+Math.abs(e.y-tk.y)===1).forEach(v=>{const s=empty(v.x,v.y);if(s.length){const p=rng(s);v.x=p.x;v.y=p.y}})}
+function volley(tk){const h={};for(const g of liv("ghost"))for(const[dx,dy]of D){const t=at(g.x+dx,g.y+dy);if(t&&(t.t==="purp"||(tk&&t.t==="turk")))h[t.id]=(h[t.id]||0)+1}hits(h,tk?["purp","turk"]:["purp"])}
+function purps(){for(const p of sh(liv("purp"))){const n=D.map(([dx,dy])=>({x:p.x+dx,y:p.y+dy})).filter(c=>inb(c.x,c.y));
+const g=n.find(c=>{const e=at(c.x,c.y);return e&&e.t==="ghost"});if(g){const gh=at(g.x,g.y);gh.ban=1;p.x=g.x;p.y=g.y;log("BANISH");continue}
+const d=n.find(c=>{const e=at(c.x,c.y);return e&&e.t==="dough"});if(d){const dough=at(d.x,d.y);dough.hp--;if(dough.hp<=0){p.x=d.x;p.y=d.y;st.e=st.e.filter(e=>e.hp>0||e.t==="ghost")}continue}
+const em=n.filter(c=>!at(c.x,c.y));if(em.length){const s=rng(em);p.x=s.x;p.y=s.y}}}
+function drift(){const t=liv("turk")[0];if(!t||Math.random()>=.55)return;const s=empty(t.x,t.y);if(s.length){const p=rng(s);t.x=p.x;t.y=p.y}}
+function multi(){if(st.i%2)return;for(const p of liv("purp").slice()){const s=empty(p.x,p.y);if(!s.length)continue;const q=rng(s);st.e.push({id:"p"+Math.random(),t:"purp",x:q.x,y:q.y,hp:2,m:2})}}
+function anchor(){const ban=st.e.filter(e=>e.t==="ghost"&&e.ban);const ds=sh(liv("dough"));for(const g of ban){for(const d of ds){const s=empty(d.x,d.y);if(!s.length)continue;const q=rng(s);g.x=q.x;g.y=q.y;g.ban=0;break}}}
+function legal(u){if(!u)return[];return D.map(([dx,dy])=>({x:u.x+dx,y:u.y+dy})).filter(c=>inb(c.x,c.y)&&(!at(c.x,c.y)||at(c.x,c.y).t==="purp"||at(c.x,c.y).t==="turk"))}
+function draw(){const b=$("board"),sel=st.e.find(e=>e.id===st.sel),L=st.turn==="player"&&!st.out?legal(sel):[];b.innerHTML="";
+for(let y=0;y<S;y++)for(let x=0;x<S;x++){const c=document.createElement("button");c.className="cell";c.dataset.x=x;c.dataset.y=y;
+const e=at(x,y);if(e){c.innerHTML=`<span class="who">${SP[e.t]}</span><span class="hp">${"<i></i>".repeat(e.hp)}</span>`}
+if(L.some(q=>q.x===x&&q.y===y))c.classList.add("legal");b.appendChild(c)}
+$("stSide").textContent=st.out?st.out.toUpperCase():st.turn.toUpperCase();
+$("stThreat").textContent=liv("purp").length+(liv("turk").length?1:0);
+$("stAnchor").textContent=liv("dough").length;$("stGhost").textContent=liv("ghost").length;
+$("pill").textContent=st.out==="win"?"TURK_DELETED":st.out==="lose"?"SIGNAL LOST":"GRID-07";
+$("ov").className="ov"+(st.out?" on":"");$("ovT").textContent=st.out==="win"?"TURK_DELETED":st.out==="lose"?"DOUGH_COLLAPSE":"";
+$("log").textContent=st.log.join(" · ")}
+function can(e){return e&&(e.t==="ghost"||e.t==="dough")&&e.hp>0&&!e.ban}
+function click(x,y){if(busy||st.out||st.turn!=="player")return;const e=at(x,y),sel=st.e.find(u=>u.id===st.sel);
+if(!sel){if(can(e)){st.sel=e.id;log("SELECT");draw()}return}
+if(Math.abs(sel.x-x)+Math.abs(sel.y-y)!==1){st.sel=can(e)?e.id:null;draw();return}
+if(e&&(e.t==="ghost"||e.t==="dough")){if(can(e))st.sel=e.id;draw();return}
+if(!e){sel.x=x;sel.y=y;log("MOVE")}else if(e.t==="purp"||e.t==="turk"){e.hp--;log("STRIKE");if(e.hp<=0){sel.x=x;sel.y=y;st.e=st.e.filter(u=>u.hp>0||u.t==="ghost")}}
+st.sel=null;resolve()}
+function resolve(){busy=1;fear();volley(1);if(end()){busy=0;draw();return}draw();const g=ep;clearTimeout(tm);tm=setTimeout(()=>{if(g!==ep)return;purps();if(end()){busy=0;draw();return}drift();multi();volley(0);st.e=st.e.filter(e=>e.t==="ghost"||e.hp>0);anchor();st.i++;if(!end())st.turn="player";busy=0;draw()},340)}
+function reset(){ep++;clearTimeout(tm);st=fresh();busy=0;draw()}
+$("board").onclick=e=>{const c=e.target.closest(".cell");if(c)click(+c.dataset.x,+c.dataset.y)};
+$("rs").onclick=$("ovR").onclick=reset;reset();
+</script>
+</body>
+</html>
