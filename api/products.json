@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "updated": "2026-09-12",
+  "home": "https://kawhooped.github.io/voidd-sales/store.html",
+  "products": [
+    {
+      "id": "ghost-turk",
+      "title": "Ghost Turk",
+      "tag": "Play + $7",
+      "price": 7,
+      "blurb": "Move one. Purps multiply. Ghosts never die.",
+      "play": "play/ghost-turk.html",
+      "gumroad": "",
+      "status": "live-play"
+    },
+    {
+      "id": "arcade-pack",
+      "title": "VOIDD Arcade Pack",
+      "tag": "$19",
+      "price": 19,
+      "blurb": "Ghost Turk + Dignity Sweep + Night Lanes.",
+      "play": "play/ghost-turk.html",
+      "gumroad": "",
+      "status": "listed"
+    },
+    {
+      "id": "studio-kit",
+      "title": "VOIDD Studio Kit",
+      "tag": "$29",
+      "price": 29,
+      "blurb": "Starter page, HUD tokens, grid kernel, GDD.",
+      "play": "",
+      "gumroad": "",
+      "status": "listed"
+    },
+    {
+      "id": "dignity-sweep",
+      "title": "Dignity Sweep",
+      "tag": "Play",
+      "price": 0,
+      "blurb": "Hold to vacuum coins. Robbers clip the lane.",
+      "play": "play/dignity-sweep.html",
+      "gumroad": "",
+      "status": "live-play"
+    }
+  ]
+}
