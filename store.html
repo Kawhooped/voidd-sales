@@ -22,29 +22,36 @@
         </nav>
       </div>
       <p class="place">Shop</p>
-      <h1>Nothing for sale yet.</h1>
-      <p class="lede">Tools are free. Call if you want something built.</p>
+      <h1>Carts for sale.</h1>
+      <p class="lede">Play here. Pay on Gumroad when the button is live. Same SKU, not a second store.</p>
     </header>
     <main>
-      <div class="grid">
-        <article class="tile">
-          <span class="n">Free</span>
-          <h2>30 simple tools</h2>
-          <p>Use them now.</p>
-          <a class="btn" href="farm.html">Open tools</a>
-        </article>
-        <article class="tile">
-          <span class="n">Later</span>
-          <h2>Paid work</h2>
-          <p>No cart. No middleman.</p>
-          <a class="btn ghost" href="call.html">Call</a>
-        </article>
+      <div class="grid" id="shelf">
+        <article class="tile"><span class="n">Load</span><h2>Catalog</h2><p>Reading api/products.json</p></article>
       </div>
     </main>
     <footer>
       <span>VOIDD Labs</span>
+      <a href="manager.html">Manager</a>
       <a href="call.html">786-660-1778</a>
     </footer>
   </div>
+  <script>
+  async function load(){
+    const el=document.getElementById("shelf");
+    try{
+      const r=await fetch("api/products.json",{cache:"no-store"});
+      const data=await r.json();
+      el.innerHTML=data.products.map(p=>{
+        const play=p.play?`<a class="btn" href="${p.play}">Play</a>`:"";
+        const buy=p.gumroad?`<a class="btn ghost" href="${p.gumroad}">Buy $${p.price}</a>`:(p.price?`<span class="btn ghost">$${p.price} · Gumroad soon</span>`:"");
+        return `<article class="tile"><span class="n">${p.tag}</span><h2>${p.title}</h2><p>${p.blurb}</p><div style="display:flex;flex-wrap:wrap;gap:8px">${play}${buy}</div></article>`;
+      }).join("");
+    }catch(e){
+      el.innerHTML='<article class="tile"><span class="n">Err</span><h2>Catalog offline</h2><p>api/products.json failed.</p></article>';
+    }
+  }
+  load();
+  </script>
 </body>
 </html>
