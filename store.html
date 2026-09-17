@@ -19,11 +19,12 @@
           <a href="farm.html">Tools</a>
           <a href="blog.html">Blog</a>
           <a href="store.html" aria-current="page">Shop</a>
+          <a href="codeshelf.html">CodeShelf</a>
         </nav>
       </div>
       <p class="place">Shop</p>
       <h1>Carts for sale.</h1>
-      <p class="lede">Play here. Pay on Gumroad when the button is live. Same SKU, not a second store.</p>
+      <p class="lede">Play here. Pay on Gumroad when the button is live. Same SKU, not a second store. Full pack list lives in <a href="codeshelf.html">CodeShelf</a>.</p>
     </header>
     <main>
       <div class="grid" id="shelf">
@@ -32,6 +33,7 @@
     </main>
     <footer>
       <span>VOIDD Labs</span>
+      <a href="codeshelf.html">CodeShelf</a>
       <a href="manager.html">Manager</a>
       <a href="call.html">786-660-1778</a>
     </footer>
@@ -42,13 +44,14 @@
     try{
       const r=await fetch("api/products.json",{cache:"no-store"});
       const data=await r.json();
-      el.innerHTML=data.products.map(p=>{
+      const extra=`<article class="tile"><span class="n">All</span><h2>CodeShelf</h2><p>Ten artifacts. Search, sort, local notes. Buy buttons open Gumroad.</p><a class="btn" href="codeshelf.html">Open snapshot</a></article>`;
+      el.innerHTML=extra+data.products.map(p=>{
         const play=p.play?`<a class="btn" href="${p.play}">Play</a>`:"";
         const buy=p.gumroad?`<a class="btn ghost" href="${p.gumroad}">Buy $${p.price}</a>`:(p.price?`<span class="btn ghost">$${p.price} · Gumroad soon</span>`:"");
         return `<article class="tile"><span class="n">${p.tag}</span><h2>${p.title}</h2><p>${p.blurb}</p><div style="display:flex;flex-wrap:wrap;gap:8px">${play}${buy}</div></article>`;
       }).join("");
     }catch(e){
-      el.innerHTML='<article class="tile"><span class="n">Err</span><h2>Catalog offline</h2><p>api/products.json failed.</p></article>';
+      el.innerHTML='<article class="tile"><span class="n">Err</span><h2>Catalog offline</h2><p>api/products.json failed. <a href="codeshelf.html">Open CodeShelf</a></p></article>';
     }
   }
   load();
