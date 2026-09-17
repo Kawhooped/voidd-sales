@@ -1,7 +1,10 @@
 {
-  "version": 1,
-  "updated": "2026-09-12",
+  "version": 2,
+  "updated": "2026-09-17",
   "home": "https://kawhooped.github.io/voidd-sales/store.html",
+  "cashier": "wix",
+  "wixSiteId": "2a0e0555-af19-490d-8948-a520ee8dbd13",
+  "wixSiteName": "Void_Works",
   "products": [
     {
       "id": "ghost-turk",
@@ -11,6 +14,7 @@
       "blurb": "Move one. Purps multiply. Ghosts never die.",
       "play": "play/ghost-turk.html",
       "gumroad": "",
+      "wix": "",
       "status": "live-play"
     },
     {
@@ -21,6 +25,7 @@
       "blurb": "Ghost Turk + Dignity Sweep + Night Lanes.",
       "play": "play/ghost-turk.html",
       "gumroad": "",
+      "wix": "",
       "status": "listed"
     },
     {
@@ -31,6 +36,7 @@
       "blurb": "Starter page, HUD tokens, grid kernel, GDD.",
       "play": "",
       "gumroad": "",
+      "wix": "",
       "status": "listed"
     },
     {
@@ -41,7 +47,21 @@
       "blurb": "Hold to vacuum coins. Robbers clip the lane.",
       "play": "play/dignity-sweep.html",
       "gumroad": "",
+      "wix": "",
       "status": "live-play"
+    },
+    {
+      "id": "void-city-facades-vol1",
+      "title": "VOID CITY FACADES VOL.1",
+      "tag": "$29",
+      "price": 29,
+      "blurb": "15 tileable 4K cyberpunk facade materials. Commercial license.",
+      "play": "",
+      "gumroad": "",
+      "wixProductId": "00aa9d3c-5ded-4078-8827-028a5776a6da",
+      "wixSlug": "void-city-facades-vol1",
+      "wixPath": "/product-page/void-city-facades-vol1",
+      "status": "listed-no-file"
     }
   ]
 }
