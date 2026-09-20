@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini Web Studio - Live AI Sandbox</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #090d16; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 h-screen flex flex-col font-sans overflow-hidden">
+
+  <header class="h-14 border-b border-slate-800 bg-slate-900/80 px-4 flex items-center justify-between z-10 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 text-white font-bold">
+        <i class="fa-solid fa-code text-sm"></i>
+      </div>
+      <div>
+        <h1 class="text-sm font-bold tracking-wide flex items-center gap-2">
+          Gemini<span class="text-cyan-400">Forge</span> Studio
+          <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">Live Builder</span>
+        </h1>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="toggleKeyModal()" id="apiKeyBadge" class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs bg-slate-800 border border-slate-700 text-slate-300 hover:border-slate-500 transition">
+        <span class="w-2 h-2 rounded-full bg-amber-400" id="keyIndicator"></span>
+        <span id="keyLabel">Set API Key</span>
+      </button>
+      <button onclick="downloadActiveHtml()" class="px-3 py-1 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 border border-slate-700 transition flex items-center gap-1.5">
+        <i class="fa-solid fa-download text-cyan-400"></i> Export HTML
+      </button>
+      <button onclick="openInNewTab()" class="px-3 py-1 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition flex items-center gap-1.5 shadow-sm">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Fullscreen
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+    <section class="w-full md:w-1/2 lg:w-5/12 flex flex-col border-r border-slate-800 bg-slate-950">
+      <div class="px-4 py-2 border-b border-slate-800/80 bg-slate-900/40 flex items-center justify-between text-xs text-slate-400">
+        <span class="flex items-center gap-1.5"><i class="fa-solid fa-sparkles text-cyan-400"></i> Conversational Builder</span>
+        <button onclick="clearChatHistory()" class="hover:text-rose-400 transition flex items-center gap-1">
+          <i class="fa-solid fa-trash-can text-[10px]"></i> Reset Chat
+        </button>
+      </div>
+      <div id="chatStream" class="flex-1 p-4 overflow-y-auto space-y-4 text-xs">
+        <div class="flex items-start gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-cyan-600 flex items-center justify-center text-white shrink-0 text-xs">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-3.5 max-w-lg leading-relaxed text-slate-200">
+            Tell me what web application or page you want to build. You can request layouts, calculators, dynamic dashboards, or interactive Canvas tools, and I will generate and hot-reload them directly into your live preview.
+          </div>
+        </div>
+      </div>
+      <div class="p-3 bg-slate-900/60 border-t border-slate-800">
+        <div class="flex items-center gap-2">
+          <textarea id="promptInput" rows="1" placeholder="e.g. Create a sleek Pomodoro timer with sound alerts and a dark neon theme..." class="flex-1 rounded-xl bg-slate-950 border border-slate-800 p-3 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 resize-none h-11 transition"></textarea>
+          <button onclick="handleUserPrompt()" id="sendBtn" class="h-11 px-4 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-medium text-xs flex items-center gap-1.5 transition shrink-0 shadow-lg shadow-cyan-600/20">
+            <span>Build</span>
+            <i class="fa-solid fa-paper-plane text-[10px]"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="w-full md:w-1/2 lg:w-7/12 flex flex-col bg-slate-900 relative">
+      <div class="h-10 px-4 border-b border-slate-800 bg-slate-950/60 flex items-center justify-between text-xs">
+        <div class="flex items-center gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800">
+          <button onclick="switchView('preview')" id="viewTab-preview" class="px-2.5 py-1 rounded bg-slate-800 text-cyan-400 font-semibold text-[11px] transition">
+            <i class="fa-solid fa-eye"></i> Preview
+          </button>
+          <button onclick="switchView('code')" id="viewTab-code" class="px-2.5 py-1 rounded text-slate-400 hover:text-slate-200 font-semibold text-[11px] transition">
+            <i class="fa-solid fa-code"></i> Source Code
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="renderStatus" class="text-[11px] font-mono text-slate-500">Standby</span>
+          <button onclick="refreshPreview()" class="text-slate-400 hover:text-white p-1" title="Reload iframe">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
+      </div>
+      <div id="previewContainer" class="flex-1 w-full h-full bg-slate-950 relative">
+        <iframe id="appFrame" sandbox="allow-scripts allow-modals allow-forms allow-popups" class="w-full h-full border-none"></iframe>
+      </div>
+      <div id="codeContainer" class="hidden flex-1 w-full h-full overflow-hidden relative">
+        <textarea id="codeEditor" readonly class="w-full h-full p-4 bg-slate-950 text-emerald-400 font-mono text-[11px] border-none outline-none resize-none leading-relaxed selection:bg-emerald-900/50"></textarea>
+      </div>
+    </section>
+  </main>
+
+  <div id="keyModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-2xl p-5 space-y-3 shadow-2xl">
+      <h3 class="font-bold text-sm text-slate-100 flex items-center gap-2">
+        <i class="fa-solid fa-key text-cyan-400"></i> Google AI API Key
+      </h3>
+      <p class="text-[11px] text-slate-400 leading-relaxed">
+        Get your free API key at <a href="https://aistudio.google.com" target="_blank" class="text-cyan-400 underline">aistudio.google.com</a>. It is stored locally in your browser's <code class="bg-slate-800 px-1 py-0.5 rounded text-cyan-300">localStorage</code>.
+      </p>
+      <input type="password" id="userKeyInput" placeholder="AIzaSy..." class="w-full rounded-xl bg-slate-950 border border-slate-800 p-2.5 text-xs text-slate-200 font-mono focus:border-cyan-500 focus:outline-none">
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="toggleKeyModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+        <button onclick="saveApiKey()" class="px-4 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-xs font-semibold text-white">Save Key</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let conversationHistory = [];
+    let currentHtmlPayload = `\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <script src=\"https://cdn.tailwindcss.com\"><\\/script>\n</head>\n<body class=\"bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-6 text-center font-sans\">\n  <div class=\"space-y-3 max-w-sm\">\n    <div class=\"w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto text-xl font-bold\">🚀</div>\n    <h2 class=\"text-lg font-bold text-white\">Workspace Ready</h2>\n    <p class=\"text-xs text-slate-400 leading-relaxed\">Type your prompt in the chat to start generating and rendering interactive web pages in real-time.</p>\n  </div>\n</body>\n</html>`;
+
+    const SYSTEM_INSTRUCTION = `You are an elite frontend AI architect.\nYour mission is to write fully working, complete, self-contained single-file HTML applications based on user prompts.\n\nRULES:\n1. Return ONLY the executable, standalone HTML document inside a standard markdown code fence (\`\`\`html ... \`\`\`).\n2. The HTML must include:\n   - Modern Tailwind CSS via CDN: <script src=\"https://cdn.tailwindcss.com\"><\\/script>\n   - FontAwesome CDN if icons are useful.\n   - Clean, reactive vanilla JavaScript inside a <script> tag.\n   - Proper responsive layout and dark/light UI treatments.\n3. Keep conversational replies extremely brief (1-2 sentences maximum) followed directly by the complete code fence.\n4. If the user asks for iterative changes, apply them directly to the current state of the page and emit the full updated HTML document.`;
+
+    function init() {
+      const storedKey = localStorage.getItem(\"gemini_user_api_key\");
+      if (storedKey) updateKeyUI(true);
+      renderPreview(currentHtmlPayload);
+      const tx = document.getElementById(\"promptInput\");
+      tx.addEventListener(\"keydown\", (e) => {
+        if (e.key === \"Enter\" && !e.shiftKey) {
+          e.preventDefault();
+          handleUserPrompt();
+        }
+      });
+    }
+
+    function toggleKeyModal() {
+      const modal = document.getElementById(\"keyModal\");
+      modal.classList.toggle(\"hidden\");
+      if (!modal.classList.contains(\"hidden\")) {
+        document.getElementById(\"userKeyInput\").value = localStorage.getItem(\"gemini_user_api_key\") || \"\";
+      }
+    }
+
+    function saveApiKey() {
+      const key = document.getElementById(\"userKeyInput\").value.trim();
+      if (key) {
+        localStorage.setItem(\"gemini_user_api_key\", key);
+        updateKeyUI(true);
+      } else {
+        localStorage.removeItem(\"gemini_user_api_key\");
+        updateKeyUI(false);
+      }
+      toggleKeyModal();
+    }
+
+    function updateKeyUI(hasKey) {
+      document.getElementById(\"keyIndicator\").className = hasKey ? \"w-2 h-2 rounded-full bg-emerald-400\" : \"w-2 h-2 rounded-full bg-amber-400\";
+      document.getElementById(\"keyLabel\").textContent = hasKey ? \"API Key Saved\" : \"Set API Key\";
+    }
+
+    function renderPreview(htmlContent) {
+      const frame = document.getElementById(\"appFrame\");
+      const blob = new Blob([htmlContent], { type: \"text/html\" });
+      frame.src = URL.createObjectURL(blob);
+      document.getElementById(\"codeEditor\").value = htmlContent;
+    }
+
+    function refreshPreview() { renderPreview(currentHtmlPayload); }
+
+    function switchView(view) {
+      const isPreview = view === \"preview\";
+      document.getElementById(\"previewContainer\").classList.toggle(\"hidden\", !isPreview);
+      document.getElementById(\"codeContainer\").classList.toggle(\"hidden\", isPreview);
+      document.getElementById(\"viewTab-preview\").className = isPreview
+        ? \"px-2.5 py-1 rounded bg-slate-800 text-cyan-400 font-semibold text-[11px] transition\"
+        : \"px-2.5 py-1 rounded text-slate-400 hover:text-slate-200 font-semibold text-[11px] transition\";
+      document.getElementById(\"viewTab-code\").className = !isPreview
+        ? \"px-2.5 py-1 rounded bg-slate-800 text-cyan-400 font-semibold text-[11px] transition\"
+        : \"px-2.5 py-1 rounded text-slate-400 hover:text-slate-200 font-semibold text-[11px] transition\";
+    }
+
+    function downloadActiveHtml() {
+      const blob = new Blob([currentHtmlPayload], { type: \"text/html\" });
+      const a = document.createElement(\"a\");
+      a.href = URL.createObjectURL(blob);
+      a.download = \"index.html\";
+      a.click();
+    }
+
+    function openInNewTab() {
+      const blob = new Blob([currentHtmlPayload], { type: \"text/html\" });
+      window.open(URL.createObjectURL(blob), \"_blank\");
+    }
+
+    function clearChatHistory() {
+      conversationHistory = [];
+      document.getElementById(\"chatStream\").innerHTML = `\n        <div class=\"flex items-start gap-2.5\">\n          <div class=\"w-7 h-7 rounded-lg bg-cyan-600 flex items-center justify-center text-white shrink-0 text-xs\">\n            <i class=\"fa-solid fa-robot\"></i>\n          </div>\n          <div class=\"bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-3.5 max-w-lg leading-relaxed text-slate-200\">\n            Session reset. What would you like to build?\n          </div>\n        </div>\n      `;
+    }
+
+    async function handleUserPrompt() {
+      const input = document.getElementById(\"promptInput\");
+      const btn = document.getElementById(\"sendBtn\");
+      const stream = document.getElementById(\"chatStream\");
+      const status = document.getElementById(\"renderStatus\");
+      const query = input.value.trim();
+      const apiKey = localStorage.getItem(\"gemini_user_api_key\");
+      if (!apiKey) { toggleKeyModal(); return; }
+      if (!query) return;
+      input.value = \"\";
+      const userBubble = document.createElement(\"div\");
+      userBubble.className = \"flex items-start justify-end gap-2.5\";
+      userBubble.innerHTML = `\n        <div class=\"bg-cyan-600 text-white rounded-2xl rounded-tr-none p-3 max-w-md leading-relaxed\">\n          ${escapeHtml(query)}\n        </div>\n      `;
+      stream.appendChild(userBubble);
+      stream.scrollTop = stream.scrollHeight;
+      const aiBubble = document.createElement(\"div\");
+      aiBubble.className = \"flex items-start gap-2.5\";
+      aiBubble.innerHTML = `\n        <div class=\"w-7 h-7 rounded-lg bg-cyan-600 flex items-center justify-center text-white shrink-0 text-xs\">\n          <i class=\"fa-solid fa-robot\"></i>\n        </div>\n        <div class=\"bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-3 max-w-md leading-relaxed text-slate-400 flex items-center gap-2\">\n          <span class=\"w-2 h-2 rounded-full bg-cyan-400 animate-ping\"></span> Writing code & compiling...\n        </div>\n      `;
+      stream.appendChild(aiBubble);
+      stream.scrollTop = stream.scrollHeight;
+      btn.disabled = true;
+      status.textContent = \"Synthesizing...\";
+      status.className = \"text-[11px] font-mono text-cyan-400 animate-pulse\";
+      conversationHistory.push({ role: \"user\", parts: [{ text: query }] });
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        const payload = {
+          contents: conversationHistory,
+          systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] }
+        };
+        const res = await fetch(url, { method: \"POST\", headers: { \"Content-Type\": \"application/json\" }, body: JSON.stringify(payload) });
+        const data = await res.json();
+        const responseText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!responseText) throw new Error(data.error?.message || \"No content returned.\");
+        conversationHistory.push({ role: \"model\", parts: [{ text: responseText }] });
+        const codeMatch = responseText.match(/```html([\\s\\S]*?)```/i);
+        let conversationalPart = responseText.replace(/```html[\\s\\S]*?```/gi, \"\").trim();
+        if (codeMatch && codeMatch[1]) {
+          currentHtmlPayload = codeMatch[1].trim();
+          renderPreview(currentHtmlPayload);
+          status.textContent = \"Live Reload Active\";
+          status.className = \"text-[11px] font-mono text-emerald-400\";
+        }
+        aiBubble.querySelector(\".bg-slate-900\").innerHTML = `\n          <p class=\"text-slate-200 leading-relaxed\">${escapeHtml(conversationalPart || \"App updated in sandbox.\")}</p>\n        `;
+      } catch (err) {
+        aiBubble.querySelector(\".bg-slate-900\").innerHTML = `\n          <p class=\"text-rose-400\"><strong>Error:</strong> ${escapeHtml(err.message)}</p>\n        `;
+        status.textContent = \"Build Failed\";
+        status.className = \"text-[11px] font-mono text-rose-400\";
+      } finally {
+        btn.disabled = false;
+        stream.scrollTop = stream.scrollHeight;
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return \"\";
+      return String(str).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\");
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>
