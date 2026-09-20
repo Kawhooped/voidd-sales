@@ -94,6 +94,18 @@
       "status": "live"
     },
     {
+      "id": "html-gemini-forge-studio",
+      "kind": "html",
+      "title": "GeminiForge Studio — Live Builder",
+      "where": "tools/gemini-forge-studio.html",
+      "url": "tools/gemini-forge-studio.html",
+      "file": "tools/gemini-forge-studio.html",
+      "repo": "https://github.com/Kawhooped/gemini-forge",
+      "note": "Split-pane conversational builder. Gemini writes a full HTML app and hot-reloads it in a sandboxed iframe. Export / fullscreen.",
+      "use_on": ["voidd-sales", "gemini-forge"],
+      "status": "live"
+    },
+    {
       "id": "html-neon-cropper",
       "kind": "html",
       "title": "neon-cropper-v3-batch.html",
