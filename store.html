@@ -8,6 +8,7 @@
   <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/store.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="gold.css">
+  <script src="https://gumroad.com/js/gumroad.js"></script>
 </head>
 <body>
   <div class="wrap">
@@ -24,7 +25,7 @@
       </div>
       <p class="place">Shop</p>
       <h1>Shop.</h1>
-      <p class="lede">Play here. Pay on Gumroad when the button is live. Same SKU, not a second store. Full pack list lives in <a href="codeshelf.html">CodeShelf</a>.</p>
+      <p class="lede">Play here. Pay on Gumroad in this tab. Same SKUs as <a href="codeshelf.html">CodeShelf</a>.</p>
     </header>
     <main>
       <div class="grid" id="shelf"></div>
@@ -39,23 +40,39 @@
   <script>
   const FALLBACK = {
     products: [
-      {id:"ghost-turk",title:"Ghost Turk",tag:"Play + $7",price:7,blurb:"Move one. Purps multiply. Ghosts never die.",play:"play/ghost-turk.html",gumroad:""},
+      {id:"ghost-turk",title:"Ghost Turk",tag:"Play",price:0,blurb:"Move one. Purps multiply. Ghosts never die.",play:"play/ghost-turk.html",gumroad:""},
       {id:"dignity-sweep",title:"Dignity Sweep",tag:"Play",price:0,blurb:"Hold to vacuum coins. Robbers clip the lane.",play:"play/dignity-sweep.html",gumroad:""},
-      {id:"arcade-pack",title:"VOIDD Arcade Pack",tag:"$19",price:19,blurb:"Ghost Turk + Dignity Sweep + Night Lanes.",play:"play/ghost-turk.html",gumroad:""},
-      {id:"studio-kit",title:"VOIDD Studio Kit",tag:"$29",price:29,blurb:"Starter page, HUD tokens, grid kernel, GDD.",play:"",gumroad:""},
-      {id:"facades",title:"VOID CITY FACADES VOL.1",tag:"$29",price:29,blurb:"15 tileable 4K cyberpunk facade materials.",play:"",gumroad:""}
+      {id:"after-hours",title:"After-Hours Lead Pack",tag:"$47",price:47,blurb:"DIY chat + lead-capture kit for six niches.",gumroad:"https://gimminomi.gumroad.com/l/bhifxl"},
+      {id:"upper-mgmt",title:"UPPER MANAGEMENT",tag:"$9",price:9,blurb:"Org / upper-management sim toy.",gumroad:"https://gimminomi.gumroad.com/l/upper-management-sim"},
+      {id:"asset-factory",title:"ASSET FACTORY CONSOLE",tag:"$12",price:12,blurb:"Listing and asset desk energy in one HTML.",gumroad:"https://gimminomi.gumroad.com/l/asset-factory-console"},
+      {id:"vector-forge-living",title:"VECTOR FORGE LIVING",tag:"$12",price:12,blurb:"Generative motion in one offline HTML.",gumroad:"https://gimminomi.gumroad.com/l/vector-forge-living"},
+      {id:"cockpit-pack",title:"COCKPIT PACK",tag:"$15",price:15,blurb:"Showrunner + Ship Dashboard + Horizon + Hearth.",gumroad:"https://gimminomi.gumroad.com/l/voidd-cockpit-pack"},
+      {id:"court-pack",title:"COURT PACK",tag:"$15",price:15,blurb:"Whisper Court + King's Hours + Core + Coalition + Young King.",gumroad:"https://gimminomi.gumroad.com/l/voidd-court-pack"},
+      {id:"nudge-lab-pack",title:"NUDGE LAB PACK",tag:"$15",price:15,blurb:"Four nudge/field toys: cosmos, biome, arena, lab.",gumroad:"https://gimminomi.gumroad.com/l/voidd-nudge-lab-pack"},
+      {id:"arena-pack",title:"ARENA PACK",tag:"$19",price:19,blurb:"Angels vs Demons + Blade Instinct + Platform Command + Emoji Soccer.",gumroad:"https://gimminomi.gumroad.com/l/voidd-arena-pack"},
+      {id:"creative-pack",title:"CREATIVE PACK",tag:"$19",price:19,blurb:"Vector Forge + Loom + Draws + The Forge + Ember.",gumroad:"https://gimminomi.gumroad.com/l/voidd-creative-pack"},
+      {id:"play-wave-pack",title:"PLAY WAVE PACK",tag:"$19",price:19,blurb:"Oculus + Ascent Arcade + Draws.",gumroad:"https://gimminomi.gumroad.com/l/voidd-play-wave-pack"}
     ]
   };
 
+  function buyBtn(p){
+    if (p.gumroad) {
+      const label = p.price ? ("Buy $" + p.price) : "Buy";
+      return `<a class="btn gumroad-button" href="${p.gumroad}">${label}</a>`;
+    }
+    if (p.wixPath) {
+      return `<a class="btn ghost" href="https://www.void.works${p.wixPath}" target="_blank" rel="noopener">Buy on Wix $${p.price}</a>`;
+    }
+    if (p.price) return `<span class="btn ghost">$${p.price} · checkout later</span>`;
+    return "";
+  }
+
   function paint(data, note){
     const el = document.getElementById("shelf");
-    const extra = `<article class="tile"><span class="n">All</span><h2>CodeShelf</h2><p>Ten artifacts. Search, sort, local notes. Buy buttons open Gumroad.</p><a class="btn" href="codeshelf.html">Open snapshot</a></article>`;
+    const extra = `<article class="tile"><span class="n">All</span><h2>CodeShelf</h2><p>Same ten packs. Search and local notes.</p><a class="btn ghost" href="codeshelf.html">Open snapshot</a></article>`;
     const cards = (data.products || []).map(p => {
-      const play = p.play ? `<a class="btn" href="${p.play}">Play</a>` : "";
-      const buy = p.gumroad
-        ? `<a class="btn ghost" href="${p.gumroad}">Buy $${p.price}</a>`
-        : (p.price ? `<span class="btn ghost">$${p.price} · Gumroad soon</span>` : "");
-      return `<article class="tile"><span class="n">${p.tag || "SKU"}</span><h2>${p.title}</h2><p>${p.blurb || ""}</p><div style="display:flex;flex-wrap:wrap;gap:8px">${play}${buy}</div></article>`;
+      const play = p.play ? `<a class="btn ghost" href="${p.play}">Play</a>` : "";
+      return `<article class="tile"><span class="n">${p.tag || "SKU"}</span><h2>${p.title}</h2><p>${p.blurb || ""}</p><div style="display:flex;flex-wrap:wrap;gap:8px">${play}${buyBtn(p)}</div></article>`;
     }).join("");
     el.innerHTML = extra + cards + (note ? `<article class="tile"><span class="n">Note</span><h2>Catalog source</h2><p>${note}</p></article>` : "");
   }
@@ -73,7 +90,7 @@
       paint(data, "");
     } catch (e) {
       clearTimeout(t);
-      paint(FALLBACK, "Live list timed out. Showing the built-in shelf. CodeShelf still works.");
+      paint(FALLBACK, "Live list timed out. Showing the built-in shelf.");
     }
   }
   load();
