@@ -27,9 +27,7 @@
       <p class="lede">Play here. Pay on Gumroad when the button is live. Same SKU, not a second store. Full pack list lives in <a href="codeshelf.html">CodeShelf</a>.</p>
     </header>
     <main>
-      <div class="grid" id="shelf">
-        <article class="tile"><span class="n">Load</span><h2>Catalog</h2><p>Reading api/products.json</p></article>
-      </div>
+      <div class="grid" id="shelf"></div>
     </main>
     <footer>
       <span>VOIDD Labs</span>
@@ -39,19 +37,43 @@
     </footer>
   </div>
   <script>
+  const FALLBACK = {
+    products: [
+      {id:"ghost-turk",title:"Ghost Turk",tag:"Play + $7",price:7,blurb:"Move one. Purps multiply. Ghosts never die.",play:"play/ghost-turk.html",gumroad:""},
+      {id:"dignity-sweep",title:"Dignity Sweep",tag:"Play",price:0,blurb:"Hold to vacuum coins. Robbers clip the lane.",play:"play/dignity-sweep.html",gumroad:""},
+      {id:"arcade-pack",title:"VOIDD Arcade Pack",tag:"$19",price:19,blurb:"Ghost Turk + Dignity Sweep + Night Lanes.",play:"play/ghost-turk.html",gumroad:""},
+      {id:"studio-kit",title:"VOIDD Studio Kit",tag:"$29",price:29,blurb:"Starter page, HUD tokens, grid kernel, GDD.",play:"",gumroad:""},
+      {id:"facades",title:"VOID CITY FACADES VOL.1",tag:"$29",price:29,blurb:"15 tileable 4K cyberpunk facade materials.",play:"",gumroad:""}
+    ]
+  };
+
+  function paint(data, note){
+    const el = document.getElementById("shelf");
+    const extra = `<article class="tile"><span class="n">All</span><h2>CodeShelf</h2><p>Ten artifacts. Search, sort, local notes. Buy buttons open Gumroad.</p><a class="btn" href="codeshelf.html">Open snapshot</a></article>`;
+    const cards = (data.products || []).map(p => {
+      const play = p.play ? `<a class="btn" href="${p.play}">Play</a>` : "";
+      const buy = p.gumroad
+        ? `<a class="btn ghost" href="${p.gumroad}">Buy $${p.price}</a>`
+        : (p.price ? `<span class="btn ghost">$${p.price} · Gumroad soon</span>` : "");
+      return `<article class="tile"><span class="n">${p.tag || "SKU"}</span><h2>${p.title}</h2><p>${p.blurb || ""}</p><div style="display:flex;flex-wrap:wrap;gap:8px">${play}${buy}</div></article>`;
+    }).join("");
+    el.innerHTML = extra + cards + (note ? `<article class="tile"><span class="n">Note</span><h2>Catalog source</h2><p>${note}</p></article>` : "");
+  }
+
   async function load(){
-    const el=document.getElementById("shelf");
-    try{
-      const r=await fetch("api/products.json",{cache:"no-store"});
-      const data=await r.json();
-      const extra=`<article class="tile"><span class="n">All</span><h2>CodeShelf</h2><p>Ten artifacts. Search, sort, local notes. Buy buttons open Gumroad.</p><a class="btn" href="codeshelf.html">Open snapshot</a></article>`;
-      el.innerHTML=extra+data.products.map(p=>{
-        const play=p.play?`<a class="btn" href="${p.play}">Play</a>`:"";
-        const buy=p.gumroad?`<a class="btn ghost" href="${p.gumroad}">Buy $${p.price}</a>`:(p.price?`<span class="btn ghost">$${p.price} · Gumroad soon</span>`:"");
-        return `<article class="tile"><span class="n">${p.tag}</span><h2>${p.title}</h2><p>${p.blurb}</p><div style="display:flex;flex-wrap:wrap;gap:8px">${play}${buy}</div></article>`;
-      }).join("");
-    }catch(e){
-      el.innerHTML='<article class="tile"><span class="n">Err</span><h2>Catalog offline</h2><p>api/products.json failed. <a href="codeshelf.html">Open CodeShelf</a></p></article>';
+    paint(FALLBACK, "");
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 5000);
+    try {
+      const r = await fetch("api/products.json", { cache: "no-store", signal: ctrl.signal });
+      clearTimeout(t);
+      if (!r.ok) throw new Error(r.status);
+      const data = await r.json();
+      if (!data || !Array.isArray(data.products) || !data.products.length) throw new Error("empty");
+      paint(data, "");
+    } catch (e) {
+      clearTimeout(t);
+      paint(FALLBACK, "Live list timed out. Showing the built-in shelf. CodeShelf still works.");
     }
   }
   load();
