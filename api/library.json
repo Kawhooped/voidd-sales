@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "updated": "2026-09-20",
   "purpose": "One shelf for things Danny made so other sites stay consistent.",
   "home": "https://kawhooped.github.io/voidd-sales/",
@@ -89,7 +89,7 @@
       "title": "Shop",
       "where": "store.html",
       "url": "store.html",
-      "note": "Headline is Shop. Fallback SKUs then api/products.json. Buy buttons wait on Gumroad URLs.",
+      "note": "Static Pages shop. Loads api/products.json. Gumroad overlay checkout on pack tiles.",
       "status": "live"
     },
     {
@@ -156,7 +156,7 @@
       "where": "api/products.json",
       "url": "api/products.json",
       "file": "api/products.json",
-      "note": "Shop SKUs for store.html and manager.html. Wix cashier noted. Gumroad fields still empty on most SKUs.",
+      "note": "Shop SKUs. Cashier is Gumroad (gimminomi). Ten packs have live buy URLs.",
       "status": "live"
     },
     {
@@ -194,7 +194,7 @@
       "url": "tools/gemini-forge.html",
       "file": "tools/gemini-forge.html",
       "repo": "https://github.com/Kawhooped/gemini-forge",
-      "note": "Live Pages studio: chat, search grounding, structured JSON, image gen, TTS. Key in the header. Compact ship, not the 70KB Canvas original.",
+      "note": "Live Pages studio: chat, search grounding, structured JSON, image gen, TTS.",
       "use_on": ["voidd-sales", "gemini-forge"],
       "status": "live"
     },
@@ -206,7 +206,7 @@
       "url": "tools/gemini-forge-studio.html",
       "file": "tools/gemini-forge-studio.html",
       "repo": "https://github.com/Kawhooped/gemini-forge",
-      "note": "Split-pane conversational builder. Gemini writes a full HTML app and hot-reloads it in a sandboxed iframe. Export / fullscreen.",
+      "note": "Split-pane conversational builder. Export / fullscreen.",
       "use_on": ["voidd-sales", "gemini-forge"],
       "status": "live"
     },
@@ -271,21 +271,80 @@
       "kind": "pack",
       "title": "After-Hours Lead Pack",
       "url": "https://gimminomi.gumroad.com/l/bhifxl",
-      "note": "HVAC, dental, law, detail, plumbing, immigration."
+      "note": "HVAC, dental, law, detail, plumbing, immigration. $47.",
+      "status": "for-sale"
     },
     {
       "id": "pack-upper-mgmt",
       "kind": "pack",
       "title": "UPPER MANAGEMENT",
       "url": "https://gimminomi.gumroad.com/l/upper-management-sim",
-      "note": "Org sim toy."
+      "note": "Org sim toy. $9.",
+      "status": "for-sale"
     },
     {
       "id": "pack-asset-factory",
       "kind": "pack",
       "title": "ASSET FACTORY CONSOLE",
       "url": "https://gimminomi.gumroad.com/l/asset-factory-console",
-      "note": "Maker desk HTML."
+      "note": "Maker desk HTML. $12.",
+      "status": "for-sale"
+    },
+    {
+      "id": "pack-vector-forge",
+      "kind": "pack",
+      "title": "VECTOR FORGE LIVING",
+      "url": "https://gimminomi.gumroad.com/l/vector-forge-living",
+      "note": "Generative motion HTML. $12.",
+      "status": "for-sale"
+    },
+    {
+      "id": "pack-cockpit",
+      "kind": "pack",
+      "title": "COCKPIT PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-cockpit-pack",
+      "note": "Showrunner + Ship Dashboard + Horizon + Hearth. $15.",
+      "status": "for-sale"
+    },
+    {
+      "id": "pack-court",
+      "kind": "pack",
+      "title": "COURT PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-court-pack",
+      "note": "Whisper Court + King's Hours + Core + Coalition + Young King. $15.",
+      "status": "for-sale"
+    },
+    {
+      "id": "pack-nudge-lab",
+      "kind": "pack",
+      "title": "NUDGE LAB PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-nudge-lab-pack",
+      "note": "Four nudge/field toys. $15.",
+      "status": "for-sale"
+    },
+    {
+      "id": "pack-arena",
+      "kind": "pack",
+      "title": "ARENA PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-arena-pack",
+      "note": "Angels vs Demons + Blade Instinct + Platform Command + Emoji Soccer. $19.",
+      "status": "for-sale"
+    },
+    {
+      "id": "pack-creative",
+      "kind": "pack",
+      "title": "CREATIVE PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-creative-pack",
+      "note": "Vector Forge + Loom + Draws + The Forge + Ember. $19.",
+      "status": "for-sale"
+    },
+    {
+      "id": "pack-play-wave",
+      "kind": "pack",
+      "title": "PLAY WAVE PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-play-wave-pack",
+      "note": "Oculus + Ascent Arcade + Draws. $19.",
+      "status": "for-sale"
     }
   ]
 }
