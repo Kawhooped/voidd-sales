@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>VOID lookbook · hush.red_glow</title>
+  <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/shop-void.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <script src="https://gumroad.com/js/gumroad.js"></script>
+  <style>
+    :root{--bg:#0a0a0a;--ink:#e8e8e8;--red:#ff2a2a;--mute:rgba(255,255,255,.45)}
+    *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif}
+    a{color:inherit;text-decoration:none}
+    .noise{position:fixed;inset:0;pointer-events:none;opacity:.06;background:radial-gradient(120% 90% at 50% 0,rgba(255,42,42,.12),transparent 55%)}
+    header{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:#0a0a0acc;border-bottom:1px solid rgba(255,255,255,.06)}
+    .bar,.wrap{max-width:1280px;margin:auto;padding:0 24px}
+    .bar{height:64px;display:flex;align-items:center;justify-content:space-between}
+    .mark{letter-spacing:.24em;font-weight:650}
+    nav{display:flex;gap:28px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+    nav a[aria-current]{color:#e8e8e8}
+    .hero{padding:72px 24px 32px;max-width:1280px;margin:auto;display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap}
+    h1{font-size:clamp(32px,6vw,52px);line-height:.95;letter-spacing:-.03em;max-width:12ch;margin:0}
+    .lede{max-width:32ch;color:rgba(255,255,255,.5);font-size:13px;line-height:1.6}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;padding:8px 0 24px}
+    .filters button{border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.55);border-radius:999px;height:34px;padding:0 16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+    .filters button.on{background:#e8e8e8;color:#0a0a0a;border-color:#e8e8e8}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:28px;padding-bottom:80px}
+    article{cursor:pointer}
+    .shot{aspect-ratio:4/5;border-radius:22px;border:1px solid rgba(255,255,255,.07);background:#121212;position:relative;overflow:hidden}
+    article:hover .shot{border-color:rgba(255,42,42,.4);box-shadow:0 0 0 1px rgba(255,42,42,.25),0 0 40px rgba(255,42,42,.18)}
+    .glyph{position:absolute;inset:0;display:grid;place-items:center;font-family:ui-monospace,monospace;letter-spacing:.35em;font-size:10px;color:rgba(255,255,255,.18);text-transform:uppercase}
+    .meta{display:flex;justify-content:space-between;gap:12px;padding-top:14px}
+    .name{font-size:14px}.cat{font-size:11px;color:var(--mute);font-family:ui-monospace,monospace}
+    .price{font-family:ui-monospace,monospace}
+    .note{position:absolute;top:14px;right:14px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:4px 8px;background:#0009}
+    .sold .shot{filter:grayscale(.4)}
+    footer{border-top:1px solid rgba(255,255,255,.06);padding:24px;max-width:1280px;margin:auto;display:flex;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);flex-wrap:wrap}
+    dialog{border:1px solid rgba(255,255,255,.1);background:#111;color:#e8e8e8;border-radius:24px;padding:0;width:min(720px,92vw)}
+    dialog::backdrop{background:#000c}
+    .dlg{display:grid;grid-template-columns:1fr 1fr}
+    @media(max-width:720px){.dlg{grid-template-columns:1fr}}
+    .dlg .left{background:#0e0e0e;min-height:280px;position:relative}
+    .dlg .right{padding:28px}
+    .buy{display:inline-flex;align-items:center;justify-content:center;height:48px;border-radius:999px;background:#ff2a2a;color:#fff;width:100%;letter-spacing:.14em;text-transform:uppercase;font-size:12px;font-weight:600;box-shadow:0 0 24px rgba(255,42,42,.45)}
+    .ghost{background:#e8e8e8;color:#0a0a0a;box-shadow:none}
+    .x{position:absolute;right:12px;top:12px;background:#fff1;border:1px solid #fff2;border-radius:999px;width:32px;height:32px;color:#fff}
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <header>
+    <div class="bar">
+      <a class="mark" href="index.html">VOID</a>
+      <nav>
+        <a href="store.html">Gumroad shop</a>
+        <a href="shop-void.html" aria-current="page">Lookbook</a>
+        <a href="codeshelf.html">CodeShelf</a>
+      </nav>
+    </div>
+  </header>
+  <div class="hero">
+    <div>
+      <p class="cat">Lookbook — merch language</p>
+      <h1>Objects for quiet and loud hours.</h1>
+    </div>
+    <p class="lede">This page is the hush.red_glow store skin. Digital packs still check out on Gumroad. Apparel tiles are lookbook until real photos and a merch cashier exist. Do not treat the cart as live money.</p>
+  </div>
+  <div class="wrap">
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+  <footer>
+    <span>VOID lookbook · not the cashier</span>
+    <a href="store.html">Buy HTML packs →</a>
+  </footer>
+  <dialog id="dlg">
+    <form method="dialog"><button class="x" value="close">✕</button></form>
+    <div class="dlg">
+      <div class="left"><div class="glyph" id="dg"></div></div>
+      <div class="right">
+        <p class="cat" id="dc"></p>
+        <h2 id="dn"></h2>
+        <p class="price" id="dp"></p>
+        <p class="lede" id="dd"></p>
+        <p style="margin-top:24px" id="da"></p>
+      </div>
+    </div>
+  </dialog>
+<script>
+const LOOK = [
+  {id:"void-hoodie",name:"Void Hoodie Black",price:120,category:"Apparel",stock:7,note:"Lookbook",desc:"Heavy 500gsm language. Not for sale here yet.",kind:"look"},
+  {id:"red-glow-ls",name:"Red Glow Longsleeve",price:85,category:"Apparel",stock:3,note:"Lookbook",desc:"Discharge print language. Photos later.",kind:"look"},
+  {id:"void-cap",name:"Void Cap",price:45,category:"Apparel",stock:12,note:"Lookbook",desc:"6-panel unstructured. Not wired to checkout.",kind:"look"},
+  {id:"cassette",name:"Distorted Cassette Tape",price:18,category:"Music",stock:0,note:"Sold",desc:"Archive tile.",kind:"look"},
+  {id:"incense",name:"Concrete Incense Holder",price:60,category:"Objects",stock:5,note:"Lookbook",desc:"Cast concrete language.",kind:"look"},
+  {id:"zine-01",name:"Printed Zine Issue 01",price:28,category:"Objects",stock:9,note:"Lookbook",desc:"64pp language.",kind:"look"}
+];
+const DIGITAL = [
+  {id:"after-hours",name:"After-Hours Lead Pack",price:47,category:"Code",stock:99,note:"Live",desc:"Six-niche lead kit.",kind:"gumroad",url:"https://gimminomi.gumroad.com/l/bhifxl"},
+  {id:"upper-mgmt",name:"UPPER MANAGEMENT",price:9,category:"Code",stock:99,note:"Live",desc:"Org sim toy.",kind:"gumroad",url:"https://gimminomi.gumroad.com/l/upper-management-sim"},
+  {id:"arena-pack",name:"ARENA PACK",price:19,category:"Code",stock:99,note:"Live",desc:"Four combat HTML games.",kind:"gumroad",url:"https://gimminomi.gumroad.com/l/voidd-arena-pack"},
+  {id:"creative-pack",name:"CREATIVE PACK",price:19,category:"Code",stock:99,note:"Live",desc:"Five generative toys.",kind:"gumroad",url:"https://gimminomi.gumroad.com/l/voidd-creative-pack"}
+];
+const ALL = LOOK.concat(DIGITAL);
+const CATS = ["All","Code","Apparel","Objects","Music","Sold"];
+let cat = "All";
+const grid = document.getElementById("grid");
+const filters = document.getElementById("filters");
+function list(){
+  if(cat==="All") return ALL;
+  if(cat==="Sold") return ALL.filter(p=>p.stock===0);
+  return ALL.filter(p=>p.category===cat && p.stock>0);
+}
+function paintFilters(){
+  filters.innerHTML = CATS.map(c=>`<button class="${c===cat?"on":""}" data-c="${c}">${c}</button>`).join("");
+}
+function paint(){
+  paintFilters();
+  grid.innerHTML = list().map(p=>`
+    <article class="${p.stock===0?"sold":""}" data-id="${p.id}">
+      <div class="shot"><span class="note">${p.note}</span><div class="glyph">${p.name}</div></div>
+      <div class="meta"><div><div class="name">${p.name}</div><div class="cat">${p.category}</div></div><div class="price">$${p.price}</div></div>
+    </article>`).join("");
+}
+filters.onclick = e => { const b=e.target.closest("button"); if(!b) return; cat=b.dataset.c; paint(); };
+grid.onclick = e => {
+  const a=e.target.closest("article"); if(!a) return;
+  const p=ALL.find(x=>x.id===a.dataset.id); if(!p) return;
+  document.getElementById("dn").textContent=p.name;
+  document.getElementById("dc").textContent=p.category+" · "+p.note;
+  document.getElementById("dp").textContent="$"+p.price;
+  document.getElementById("dd").textContent=p.desc;
+  document.getElementById("dg").textContent=p.name;
+  document.getElementById("da").innerHTML = p.kind==="gumroad"
+    ? `<a class="buy gumroad-button" href="${p.url}">Buy on Gumroad · $${p.price}</a>`
+    : `<span class="buy ghost">Lookbook only</span><p class="cat" style="margin-top:10px">Pay for code on the Gumroad shop.</p>`;
+  document.getElementById("dlg").showModal();
+};
+paint();
+</script>
+</body>
+</html>
