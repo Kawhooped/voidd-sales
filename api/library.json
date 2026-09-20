@@ -1,7 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "updated": "2026-09-20",
   "purpose": "One shelf for things Danny made so other sites stay consistent.",
+  "home": "https://kawhooped.github.io/voidd-sales/",
   "kinds": ["mark", "icon", "color", "page", "game", "tool", "pack", "html", "note"],
   "items": [
     {
@@ -12,7 +13,8 @@
       "file": "favicon.svg",
       "preview": "favicon.svg",
       "note": "22px ring: #866fff / #b17dff / #4ec8ff, rotate -18deg. Wordmark VOIDD.",
-      "use_on": ["voidd-sales", "all public pages"]
+      "use_on": ["voidd-sales", "all public pages"],
+      "status": "live"
     },
     {
       "id": "voidd-favicon-v",
@@ -22,7 +24,8 @@
       "file": "favicon.svg",
       "preview": "favicon.svg",
       "note": "32px, dark plate #060504, gold field #d8c089, Georgia V.",
-      "use_on": ["voidd-sales"]
+      "use_on": ["voidd-sales"],
+      "status": "live"
     },
     {
       "id": "voidd-gold-tokens",
@@ -30,8 +33,10 @@
       "title": "VOIDD chrome tokens",
       "where": "gold.css :root",
       "file": "gold.css",
+      "url": "gold.css",
       "note": "bg #03040a, ink #f7f6ff, gold #a06cff, gold-hot #c4a2ff, cyan #43def5, line #1a1e2d.",
-      "use_on": ["voidd-sales"]
+      "use_on": ["voidd-sales"],
+      "status": "live"
     },
     {
       "id": "page-work",
@@ -39,7 +44,8 @@
       "title": "Work",
       "where": "index.html",
       "url": "index.html",
-      "note": "Portfolio tiles. Headline void tools."
+      "note": "Portfolio home. Headline void tools. Tiles for tools, Ghost Turk, blog, shop, CodeShelf.",
+      "status": "live"
     },
     {
       "id": "page-tools",
@@ -47,7 +53,35 @@
       "title": "30 simple tools",
       "where": "farm.html",
       "url": "farm.html",
-      "note": "Toy farm. Queued to become real client-side tools."
+      "note": "Toy farm. Queued to become real client-side tools.",
+      "status": "live"
+    },
+    {
+      "id": "page-tools-index",
+      "kind": "page",
+      "title": "Tools index",
+      "where": "tools/index.html",
+      "url": "tools/index.html",
+      "note": "Small demos landing. Points back at farm.html.",
+      "status": "live"
+    },
+    {
+      "id": "page-tools-simple",
+      "kind": "tool",
+      "title": "Simple tools demo",
+      "where": "tools/simple/index.html",
+      "url": "tools/simple/index.html",
+      "note": "Secondary tools page under /tools/simple.",
+      "status": "live"
+    },
+    {
+      "id": "page-blog",
+      "kind": "page",
+      "title": "Blog",
+      "where": "blog.html",
+      "url": "blog.html",
+      "note": "Notes. Three posts from 10 Sep 2026: Seven billion, This site is work, Thirty tools.",
+      "status": "live"
     },
     {
       "id": "page-shop",
@@ -55,7 +89,8 @@
       "title": "Shop",
       "where": "store.html",
       "url": "store.html",
-      "note": "Headline is Shop. Fallback SKUs then api/products.json."
+      "note": "Headline is Shop. Fallback SKUs then api/products.json. Buy buttons wait on Gumroad URLs.",
+      "status": "live"
     },
     {
       "id": "page-codeshelf",
@@ -63,7 +98,66 @@
       "title": "CodeShelf",
       "where": "codeshelf.html",
       "url": "codeshelf.html",
-      "note": "Ten Gumroad packs. Search + notes in this browser."
+      "note": "Ten Gumroad packs. Search + notes in this browser.",
+      "status": "live"
+    },
+    {
+      "id": "page-database",
+      "kind": "page",
+      "title": "Database",
+      "where": "db.html",
+      "url": "db.html",
+      "file": "api/library.json",
+      "note": "Creation shelf. Reads this library.json. Drafts stay in the browser until Grok commits.",
+      "status": "live"
+    },
+    {
+      "id": "page-manager",
+      "kind": "page",
+      "title": "Shop manager",
+      "where": "manager.html",
+      "url": "manager.html",
+      "file": "api/products.json",
+      "note": "Edits api/products.json in the browser, then download + commit. Pages cannot write the repo.",
+      "status": "live"
+    },
+    {
+      "id": "page-contact",
+      "kind": "page",
+      "title": "Contact",
+      "where": "call.html",
+      "url": "call.html",
+      "note": "No public number. Phone off the Pages site.",
+      "status": "live"
+    },
+    {
+      "id": "page-license",
+      "kind": "page",
+      "title": "License",
+      "where": "license.html",
+      "url": "license.html",
+      "note": "Public tools are MIT. Paid work is separate.",
+      "status": "live"
+    },
+    {
+      "id": "catalog-library",
+      "kind": "note",
+      "title": "library.json",
+      "where": "api/library.json",
+      "url": "api/library.json",
+      "file": "api/library.json",
+      "note": "This file. Creation shelf consumed by db.html.",
+      "status": "live"
+    },
+    {
+      "id": "catalog-products",
+      "kind": "note",
+      "title": "products.json",
+      "where": "api/products.json",
+      "url": "api/products.json",
+      "file": "api/products.json",
+      "note": "Shop SKUs for store.html and manager.html. Wix cashier noted. Gumroad fields still empty on most SKUs.",
+      "status": "live"
     },
     {
       "id": "game-ghost-turk",
@@ -71,7 +165,8 @@
       "title": "Ghost Turk",
       "where": "play/ghost-turk.html",
       "url": "play/ghost-turk.html",
-      "note": "Move one. Purps multiply. Ghosts never die."
+      "note": "Move one. Purps multiply. Ghosts never die.",
+      "status": "live"
     },
     {
       "id": "game-dignity-sweep",
@@ -79,7 +174,17 @@
       "title": "Dignity Sweep",
       "where": "play/dignity-sweep.html",
       "url": "play/dignity-sweep.html",
-      "note": "Hold to vacuum coins. Also the Dignity itch Current."
+      "note": "Hold to vacuum coins. Also the Dignity itch Current.",
+      "status": "live"
+    },
+    {
+      "id": "game-bean",
+      "kind": "game",
+      "title": "Bean",
+      "where": "bean.html",
+      "url": "bean.html",
+      "note": "One-room pixel day loop. Sleep, eat, work, wash. Street later.",
+      "status": "live"
     },
     {
       "id": "html-gemini-forge",
@@ -89,7 +194,7 @@
       "url": "tools/gemini-forge.html",
       "file": "tools/gemini-forge.html",
       "repo": "https://github.com/Kawhooped/gemini-forge",
-      "note": "Single-file Gemini studio: chat, search grounding, structured JSON, image gen, TTS. Live on Pages and in Kawhooped/gemini-forge.",
+      "note": "Live Pages studio: chat, search grounding, structured JSON, image gen, TTS. Key in the header. Compact ship, not the 70KB Canvas original.",
       "use_on": ["voidd-sales", "gemini-forge"],
       "status": "live"
     },
