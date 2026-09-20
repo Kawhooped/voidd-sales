@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#03040a">
+  <meta name="robots" content="noindex">
+  <title>Database · VOIDD Labs</title>
+  <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/db.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="gold.css">
+  <style>
+    .row { display:grid; gap:.7rem; margin:1.1rem 0 1.6rem; grid-template-columns:repeat(auto-fill,minmax(min(100%,16rem),1fr)); }
+    .pill { display:inline-block; margin:.15rem .3rem .15rem 0; padding:.2rem .55rem; border:1px solid var(--line); border-radius:999px; color:var(--dim); font-size:.78rem; }
+    .pill.warn { color:#ffb4a2; border-color:#3a221c; }
+    .pill.ok { color:var(--cyan); border-color:#16343a; }
+    table { width:100%; border-collapse:collapse; font-size:.88rem; margin:.4rem 0 1.4rem; }
+    th, td { text-align:left; padding:.5rem .45rem; border-bottom:1px solid var(--line); vertical-align:top; }
+    th { color:var(--muted2); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:.68rem; }
+    td a { color:var(--gold); text-decoration:none; }
+    code { font-size:.82em; color:var(--gold-hot); }
+    .stale { color:#ffb4a2; }
+    ul.plain { margin:.3rem 0 1.2rem; padding:0; list-style:none; color:var(--dim); }
+    ul.plain li { padding:.35rem 0; border-bottom:1px solid var(--line); }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#db">Skip to database</a>
+  <div class="wrap wide">
+    <header>
+      <div class="top">
+        <a class="mark" href="index.html"><span class="ring" aria-hidden="true"></span>VOIDD</a>
+        <nav>
+          <a href="index.html">Work</a>
+          <a href="farm.html">Tools</a>
+          <a href="store.html">Shop</a>
+          <a href="manager.html">Manager</a>
+          <a href="db.html" aria-current="page">Database</a>
+        </nav>
+      </div>
+      <p class="place">Shared board · until Firebase</p>
+      <h1>Database.</h1>
+      <p class="lede">Machine snapshot from <code>farm-board/STATE.json</code>. Product code stays in project repos. No fake login.</p>
+    </header>
+    <main id="db">
+      <p class="place" id="meta">loading</p>
+      <div class="row" id="cards"></div>
+      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Blocked on Danny</h2>
+      <ul class="plain" id="blocked"></ul>
+      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Queued</h2>
+      <ul class="plain" id="queued"></ul>
+      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Do not</h2>
+      <div id="donot"></div>
+      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Actions</h2>
+      <table>
+        <thead><tr><th>Verb</th><th>Who</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><code>read</code></td><td>all</td><td>no commit</td></tr>
+          <tr><td><code>claim</code></td><td>one agent</td><td>name + task in handoff</td></tr>
+          <tr><td><code>write-product</code></td><td>Grok</td><td>project repo on dd-main</td></tr>
+          <tr><td><code>write-hub</code></td><td>Grok</td><td>farm-board state</td></tr>
+          <tr><td><code>propose</code></td><td>ChatGPT</td><td>Grok commits if accepted</td></tr>
+          <tr><td><code>verify</code></td><td>Comet / Danny</td><td>load / 404 / broken</td></tr>
+          <tr><td><code>decide</code></td><td>Danny</td><td>DECISIONS.md</td></tr>
+          <tr><td><code>ship-money</code></td><td>Danny only</td><td>itch, Play, Gumroad</td></tr>
+          <tr><td><code>auth-google</code></td><td>Danny only</td><td>then board.html can wire</td></tr>
+        </tbody>
+      </table>
+      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Shop SKUs</h2>
+      <p class="place" id="sku-meta">catalog</p>
+      <div style="overflow:auto"><table id="skus"><thead><tr><th>id</th><th>title</th><th>$</th><th>status</th><th>gumroad</th><th>play</th></tr></thead><tbody></tbody></table></div>
+      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Working HTML from chat</h2>
+      <div id="working"></div>
+      <p style="margin:1.2rem 0">
+        <button class="btn" type="button" id="reload">Reload state</button>
+        <a class="btn ghost" href="https://github.com/Kawhooped/farm-board">farm-board</a>
+        <a class="btn ghost" href="manager.html">Catalog manager</a>
+      </p>
+    </main>
+    <footer>
+      <span>VOIDD Labs</span>
+      <a href="license.html">License</a>
+    </footer>
+  </div>
+<script>
+const STATE_URLS = [
+  "https://raw.githubusercontent.com/Kawhooped/farm-board/dd-main/STATE.json",
+  "https://cdn.jsdelivr.net/gh/Kawhooped/farm-board@dd-main/STATE.json"
+];
+const FALLBACK = {
+  updated: "embedded",
+  hub: "farm-board",
+  current_plot: "plot-dignity",
+  current_plot_goal: "Public itch URL that plays Dignity Coin Rush in the browser",
+  public_site: { url: "https://kawhooped.github.io/voidd-sales/", shop_headline: "Shop.", phone_on_pages: false, google_auth: false, tools_status: "toy-farm", store_status: "fallback-plus-json" },
+  blocked_on_danny: ["itch public publish for Dignity", "Firebase / Google OAuth client if he wants Sign-In board", "Gumroad URLs for shop SKUs that still say soon"],
+  queued: ["Replace farm.html toys with real client-side tools", "Copy CodeShelf Gumroad links onto shop cards", "PWA manifest for add-to-home-screen"],
+  agents: { danny: "gates", grok: "writes files", chatgpt: "read + propose", comet: "browser verify" },
+  working_html_from_chat: [],
+  do_not: ["public phone number", "fake Google login", "keys in git"]
+};
+
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
+
+function paintState(st, src){
+  document.getElementById("meta").textContent = (st.updated||"?") + " · " + src;
+  document.getElementById("cards").innerHTML = [
+    ["Current plot", st.current_plot, st.current_plot_goal],
+    ["Public site", st.public_site && st.public_site.url, "headline " + ((st.public_site&&st.public_site.shop_headline)||"") + " · phone " + ((st.public_site&&st.public_site.phone_on_pages)?"ON":"off") + " · google " + ((st.public_site&&st.public_site.google_auth)?"on":"off")],
+    ["Tools / store", (st.public_site&&st.public_site.tools_status)||"—", "store " + ((st.public_site&&st.public_site.store_status)||"—")],
+    ["Branch", st.branch || "dd-main", "owner " + (st.github||"Kawhooped")]
+  ].map(([n,h,p]) => `<article class="t"><h2>${esc(n)}</h2><p style="margin:0;color:var(--ink)">${esc(h)}</p><p style="margin:.35rem 0 0;color:var(--dim);font-size:.9rem">${esc(p||"")}</p></article>`).join("");
+  document.getElementById("blocked").innerHTML = (st.blocked_on_danny||[]).map(x=>`<li>${esc(x)}</li>`).join("") || "<li>none listed</li>";
+  document.getElementById("queued").innerHTML = (st.queued||[]).map(x=>`<li>${esc(x)}</li>`).join("") || "<li>none listed</li>";
+  document.getElementById("donot").innerHTML = (st.do_not||[]).map(x=>`<span class="pill warn">${esc(x)}</span>`).join(" ");
+  const ag = st.agents || {};
+  const working = st.working_html_from_chat || [];
+  document.getElementById("working").innerHTML = working.map(x=>`<span class="pill">${esc(x)}</span>`).join(" ") +
+    Object.keys(ag).map(k=>`<span class="pill ok">${esc(k)} · ${esc(ag[k])}</span>`).join(" ");
+}
+
+async function loadState(){
+  for (const url of STATE_URLS){
+    try {
+      const r = await fetch(url, { cache: "no-store" });
+      if (!r.ok) continue;
+      const st = await r.json();
+      paintState(st, url.includes("jsdelivr") ? "jsdelivr" : "github raw");
+      return;
+    } catch (e) {}
+  }
+  paintState(FALLBACK, "embedded fallback");
+  document.getElementById("meta").className = "place stale";
+}
+
+function paintSkus(d){
+  document.getElementById("sku-meta").textContent = "v"+(d.version||"?")+" · "+(d.updated||"?")+" · "+(d.products||[]).length+" SKUs";
+  const tb = document.querySelector("#skus tbody");
+  tb.innerHTML = (d.products||[]).map(p => `<tr>
+    <td><code>${esc(p.id)}</code></td>
+    <td>${esc(p.title)}</td>
+    <td>${esc(p.price)}</td>
+    <td>${esc(p.status||"")}</td>
+    <td>${p.gumroad ? `<a href="${esc(p.gumroad)}">link</a>` : "—"}</td>
+    <td>${p.play ? `<a href="${esc(p.play)}">play</a>` : "—"}</td>
+  </tr>`).join("");
+}
+
+fetch("api/products.json", { cache: "no-store" }).then(r=>r.json()).then(paintSkus).catch(()=>{
+  document.getElementById("sku-meta").textContent = "catalog fetch failed";
+});
+loadState();
+document.getElementById("reload").onclick = loadState;
+</script>
+</body>
+</html>
