@@ -82,6 +82,18 @@
       "note": "Hold to vacuum coins. Also the Dignity itch Current."
     },
     {
+      "id": "html-gemini-forge",
+      "kind": "html",
+      "title": "GeminiForge — AI App Template",
+      "where": "tools/gemini-forge.html",
+      "url": "tools/gemini-forge.html",
+      "file": "tools/gemini-forge.html",
+      "repo": "https://github.com/Kawhooped/gemini-forge",
+      "note": "Single-file Gemini studio: chat, search grounding, structured JSON, image gen, TTS. Live on Pages and in Kawhooped/gemini-forge.",
+      "use_on": ["voidd-sales", "gemini-forge"],
+      "status": "live"
+    },
+    {
       "id": "html-neon-cropper",
       "kind": "html",
       "title": "neon-cropper-v3-batch.html",
