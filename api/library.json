@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "updated": "2026-09-20",
+  "purpose": "One shelf for things Danny made so other sites stay consistent.",
+  "kinds": ["mark", "icon", "color", "page", "game", "tool", "pack", "html", "note"],
+  "items": [
+    {
+      "id": "voidd-mark-ring",
+      "kind": "mark",
+      "title": "VOIDD ring mark",
+      "where": "gold.css + every header",
+      "file": "favicon.svg",
+      "preview": "favicon.svg",
+      "note": "22px ring: #866fff / #b17dff / #4ec8ff, rotate -18deg. Wordmark VOIDD.",
+      "use_on": ["voidd-sales", "all public pages"]
+    },
+    {
+      "id": "voidd-favicon-v",
+      "kind": "icon",
+      "title": "Favicon V plate",
+      "where": "favicon.svg",
+      "file": "favicon.svg",
+      "preview": "favicon.svg",
+      "note": "32px, dark plate #060504, gold field #d8c089, Georgia V.",
+      "use_on": ["voidd-sales"]
+    },
+    {
+      "id": "voidd-gold-tokens",
+      "kind": "color",
+      "title": "VOIDD chrome tokens",
+      "where": "gold.css :root",
+      "file": "gold.css",
+      "note": "bg #03040a, ink #f7f6ff, gold #a06cff, gold-hot #c4a2ff, cyan #43def5, line #1a1e2d.",
+      "use_on": ["voidd-sales"]
+    },
+    {
+      "id": "page-work",
+      "kind": "page",
+      "title": "Work",
+      "where": "index.html",
+      "url": "index.html",
+      "note": "Portfolio tiles. Headline void tools."
+    },
+    {
+      "id": "page-tools",
+      "kind": "tool",
+      "title": "30 simple tools",
+      "where": "farm.html",
+      "url": "farm.html",
+      "note": "Toy farm. Queued to become real client-side tools."
+    },
+    {
+      "id": "page-shop",
+      "kind": "page",
+      "title": "Shop",
+      "where": "store.html",
+      "url": "store.html",
+      "note": "Headline is Shop. Fallback SKUs then api/products.json."
+    },
+    {
+      "id": "page-codeshelf",
+      "kind": "page",
+      "title": "CodeShelf",
+      "where": "codeshelf.html",
+      "url": "codeshelf.html",
+      "note": "Ten Gumroad packs. Search + notes in this browser."
+    },
+    {
+      "id": "game-ghost-turk",
+      "kind": "game",
+      "title": "Ghost Turk",
+      "where": "play/ghost-turk.html",
+      "url": "play/ghost-turk.html",
+      "note": "Move one. Purps multiply. Ghosts never die."
+    },
+    {
+      "id": "game-dignity-sweep",
+      "kind": "game",
+      "title": "Dignity Sweep",
+      "where": "play/dignity-sweep.html",
+      "url": "play/dignity-sweep.html",
+      "note": "Hold to vacuum coins. Also the Dignity itch Current."
+    },
+    {
+      "id": "html-neon-cropper",
+      "kind": "html",
+      "title": "neon-cropper-v3-batch.html",
+      "note": "Working HTML from chat. Not on Pages yet.",
+      "status": "chat-only"
+    },
+    {
+      "id": "html-fade-video",
+      "kind": "html",
+      "title": "fade-video-maker.html",
+      "note": "Working HTML from chat. Not on Pages yet.",
+      "status": "chat-only"
+    },
+    {
+      "id": "html-codeshelf-offline",
+      "kind": "html",
+      "title": "codeshelf-offline-1.html",
+      "note": "Working HTML from chat. Not on Pages yet.",
+      "status": "chat-only"
+    },
+    {
+      "id": "html-joint-rite",
+      "kind": "html",
+      "title": "joint-rite-1.html",
+      "note": "Working HTML from chat. Not on Pages yet.",
+      "status": "chat-only"
+    },
+    {
+      "id": "html-app-builder",
+      "kind": "html",
+      "title": "voidd-app-builder.html",
+      "note": "Working HTML from chat. Not on Pages yet.",
+      "status": "chat-only"
+    },
+    {
+      "id": "html-concept-calc",
+      "kind": "html",
+      "title": "concept-calculator.html",
+      "note": "Working HTML from chat. Not on Pages yet.",
+      "status": "chat-only"
+    },
+    {
+      "id": "html-neo-metropolis",
+      "kind": "html",
+      "title": "neo-metropolis.html",
+      "note": "Working HTML from chat. Not on Pages yet.",
+      "status": "chat-only"
+    },
+    {
+      "id": "html-cybermaze",
+      "kind": "html",
+      "title": "cybermaze-3d-remade-from-scratch.html",
+      "note": "Working HTML from chat. Not on Pages yet.",
+      "status": "chat-only"
+    },
+    {
+      "id": "pack-after-hours",
+      "kind": "pack",
+      "title": "After-Hours Lead Pack",
+      "url": "https://gimminomi.gumroad.com/l/bhifxl",
+      "note": "HVAC, dental, law, detail, plumbing, immigration."
+    },
+    {
+      "id": "pack-upper-mgmt",
+      "kind": "pack",
+      "title": "UPPER MANAGEMENT",
+      "url": "https://gimminomi.gumroad.com/l/upper-management-sim",
+      "note": "Org sim toy."
+    },
+    {
+      "id": "pack-asset-factory",
+      "kind": "pack",
+      "title": "ASSET FACTORY CONSOLE",
+      "url": "https://gimminomi.gumroad.com/l/asset-factory-console",
+      "note": "Maker desk HTML."
+    }
+  ]
+}

@@ -10,22 +10,34 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="gold.css">
   <style>
-    .row { display:grid; gap:.7rem; margin:1.1rem 0 1.6rem; grid-template-columns:repeat(auto-fill,minmax(min(100%,16rem),1fr)); }
-    .pill { display:inline-block; margin:.15rem .3rem .15rem 0; padding:.2rem .55rem; border:1px solid var(--line); border-radius:999px; color:var(--dim); font-size:.78rem; }
-    .pill.warn { color:#ffb4a2; border-color:#3a221c; }
-    .pill.ok { color:var(--cyan); border-color:#16343a; }
-    table { width:100%; border-collapse:collapse; font-size:.88rem; margin:.4rem 0 1.4rem; }
-    th, td { text-align:left; padding:.5rem .45rem; border-bottom:1px solid var(--line); vertical-align:top; }
-    th { color:var(--muted2); font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:.68rem; }
-    td a { color:var(--gold); text-decoration:none; }
-    code { font-size:.82em; color:var(--gold-hot); }
-    .stale { color:#ffb4a2; }
-    ul.plain { margin:.3rem 0 1.2rem; padding:0; list-style:none; color:var(--dim); }
-    ul.plain li { padding:.35rem 0; border-bottom:1px solid var(--line); }
+    .bar { display:flex; flex-wrap:wrap; gap:.55rem; margin:1.1rem 0 .4rem; align-items:center; }
+    .bar input, .bar select { flex:1; min-width:10rem; }
+    .kinds { display:flex; flex-wrap:wrap; gap:.35rem; margin:.4rem 0 1rem; }
+    .kinds button {
+      min-height:2.3rem; padding:0 .7rem; border-radius:999px; cursor:pointer;
+      border:1px solid var(--line); background:#090c14; color:var(--dim); font:inherit;
+    }
+    .kinds button.on, .kinds button:hover { color:var(--ink); border-color:#3a4158; }
+    .shelf { display:grid; gap:.7rem; grid-template-columns:repeat(auto-fill,minmax(min(100%,16.5rem),1fr)); }
+    .card { background:linear-gradient(145deg,#0b0f18,#06080e); border:1px solid var(--line); border-radius:14px; padding:.9rem; display:flex; flex-direction:column; gap:.35rem; }
+    .card .k { font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); }
+    .card h2 { margin:0; font-size:1.05rem; }
+    .card p { margin:0; color:var(--dim); font-size:.92rem; flex:1; }
+    .card .prev { width:48px; height:48px; object-fit:contain; border-radius:8px; background:#05070d; border:1px solid var(--line); }
+    .card .row { display:flex; gap:.55rem; align-items:center; }
+    .card .links { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.35rem; }
+    .card .links a, .card .links button { min-height:2.2rem; }
+    .add { margin:1.6rem 0; padding:1rem; border:1px dashed var(--line2); border-radius:14px; }
+    .add h2 { margin:0 0 .6rem; font-size:1rem; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); }
+    .add textarea { min-height:4.5rem; }
+    details.ops { margin:2rem 0 1rem; border-top:1px solid var(--line); padding-top:1rem; }
+    details.ops summary { cursor:pointer; color:var(--muted2); letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; }
+    .count { color:var(--muted2); font-size:.8rem; }
+    .draft { outline:1px dashed #3a4158; }
   </style>
 </head>
 <body>
-  <a class="skip" href="#db">Skip to database</a>
+  <a class="skip" href="#shelf">Skip to shelf</a>
   <div class="wrap wide">
     <header>
       <div class="top">
@@ -34,123 +46,163 @@
           <a href="index.html">Work</a>
           <a href="farm.html">Tools</a>
           <a href="store.html">Shop</a>
-          <a href="manager.html">Manager</a>
           <a href="db.html" aria-current="page">Database</a>
         </nav>
       </div>
-      <p class="place">Shared board · until Firebase</p>
+      <p class="place">Shelf · one place</p>
       <h1>Database.</h1>
-      <p class="lede">Machine snapshot from <code>farm-board/STATE.json</code>. Product code stays in project repos. No fake login.</p>
+      <p class="lede">Everything you make lives here so other sites can stay consistent. Logos, icons, colors, pages, games, packs. Add over time.</p>
     </header>
-    <main id="db">
-      <p class="place" id="meta">loading</p>
-      <div class="row" id="cards"></div>
-      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Blocked on Danny</h2>
-      <ul class="plain" id="blocked"></ul>
-      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Queued</h2>
-      <ul class="plain" id="queued"></ul>
-      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Do not</h2>
-      <div id="donot"></div>
-      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Actions</h2>
-      <table>
-        <thead><tr><th>Verb</th><th>Who</th><th>Result</th></tr></thead>
-        <tbody>
-          <tr><td><code>read</code></td><td>all</td><td>no commit</td></tr>
-          <tr><td><code>claim</code></td><td>one agent</td><td>name + task in handoff</td></tr>
-          <tr><td><code>write-product</code></td><td>Grok</td><td>project repo on dd-main</td></tr>
-          <tr><td><code>write-hub</code></td><td>Grok</td><td>farm-board state</td></tr>
-          <tr><td><code>propose</code></td><td>ChatGPT</td><td>Grok commits if accepted</td></tr>
-          <tr><td><code>verify</code></td><td>Comet / Danny</td><td>load / 404 / broken</td></tr>
-          <tr><td><code>decide</code></td><td>Danny</td><td>DECISIONS.md</td></tr>
-          <tr><td><code>ship-money</code></td><td>Danny only</td><td>itch, Play, Gumroad</td></tr>
-          <tr><td><code>auth-google</code></td><td>Danny only</td><td>then board.html can wire</td></tr>
-        </tbody>
-      </table>
-      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Shop SKUs</h2>
-      <p class="place" id="sku-meta">catalog</p>
-      <div style="overflow:auto"><table id="skus"><thead><tr><th>id</th><th>title</th><th>$</th><th>status</th><th>gumroad</th><th>play</th></tr></thead><tbody></tbody></table></div>
-      <h2 style="font-size:1rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)">Working HTML from chat</h2>
-      <div id="working"></div>
-      <p style="margin:1.2rem 0">
-        <button class="btn" type="button" id="reload">Reload state</button>
-        <a class="btn ghost" href="https://github.com/Kawhooped/farm-board">farm-board</a>
-        <a class="btn ghost" href="manager.html">Catalog manager</a>
-      </p>
+    <main>
+      <div class="bar">
+        <input id="q" type="search" placeholder="Find a mark, page, pack…">
+        <select id="sort">
+          <option value="kind">Kind</option>
+          <option value="name">Name</option>
+        </select>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="kinds" id="kinds"></div>
+      <div class="shelf" id="shelf"></div>
+      <form class="add" id="add">
+        <h2>Add to this browser</h2>
+        <p class="lede" style="margin-bottom:.7rem">Drafts stay on this phone until you download JSON and ask Grok to commit them into <code>api/library.json</code>. Pages cannot write the repo.</p>
+        <input name="title" required placeholder="Title — VOIDD wordmark, cropper, facade set…">
+        <select name="kind">
+          <option>mark</option><option>icon</option><option>color</option>
+          <option>page</option><option>game</option><option>tool</option>
+          <option>pack</option><option>html</option><option>note</option>
+        </select>
+        <input name="file" placeholder="file path or URL (optional)">
+        <textarea name="note" placeholder="How to use it. Where it already lives."></textarea>
+        <p style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0">
+          <button class="btn" type="submit">Save draft</button>
+          <button class="btn ghost" type="button" id="export">Download drafts.json</button>
+          <button class="btn ghost" type="button" id="clear">Clear drafts</button>
+        </p>
+      </form>
+      <details class="ops">
+        <summary>Agent board (farm-board STATE)</summary>
+        <p class="place" id="meta">closed until opened</p>
+        <div id="ops"></div>
+      </details>
     </main>
     <footer>
       <span>VOIDD Labs</span>
+      <a href="api/library.json">library.json</a>
+      <a href="manager.html">Shop manager</a>
       <a href="license.html">License</a>
     </footer>
   </div>
 <script>
-const STATE_URLS = [
-  "https://raw.githubusercontent.com/Kawhooped/farm-board/dd-main/STATE.json",
-  "https://cdn.jsdelivr.net/gh/Kawhooped/farm-board@dd-main/STATE.json"
-];
-const FALLBACK = {
-  updated: "embedded",
-  hub: "farm-board",
-  current_plot: "plot-dignity",
-  current_plot_goal: "Public itch URL that plays Dignity Coin Rush in the browser",
-  public_site: { url: "https://kawhooped.github.io/voidd-sales/", shop_headline: "Shop.", phone_on_pages: false, google_auth: false, tools_status: "toy-farm", store_status: "fallback-plus-json" },
-  blocked_on_danny: ["itch public publish for Dignity", "Firebase / Google OAuth client if he wants Sign-In board", "Gumroad URLs for shop SKUs that still say soon"],
-  queued: ["Replace farm.html toys with real client-side tools", "Copy CodeShelf Gumroad links onto shop cards", "PWA manifest for add-to-home-screen"],
-  agents: { danny: "gates", grok: "writes files", chatgpt: "read + propose", comet: "browser verify" },
-  working_html_from_chat: [],
-  do_not: ["public phone number", "fake Google login", "keys in git"]
-};
-
+const KIND_ALL = "all";
+const DRAFT_KEY = "voidd-library-drafts";
+let lib = { items: [], kinds: ["mark","icon","color","page","game","tool","pack","html","note"] };
+let kind = KIND_ALL;
 function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
-
-function paintState(st, src){
-  document.getElementById("meta").textContent = (st.updated||"?") + " · " + src;
-  document.getElementById("cards").innerHTML = [
-    ["Current plot", st.current_plot, st.current_plot_goal],
-    ["Public site", st.public_site && st.public_site.url, "headline " + ((st.public_site&&st.public_site.shop_headline)||"") + " · phone " + ((st.public_site&&st.public_site.phone_on_pages)?"ON":"off") + " · google " + ((st.public_site&&st.public_site.google_auth)?"on":"off")],
-    ["Tools / store", (st.public_site&&st.public_site.tools_status)||"—", "store " + ((st.public_site&&st.public_site.store_status)||"—")],
-    ["Branch", st.branch || "dd-main", "owner " + (st.github||"Kawhooped")]
-  ].map(([n,h,p]) => `<article class="t"><h2>${esc(n)}</h2><p style="margin:0;color:var(--ink)">${esc(h)}</p><p style="margin:.35rem 0 0;color:var(--dim);font-size:.9rem">${esc(p||"")}</p></article>`).join("");
-  document.getElementById("blocked").innerHTML = (st.blocked_on_danny||[]).map(x=>`<li>${esc(x)}</li>`).join("") || "<li>none listed</li>";
-  document.getElementById("queued").innerHTML = (st.queued||[]).map(x=>`<li>${esc(x)}</li>`).join("") || "<li>none listed</li>";
-  document.getElementById("donot").innerHTML = (st.do_not||[]).map(x=>`<span class="pill warn">${esc(x)}</span>`).join(" ");
-  const ag = st.agents || {};
-  const working = st.working_html_from_chat || [];
-  document.getElementById("working").innerHTML = working.map(x=>`<span class="pill">${esc(x)}</span>`).join(" ") +
-    Object.keys(ag).map(k=>`<span class="pill ok">${esc(k)} · ${esc(ag[k])}</span>`).join(" ");
+function drafts(){ try { return JSON.parse(localStorage.getItem(DRAFT_KEY)||"[]"); } catch(e){ return []; } }
+function setDrafts(a){ try { localStorage.setItem(DRAFT_KEY, JSON.stringify(a)); } catch(e){} }
+function allItems(){ return lib.items.concat(drafts().map(d => Object.assign({draft:true}, d))); }
+function paintKinds(){
+  const used = [KIND_ALL].concat(lib.kinds || []);
+  document.getElementById("kinds").innerHTML = used.map(k =>
+    `<button type="button" data-k="${esc(k)}" class="${k===kind?"on":""}">${esc(k)}</button>`
+  ).join("");
 }
-
-async function loadState(){
-  for (const url of STATE_URLS){
-    try {
-      const r = await fetch(url, { cache: "no-store" });
-      if (!r.ok) continue;
-      const st = await r.json();
-      paintState(st, url.includes("jsdelivr") ? "jsdelivr" : "github raw");
-      return;
-    } catch (e) {}
-  }
-  paintState(FALLBACK, "embedded fallback");
-  document.getElementById("meta").className = "place stale";
+function paint(){
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const sort = document.getElementById("sort").value;
+  let list = allItems().filter(it => {
+    if (kind !== KIND_ALL && it.kind !== kind) return false;
+    const blob = [it.title, it.note, it.where, it.file, it.url, it.kind, (it.use_on||[]).join(" ")].join(" ").toLowerCase();
+    return !q || blob.includes(q);
+  });
+  if (sort === "name") list.sort((a,b)=>String(a.title).localeCompare(String(b.title)));
+  else list.sort((a,b)=>String(a.kind).localeCompare(String(b.kind)) || String(a.title).localeCompare(String(b.title)));
+  document.getElementById("count").textContent = list.length + " items";
+  document.getElementById("shelf").innerHTML = list.length ? list.map(it => {
+    const href = it.url || it.file || "";
+    const prev = it.preview || (/\.(svg|png|jpe?g|webp)$/i.test(it.file||"") ? it.file : "");
+    return `<article class="card${it.draft?" draft":""}">
+      <div class="row">
+        ${prev ? `<img class="prev" alt="" src="${esc(prev)}">` : ""}
+        <div>
+          <div class="k">${esc(it.kind)}${it.draft?" · draft":""}</div>
+          <h2>${esc(it.title)}</h2>
+        </div>
+      </div>
+      <p>${esc(it.note || it.where || "")}</p>
+      <div class="links">
+        ${href ? `<a class="btn ghost" href="${esc(href)}">${it.url && /^https?:/.test(it.url) ? "Open" : "File"}</a>` : ""}
+        ${it.file && it.file !== href ? `<a class="btn ghost" href="${esc(it.file)}">${esc(it.file)}</a>` : ""}
+      </div>
+    </article>`;
+  }).join("") : `<article class="card"><div class="k">none</div><h2>Nothing matches</h2><p>Add a draft below or clear the search.</p></article>`;
 }
-
-function paintSkus(d){
-  document.getElementById("sku-meta").textContent = "v"+(d.version||"?")+" · "+(d.updated||"?")+" · "+(d.products||[]).length+" SKUs";
-  const tb = document.querySelector("#skus tbody");
-  tb.innerHTML = (d.products||[]).map(p => `<tr>
-    <td><code>${esc(p.id)}</code></td>
-    <td>${esc(p.title)}</td>
-    <td>${esc(p.price)}</td>
-    <td>${esc(p.status||"")}</td>
-    <td>${p.gumroad ? `<a href="${esc(p.gumroad)}">link</a>` : "—"}</td>
-    <td>${p.play ? `<a href="${esc(p.play)}">play</a>` : "—"}</td>
-  </tr>`).join("");
-}
-
-fetch("api/products.json", { cache: "no-store" }).then(r=>r.json()).then(paintSkus).catch(()=>{
-  document.getElementById("sku-meta").textContent = "catalog fetch failed";
+document.getElementById("q").addEventListener("input", paint);
+document.getElementById("sort").addEventListener("change", paint);
+document.getElementById("kinds").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  kind = b.dataset.k;
+  paintKinds();
+  paint();
 });
-loadState();
-document.getElementById("reload").onclick = loadState;
+document.getElementById("add").addEventListener("submit", e => {
+  e.preventDefault();
+  const f = e.target;
+  const item = {
+    id: "draft-" + Date.now(),
+    kind: f.kind.value,
+    title: f.title.value.trim(),
+    file: f.file.value.trim(),
+    url: /^https?:/i.test(f.file.value.trim()) ? f.file.value.trim() : "",
+    note: f.note.value.trim(),
+    added: new Date().toISOString()
+  };
+  if (!item.title) return;
+  setDrafts(drafts().concat(item));
+  f.reset();
+  paint();
+});
+document.getElementById("export").onclick = () => {
+  const blob = new Blob([JSON.stringify({ drafts: drafts() }, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "library-drafts.json";
+  a.click();
+};
+document.getElementById("clear").onclick = () => {
+  if (confirm("Clear drafts on this device?")) { setDrafts([]); paint(); }
+};
+fetch("api/library.json", { cache: "no-store" }).then(r => r.json()).then(d => {
+  lib = d;
+  paintKinds();
+  paint();
+}).catch(() => { paintKinds(); paint(); });
+document.querySelector("details.ops").addEventListener("toggle", ev => {
+  if (!ev.target.open || ev.target.dataset.loaded) return;
+  ev.target.dataset.loaded = "1";
+  const urls = [
+    "https://raw.githubusercontent.com/Kawhooped/farm-board/dd-main/STATE.json",
+    "https://cdn.jsdelivr.net/gh/Kawhooped/farm-board@dd-main/STATE.json"
+  ];
+  (async () => {
+    for (const u of urls) {
+      try {
+        const r = await fetch(u, { cache: "no-store" });
+        if (!r.ok) continue;
+        const st = await r.json();
+        document.getElementById("meta").textContent = (st.updated||"") + " · " + (st.current_plot||"");
+        document.getElementById("ops").innerHTML =
+          "<p class=\"lede\">" + esc(st.current_plot_goal||"") + "</p>" +
+          "<p>" + (st.blocked_on_danny||[]).map(x => "<span class=\"k\">" + esc(x) + "</span> ").join(" · ") + "</p>";
+        return;
+      } catch(e) {}
+    }
+    document.getElementById("meta").textContent = "state fetch failed";
+  })();
+});
 </script>
 </body>
 </html>
