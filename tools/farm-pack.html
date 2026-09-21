@@ -7,9 +7,13 @@
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../gold.css">
   <style>
-    .honest { border: 1px solid #1a1e2d; padding: 1rem 1.1rem; margin: 0 0 1.4rem; color: #c4b07a; }
-    ol { padding-left: 1.2rem; }
-    li { margin: 0 0 .7rem; }
+    .honest { border: 1px solid #1a1e2d; padding: 1rem 1.1rem; margin: 0 0 1.5rem; }
+    .honest strong { color: #c4b07a; }
+    section { margin: 0 0 2rem; }
+    h2 { font-size: 1.05rem; margin: 0 0 .6rem; }
+    ol { padding-left: 1.2rem; margin: 0; }
+    li { margin: 0 0 .85rem; }
+    .tag { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: #9b9588; }
   </style>
 </head>
 <body>
@@ -26,29 +30,69 @@
       </div>
       <p class="place">Remix · farm · ship</p>
       <h1>Farm pack.</h1>
-      <p class="lede">Prompts for things that should exist. One file at a time. This farm, this stack.</p>
+      <p class="lede">A list of internet that should exist. Mapped onto this farm. Built only when we name the cell.</p>
     </header>
     <main>
       <aside class="honest">
         <p><strong>Honesty.</strong> We are being super honest.</p>
-        <p>This page is not stolen. It is not a finished product line. It is a list. Most items are not built. Closer is the work object that exists. The thirty boxes on Tools are a variety tray, not thirty companies.</p>
-        <p>Grok made this page from simple instructions in natural language. No secret ceremony. Danny said put the pack on the farm, add honesty, say Grok wrote it from plain talk. That is what happened.</p>
+        <ul>
+          <li>This is not stolen work. A public pack invited people to make useful tools. We remixed the invitation. We did not take their code or their cloud stack.</li>
+          <li>This page is a menu. Most rows are not live products.</li>
+          <li>Closer is live and does a job. Add is a small card. Farm.html is thirty tiny widgets so someone can find a box they like. That tray is not thirty companies.</li>
+          <li>Shop is a showcase. Apparel is a lookbook. Packs sell on Gumroad. There is no public phone on this site.</li>
+          <li>Grok made this page from simple instructions in natural language. Danny asked for the pack on the farm, honesty reminders, and that credit. That is the whole trick.</li>
+        </ul>
       </aside>
-      <p>The public prompt pack was an invitation to make useful internet. We remixed the ideas onto VOIDD. We did not take their stacks. This farm ships GitHub Pages HTML. Key in the browser if AI is required. Pay on Gumroad if it is a pack.</p>
-      <ol>
-        <li><strong>Closer</strong> — messy inbound → lead JSON + reply. <a href="closer.html">Built.</a></li>
-        <li><strong>Miami paste</strong> — permit or complaint paragraph → same JSON. No live county API until named.</li>
-        <li><strong>Bookmarklet</strong> — select text on any page, open closer with it.</li>
-        <li><strong>HVAC landing</strong> — one page that feeds closer. Next gate after keep.</li>
-        <li><strong>Lens</strong> — db.html already lists the farm. Do not build a second search product.</li>
-        <li><strong>Grounded take</strong> — paste a headline; return source, counter, two links. Forge grounding can do this.</li>
-        <li><strong>Speak it</strong> — Forge TTS. No extra voice vendor.</li>
-        <li><strong>Curator note</strong> — one blog post, three links, no AI hero image.</li>
-        <li><strong>Museum</strong> — CodeShelf is the pack shelf. Keep it small.</li>
-        <li><strong>Slow pages</strong> — gold.css, chronological blog, no feed algorithm.</li>
-      </ol>
-      <p>Constraint on each: one HTML file. No login. No second catalog. Fast, useful, no marketing speak.</p>
-      <p><a class="btn" href="closer.html">Open closer</a> <a class="btn ghost" href="../farm.html">Open tray</a></p>
+
+      <section>
+        <p class="tag">Stack we actually use</p>
+        <p>GitHub Pages. One HTML file. <code>gold.css</code>. Gemini key in the browser if the tool needs a model. Gumroad if it costs money. No login. No second catalog. No Workers / Supabase / PartyKit unless Danny names them.</p>
+      </section>
+
+      <section>
+        <h2>1. Useful micro-tools</h2>
+        <ol>
+          <li><strong>Closer.</strong> One job: messy voicemail or text → JSON lead + reply SMS. <a href="closer.html">Live.</a></li>
+          <li><strong>Anti-bloat Add.</strong> Two numbers, a sum, copy. No React blob. <a href="add.html">Live.</a></li>
+          <li><strong>Variety tray.</strong> Thirty tiny tools on one page so people can poke until something fits. <a href="../farm.html">Live.</a></li>
+          <li><strong>Miami paste.</strong> Drop a permit or complaint paragraph into the same closer JSON. No live county API until we name it. Not built.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>2. AI as utility, not spam</h2>
+        <ol start="5">
+          <li><strong>Forge.</strong> Chat, grounded search, JSON, image, TTS. Key stays here. <a href="gemini-forge.html">Live.</a></li>
+          <li><strong>Studio.</strong> Talk until a page appears. Export HTML. <a href="gemini-forge-studio.html">Live.</a></li>
+          <li><strong>Grounded take.</strong> Paste a headline. Get source, counter, two links. Not a content mill. Not built as its own page — Forge grounding can do it.</li>
+          <li><strong>Bookmarklet.</strong> Select text anywhere, open closer with that text. Not built.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>3. Keep human knowledge</h2>
+        <ol start="9">
+          <li><strong>Lens.</strong> db.html + library.json is the public list of what exists. Not a second database. <a href="../db.html">Live.</a></li>
+          <li><strong>CodeShelf.</strong> Snapshot of the packs. Museum, not a new cashier. <a href="../codeshelf.html">Live.</a></li>
+          <li><strong>Blog.</strong> Slow notes. No infinite feed. <a href="../blog.html">Live.</a></li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>4. Still gates, not built</h2>
+        <ol start="12">
+          <li><strong>HVAC landing</strong> that posts into closer. Only after closer is a keep.</li>
+          <li><strong>Ghost Turk juice</strong> — same rules, clearer HUD. Play is already live.</li>
+          <li><strong>Studio preset</strong> that dumps VOIDD chrome.</li>
+          <li><strong>Simple email</strong> on call.html — mailto only, when Danny pastes the address.</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>How to use the pack</h2>
+        <p>Pick the row that annoys you because it does not exist yet. Say that row. We ship one file. Then keep / cut / change / kill. Do not run the whole list in one night.</p>
+        <p><a class="btn" href="closer.html">Closer</a> <a class="btn ghost" href="../farm.html">Tray</a> <a class="btn ghost" href="../store.html">Shop</a></p>
+      </section>
     </main>
     <footer><span>VOIDD Labs</span><a href="index.html">Tools</a></footer>
   </div>
