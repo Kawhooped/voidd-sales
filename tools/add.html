@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Add · VOIDD</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <style>
+    :root { --bg:#060607; --ink:#fff; --dim:rgba(255,255,255,.4); --line:rgba(255,255,255,.09); --panel:rgba(255,255,255,.05); }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--ink);
+      font: 14px/1.4 ui-sans-serif, system-ui, sans-serif;
+      display: grid; place-items: center; padding: 1.5rem; }
+    .top { position: fixed; top: 1rem; left: 1rem; }
+    .top a { color: var(--dim); text-decoration: none; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+    .card { width: min(360px, calc(100vw - 32px)); height: 280px; border: 1px solid var(--line);
+      border-radius: 16px; padding: 0; background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: 0 8px 24px rgba(0,0,0,.6); display: flex; flex-direction: column; overflow: hidden; }
+    .bar { display: flex; justify-content: space-between; align-items: center; height: 38px; padding: 0 18px; font: 10.5px/1 ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+    .row { display: flex; gap: 8px; align-items: center; padding: 18px 18px 0; }
+    input { flex: 1; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: #0c0c0e; color: #fff;
+      padding: 0 14px; font: 14px/1 ui-monospace, monospace; }
+    .plus { width: 28px; height: 28px; border-radius: 999px; border: 1px solid var(--line); display: grid; place-items: center; color: var(--dim); flex-shrink: 0; }
+    .out { padding: 22px 18px 0; flex: 1; }
+    .out label { font: 10px/1 ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.25); }
+    .out b { display: block; margin-top: 8px; font-size: 44px; letter-spacing: -.04em; font-weight: 650; }
+    .foot { padding: 0 12px 12px; display: flex; gap: 8px; }
+    button { height: 32px; padding: 0 14px; border-radius: 999px; border: 0; font: 11px/1 ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+    .go { background: #fff; color: #000; }
+    .copy { background: rgba(255,255,255,.07); color: rgba(255,255,255,.75); border: 1px solid var(--line); }
+    .mit { height: 28px; padding: 0 18px; font: 9px/28px ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.25); border-top: 1px solid rgba(255,255,255,.06); }
+  </style>
+</head>
+<body>
+  <p class="top"><a href="index.html">Tools</a></p>
+  <article class="card">
+    <div class="bar"><span>01 — Add</span><span>live</span></div>
+    <div class="row">
+      <input id="a" inputmode="decimal" value="12">
+      <span class="plus">+</span>
+      <input id="b" inputmode="decimal" value="30">
+    </div>
+    <div class="out">
+      <label>result</label>
+      <b id="r">42</b>
+    </div>
+    <div class="foot">
+      <button class="go" type="button" id="go">Go</button>
+      <button class="copy" type="button" id="copy">Copy</button>
+    </div>
+    <div class="mit">MIT / no account / client-side</div>
+  </article>
+<script>
+const a = document.getElementById("a");
+const b = document.getElementById("b");
+const r = document.getElementById("r");
+function num(v){ if(v===""||v==="-") return null; const n=Number(v); return Number.isFinite(n)?n:null; }
+function paint(){
+  const x=num(a.value), y=num(b.value);
+  const v = x==null && y==null ? null : x==null ? y : y==null ? x : x+y;
+  r.textContent = v==null ? "\u2014" : Number.isInteger(v) ? String(v) : String(v);
+}
+function go(){ paint(); }
+async function copy(){
+  const t = r.textContent;
+  if(!t || t==="\u2014") return;
+  try { await navigator.clipboard.writeText(t); } catch(e) {}
+}
+document.getElementById("go").onclick = go;
+document.getElementById("copy").onclick = copy;
+a.oninput = b.oninput = paint;
+</script>
+</body>
+</html>
