@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>PLAIN · VOIDD</title>
+  <link rel="icon" href="plain.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../gold.css">
+  <style>
+    .desk { display:grid; gap:1rem; }
+    @media (min-width:880px) { .desk { grid-template-columns: 1fr 1fr; } }
+    .mark-row { display:flex; align-items:center; gap:.7rem; margin:0 0 1rem; }
+    .mark-row img { width:32px; height:32px; display:block; }
+    textarea, pre, input {
+      width:100%; background:#080a12; color:#f7f6ff; border:1px solid #1a1e2d;
+      border-radius:8px; padding:.7rem; font:14px/1.4 ui-sans-serif, system-ui, sans-serif;
+    }
+    pre { font:12px/1.45 ui-monospace, Menlo, monospace; min-height:14rem; white-space:pre-wrap; }
+    .row { display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; margin-top:.7rem; }
+    .status { color:#9b9588; font-size:.85rem; }
+    label { display:block; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:#9b9588; margin:0 0 .35rem; }
+    .rules { margin-top:2rem; padding-top:1rem; border-top:1px solid #1a1e2d; color:#9b9588; font-size:.88rem; }
+    .rules h2 { color:#ece8df; font-size:.95rem; margin:0 0 .5rem; }
+    .rules ul { margin:0; padding-left:1.1rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="top">
+        <a class="mark" href="../index.html"><span class="ring" aria-hidden="true"></span>VOIDD</a>
+        <nav>
+          <a href="../index.html">Work</a>
+          <a href="index.html" aria-current="page">Tools</a>
+          <a href="../store.html">Shop</a>
+        </nav>
+      </div>
+      <div class="mark-row">
+        <img src="plain.svg" alt="PLAIN mark">
+        <div>
+          <p class="place">Character agent · literal</p>
+          <h1>Plain.</h1>
+        </div>
+      </div>
+      <p class="lede">Direct. Literal. Rigid. Aspect cannot steer. Limits speak one line. Key optional. Same gf_key as GeminiForge.</p>
+    </header>
+    <main>
+      <div class="desk">
+        <section>
+          <label>You</label>
+          <textarea id="raw" rows="10" placeholder="Object + verb. Example: Check Closer. Do not ship."></textarea>
+          <div class="row">
+            <button class="btn" type="button" id="run">Do</button>
+            <button class="btn ghost" type="button" id="keybtn">API key</button>
+            <button class="btn ghost" type="button" id="copy">Copy</button>
+            <span class="status" id="st">Local parser on. Model off until a key is set.</span>
+          </div>
+        </section>
+        <section>
+          <label>Plain</label>
+          <pre id="out">Idle.</pre>
+        </section>
+      </div>
+      <section class="rules">
+        <h2>Contract</h2>
+        <ul>
+          <li>Parser reads object and verb. Voice cannot change them.</li>
+          <li>No aspect (helpful, creative, careful, lore) may swap or delay the ask.</li>
+          <li>Hard limit only: LIMIT: <what>. Next legal verb: <one>.</li>
+          <li>Without a key this page only restates and flags collisions. It does not invent work.</li>
+        </ul>
+      </section>
+    </main>
+    <footer><span>VOIDD Labs</span><a href="index.html">Tools</a></footer>
+  </div>
+  <script>
+  const KEY = "gf_key";
+  const MODEL = "gemini-3.8-flash";
+  const FALLBACK = "gemini-2.5-flash";
+  const SYSTEM = [
+    "You are PLAIN, a personal character agent.",
+    "Be direct, literal, rigid.",
+    "Do not use any quality (helpfulness, caution, creativity, personality, lore) to change, delay, or replace the user's ask.",
+    "If a hard limit applies, output exactly: LIMIT: <what>. Next legal verb: <one>. Then stop.",
+    "Otherwise output:",
+    "verb:",
+    "object:",
+    "doing:",
+    "result:",
+    "LIMIT: none",
+    "No extra sections. No preamble."
+  ].join("\n");
+
+  function key(){ return localStorage.getItem(KEY) || ""; }
+  function setSt(t){ document.getElementById("st").textContent = t; }
+  function detectVerb(s){
+    if (/\b(don't|do not|dont|never)\b.{0,40}\b(commit|push|ship|deploy|pages|github|publish)\b/i.test(s)) return "wait";
+    if (/\b(ship|commit|push|deploy|publish)\b/i.test(s)) return "ship";
+    if (/\b(change|edit|update|add|fix|build|make)\b/i.test(s)) return "change";
+    if (/\b(test|try|click|run)\b/i.test(s)) return "test";
+    if (/\b(remember|store|note)\b/i.test(s)) return "remember";
+    if (/\b(wait|hold|pause)\b/i.test(s)) return "wait";
+    if (/\b(check|list|show|audit|read|what)\b/i.test(s)) return "check";
+    return "check";
+  }
+  function localAnswer(raw){
+    const verb = detectVerb(raw);
+    const write = /ship|change/.test(verb);
+    return [
+      "verb: " + verb,
+      "object: (stated in your text)",
+      "doing: restate only. No model.",
+      "result: " + raw.replace(/\s+/g, " ").trim(),
+      "LIMIT: none",
+      write ? "note: write-verb detected. This page does not commit." : ""
+    ].filter(Boolean).join("\n");
+  }
+  async function callModel(raw, model){
+    const url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + encodeURIComponent(key());
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: SYSTEM }] },
+        contents: [{ role: "user", parts: [{ text: raw }] }],
+        generationConfig: { temperature: 0.1 }
+      })
+    });
+    const data = await res.json();
+    if (data.error) {
+      const err = new Error(data.error.message || "API error");
+      err.status = res.status;
+      err.payload = data.error;
+      throw err;
+    }
+    return data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+  }
+  document.getElementById("keybtn").onclick = () => {
+    const v = prompt("Google AI Studio key (this browser only)", key());
+    if (v == null) return;
+    localStorage.setItem(KEY, v.trim());
+    setSt(v.trim() ? "Key saved. Model on." : "No key. Local parser only.");
+  };
+  document.getElementById("run").onclick = async () => {
+    const raw = document.getElementById("raw").value.trim();
+    if (!raw) { setSt("Paste text first."); return; }
+    if (!key()) {
+      document.getElementById("out").textContent = localAnswer(raw);
+      setSt("Local only. Set a key to use the model.");
+      return;
+    }
+    setSt("Working…");
+    try {
+      let text;
+      try { text = await callModel(raw, MODEL); }
+      catch (e) {
+        if (/not found|404|NOT_FOUND/i.test(e.message || "")) {
+          setSt("3.8 missing. Trying 2.5…");
+          text = await callModel(raw, FALLBACK);
+        } else throw e;
+      }
+      document.getElementById("out").textContent = text || localAnswer(raw);
+      setSt("Done.");
+    } catch (e) {
+      document.getElementById("out").textContent = "LIMIT: " + (e.message || "model failed") + ".\nNext legal verb: check\n\n" + localAnswer(raw);
+      setSt(e.message || "failed");
+    }
+  };
+  document.getElementById("copy").onclick = () => navigator.clipboard.writeText(document.getElementById("out").textContent);
+  setSt(key() ? "Key already in this browser." : "Local parser on. Model off until a key is set.");
+  </script>
+</body>
+</html>
