@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VOIDD · handy links</title>
+  <style>
+    :root { --bg:#03040a; --ink:#f7f6ff; --dim:#8b90a5; --gold:#c4a2ff; --line:#1a1e2d; --card:#0b0f18; --cyan:#43def5; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font: 16px/1.45 Georgia, serif; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 28px 18px 64px; }
+    h1 { font-size: 2rem; margin: 0 0 .2rem; }
+    .lede { color: var(--dim); margin: 0 0 1.4rem; }
+    h2 { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin: 1.6rem 0 .6rem; }
+    .list { display: grid; gap: .55rem; }
+    a.row { display:flex; flex-direction:column; gap:.15rem; padding:.85rem .95rem; background:var(--card); border:1px solid var(--line); border-radius:12px; color:inherit; text-decoration:none; }
+    a.row:hover { border-color:#3a4158; }
+    .name { font-weight: 600; }
+    .url { font: 12px/1.3 ui-monospace, monospace; color: var(--cyan); word-break: break-all; }
+    .note { font-size: .85rem; color: var(--dim); }
+    .dead { opacity: .55; }
+    footer { margin-top: 2rem; color: var(--dim); font-size: .8rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p style="letter-spacing:.12em;text-transform:uppercase;font:11px/1.2 ui-sans-serif,system-ui,sans-serif;color:var(--gold)"><a href="index.html" style="color:inherit;text-decoration:none">VOIDD · tools</a></p>
+    <h1>VOIDD links</h1>
+    <p class="lede">Live Pages first, then catalogs, then GitHub.</p>
+
+    <h2>Live websites</h2>
+    <div class="list">
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/"><span class="name">VOIDD Labs home</span><span class="url">kawhooped.github.io/voidd-sales/</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/store.html"><span class="name">Shop (Gumroad cashier)</span><span class="url">…/store.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/shop-void.html"><span class="name">Lookbook</span><span class="url">…/shop-void.html</span><span class="note">Apparel not for sale</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/codeshelf.html"><span class="name">CodeShelf</span><span class="url">…/codeshelf.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/db.html"><span class="name">Database shelf</span><span class="url">…/db.html</span><span class="note">Public. No login.</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/farm.html"><span class="name">Tools farm</span><span class="url">…/farm.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/tools/index.html"><span class="name">Tools index</span><span class="url">…/tools/index.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/tools/center.html"><span class="name">Center</span><span class="url">…/tools/center.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/tools/text-to-prompt.html"><span class="name">Text → Prompt</span><span class="url">…/tools/text-to-prompt.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/tools/closer.html"><span class="name">Closer</span><span class="url">…/tools/closer.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/tools/plain.html"><span class="name">Plain</span><span class="url">…/tools/plain.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/blog.html"><span class="name">Blog</span><span class="url">…/blog.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/tools/gemini-forge.html"><span class="name">GeminiForge</span><span class="url">…/tools/gemini-forge.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/tools/gemini-forge-studio.html"><span class="name">GeminiForge Studio</span><span class="url">…/tools/gemini-forge-studio.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/play/ghost-turk.html"><span class="name">Ghost Turk</span><span class="url">…/play/ghost-turk.html</span></a>
+      <a class="row" href="https://kawhooped.github.io/dd-lab/"><span class="name">DD Lab</span><span class="url">kawhooped.github.io/dd-lab/</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-site-control/"><span class="name">voidd-site-control</span><span class="url">kawhooped.github.io/voidd-site-control/</span></a>
+    </div>
+
+    <h2>Not live yet</h2>
+    <div class="list">
+      <a class="row dead" href="https://kawhooped.github.io/voidd-hub/"><span class="name">VOIDD Hub</span><span class="url">kawhooped.github.io/voidd-hub/</span><span class="note">404 until Pages is enabled on Kawhooped/voidd-hub</span></a>
+    </div>
+
+    <h2>Catalogs (JSON)</h2>
+    <div class="list">
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/api/library.json"><span class="name">library.json</span><span class="url">public shelf</span></a>
+      <a class="row" href="https://kawhooped.github.io/voidd-sales/api/products.json"><span class="name">products.json</span><span class="url">shop SKUs</span></a>
+      <a class="row" href="https://raw.githubusercontent.com/Kawhooped/voidd-hub/dd-main/api/feed.json"><span class="name">feed.json (raw)</span><span class="url">hub catalog — works even while Pages 404s</span></a>
+    </div>
+
+    <h2>GitHub</h2>
+    <div class="list">
+      <a class="row" href="https://github.com/Kawhooped/voidd-sales"><span class="name">voidd-sales</span><span class="url">public shop site · dd-main</span></a>
+      <a class="row" href="https://github.com/Kawhooped/voidd-hub"><span class="name">voidd-hub</span><span class="url">public hub scaffold · dd-main</span></a>
+      <a class="row" href="https://github.com/Kawhooped/voidd-shelf"><span class="name">voidd-shelf</span><span class="url">private shelf · upload Drive to /drive</span></a>
+      <a class="row" href="https://github.com/Kawhooped/gemini-forge"><span class="name">gemini-forge</span><span class="url">template repo · Pages off</span></a>
+    </div>
+
+    <h2>Gumroad</h2>
+    <div class="list">
+      <a class="row" href="https://gimminomi.gumroad.com/"><span class="name">gimminomi store</span><span class="url">gimminomi.gumroad.com</span></a>
+    </div>
+
+    <footer>Live on Pages · 2026-09-21</footer>
+  </div>
+</body>
+</html>
