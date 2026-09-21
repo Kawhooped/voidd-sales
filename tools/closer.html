@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Closer · VOIDD</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../gold.css">
+  <style>
+    .closer { display: grid; gap: 1rem; }
+    @media (min-width: 880px) { .closer { grid-template-columns: 1fr 1fr; } }
+    textarea, input, pre { width: 100%; background: #080a12; color: #f7f6ff; border: 1px solid #1a1e2d; border-radius: 8px; padding: .7rem; font: 14px/1.4 ui-sans-serif, system-ui, sans-serif; }
+    pre { font: 12px/1.45 ui-monospace, monospace; min-height: 12rem; white-space: pre-wrap; }
+    .row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+    .status { color: #9b9588; font-size: .85rem; }
+    label { display: block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: #9b9588; margin: 0 0 .35rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="top">
+        <a class="mark" href="../index.html"><span class="ring" aria-hidden="true"></span>VOIDD</a>
+        <nav>
+          <a href="../index.html">Work</a>
+          <a href="index.html" aria-current="page">Tools</a>
+          <a href="../store.html">Shop</a>
+        </nav>
+      </div>
+      <p class="place">After-Hours · demo</p>
+      <h1>Closer.</h1>
+      <p class="lede">Paste a voicemail, text, or form dump. Get a lead and a reply. Key stays in this browser. Pack still sells on Gumroad.</p>
+    </header>
+    <main class="closer">
+      <section>
+        <label>Trade</label>
+        <input id="trade" value="HVAC">
+        <label style="margin-top:1rem">Messy inbound</label>
+        <textarea id="raw" rows="10">hey this is maria on 79th the ac died last night unit is blowing warm and we have a baby in the house can someone come today my number is 3055550199</textarea>
+        <div class="row" style="margin-top:.8rem">
+          <button class="btn" type="button" id="run">Close this</button>
+          <button class="btn ghost" type="button" id="keybtn">API key</button>
+          <span class="status" id="st">Key in localStorage. Same as GeminiForge.</span>
+        </div>
+      </section>
+      <section>
+        <label>Lead JSON</label>
+        <pre id="json">{}</pre>
+        <label>Reply to send</label>
+        <textarea id="reply" rows="5" readonly></textarea>
+        <div class="row" style="margin-top:.8rem">
+          <button class="btn ghost" type="button" id="copyj">Copy JSON</button>
+          <button class="btn ghost" type="button" id="copyr">Copy reply</button>
+          <a class="btn ghost" href="https://gimminomi.gumroad.com/l/bhifxl">Buy pack $47</a>
+        </div>
+      </section>
+    </main>
+    <footer><span>VOIDD Labs</span><a href="index.html">Tools</a></footer>
+  </div>
+  <script>
+  const KEY = "gf_key";
+  const schema = {
+    type: "OBJECT",
+    properties: {
+      name: { type: "STRING" },
+      phone: { type: "STRING" },
+      trade: { type: "STRING" },
+      urgency: { type: "STRING", enum: ["now", "today", "this_week", "unknown"] },
+      problem: { type: "STRING" },
+      address_hint: { type: "STRING" },
+      reply_sms: { type: "STRING" }
+    },
+    required: ["urgency", "problem", "reply_sms"]
+  };
+  function key(){ return localStorage.getItem(KEY) || ""; }
+  function setSt(t){ document.getElementById("st").textContent = t; }
+  document.getElementById("keybtn").onclick = () => {
+    const v = prompt("Google AI Studio key (stored only in this browser)", key());
+    if (v == null) return;
+    localStorage.setItem(KEY, v.trim());
+    setSt(v.trim() ? "Key saved here." : "No key.");
+  };
+  document.getElementById("run").onclick = async () => {
+    const k = key();
+    if (!k) { setSt("Set a key first."); return; }
+    const trade = document.getElementById("trade").value.trim() || "trade";
+    const raw = document.getElementById("raw").value.trim();
+    if (!raw) { setSt("Paste inbound first."); return; }
+    setSt("Working…");
+    const prompt = "You extract a service lead for a " + trade + " shop. From the inbound message fill the schema. reply_sms is one short text the shop would send back. No markdown.\n\nINBOUND:\n" + raw;
+    try {
+      const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=" + encodeURIComponent(k);
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: "application/json", responseSchema: schema }
+        })
+      });
+      const data = await res.json();
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || JSON.stringify(data, null, 2);
+      let obj;
+      try { obj = JSON.parse(text); } catch(e) { obj = { raw: text }; }
+      document.getElementById("json").textContent = JSON.stringify(obj, null, 2);
+      document.getElementById("reply").value = obj.reply_sms || "";
+      setSt("Done.");
+    } catch (e) {
+      setSt(e.message || "failed");
+    }
+  };
+  document.getElementById("copyj").onclick = () => navigator.clipboard.writeText(document.getElementById("json").textContent);
+  document.getElementById("copyr").onclick = () => navigator.clipboard.writeText(document.getElementById("reply").value);
+  setSt(key() ? "Key already in this browser." : "Set a Google AI Studio key to run.");
+  </script>
+</body>
+</html>
