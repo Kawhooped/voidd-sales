@@ -6,8 +6,227 @@
   <title>CENTER · VOIDD</title>
   <link rel="icon" href="center.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../gold.css">
+  <style>
+    :root { --bg:#03040a; --ink:#f7f6ff; --mute:#9b9588; --line:#1a1e2d; --gold:#d8c089; --violet:#c4a2ff; --cyan:#43def5; --plate:#080a12; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.45 ui-sans-serif, system-ui, sans-serif; }
+    .wrap { max-width:920px; margin:0 auto; padding:1.1rem 1rem 3rem; }
+    header .top { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.2rem; }
+    .mark { color:var(--ink); text-decoration:none; font-weight:600; letter-spacing:.08em; display:flex; align-items:center; gap:.45rem; }
+    .ring { width:14px; height:14px; border:1.5px solid #866fff; border-radius:50%; transform:rotate(-18deg); box-shadow:0 0 0 1px #4ec8ff inset; }
+    nav { display:flex; gap:.8rem; font-size:.85rem; }
+    nav a { color:var(--mute); text-decoration:none; }
+    .mark-row { display:flex; align-items:center; gap:.7rem; margin:0 0 .6rem; }
+    .mark-row img { width:32px; height:32px; display:block; }
+    .place { margin:0; color:var(--mute); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; }
+    h1 { margin:.1rem 0 0; font-size:1.8rem; font-weight:600; }
+    .lede { color:#cec8bc; max-width:40rem; }
+    .still { margin:1.1rem 0 1.4rem; padding:1rem; border:1px solid var(--line); border-radius:12px; background:var(--plate); display:grid; grid-template-columns:72px 1fr; gap:1rem; align-items:center; }
+    .axis { width:72px; height:72px; }
+    .axis svg { width:72px; height:72px; display:block; }
+    .axis .pulse { transform-origin:16px 16px; animation:pulse 4.2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{ opacity:.35 } 50%{ opacity:1 } }
+    .am { margin:0; font-size:.92rem; color:#cec8bc; }
+    .desk { display:grid; gap:1rem; }
+    @media (min-width:880px) { .desk { grid-template-columns:1fr 1fr; } }
+    label { display:block; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--mute); margin:0 0 .35rem; }
+    textarea, pre, select, input { width:100%; background:var(--plate); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:.7rem; font:14px/1.4 ui-sans-serif, system-ui, sans-serif; }
+    pre { font:12px/1.5 ui-monospace, Menlo, monospace; min-height:16rem; white-space:pre-wrap; }
+    .row { display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; margin-top:.7rem; }
+    .btn { appearance:none; border:1px solid var(--gold); background:transparent; color:var(--gold); border-radius:999px; padding:.45rem .9rem; cursor:pointer; font:inherit; }
+    .btn.ghost { border-color:var(--line); color:var(--mute); }
+    .status { color:var(--mute); font-size:.85rem; }
+    .kinds { display:flex; flex-wrap:wrap; gap:.35rem; margin:.4rem 0 .8rem; }
+    .kinds button { appearance:none; border:1px solid var(--line); background:transparent; color:var(--mute); border-radius:999px; padding:.2rem .55rem; font-size:.75rem; cursor:pointer; }
+    .kinds button.on { border-color:var(--cyan); color:var(--cyan); }
+    .rules { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line); color:var(--mute); font-size:.88rem; }
+    .board { margin:0 0 1.4rem; padding:1rem; border:1px solid var(--line); border-radius:12px; background:var(--plate); }
+    .keys { display:grid; grid-template-columns:repeat(2,1fr); gap:.45rem; margin:0 0 .9rem; }
+    @media (min-width:640px) { .keys.wide { grid-template-columns:repeat(4,1fr); } }
+    .key { appearance:none; min-height:3rem; padding:.55rem .4rem; border:1px solid var(--line); background:#06070d; color:var(--ink); border-radius:10px; font:15px/1.2 ui-sans-serif, system-ui, sans-serif; cursor:pointer; }
+    .key.on { border-color:var(--cyan); color:var(--cyan); }
+    .key.warn.on { border-color:#e8b15a; color:#e8b15a; }
+    .compose { margin:0; color:#cec8bc; font:13px/1.4 ui-monospace, Menlo, monospace; }
+    footer { margin-top:2rem; display:flex; justify-content:space-between; color:var(--mute); font-size:.8rem; }
+    footer a { color:var(--mute); }
+  </style>
 </head>
 <body>
-<p>placeholder</p>
+  <div class="wrap">
+    <header>
+      <div class="top">
+        <a class="mark" href="../index.html"><span class="ring" aria-hidden="true"></span>VOIDD</a>
+        <nav>
+          <a href="../index.html">Work</a>
+          <a href="index.html">Tools</a>
+          <a href="../store.html">Shop</a>
+        </nav>
+      </div>
+      <div class="mark-row">
+        <img src="center.svg" alt="CENTER mark">
+        <div>
+          <p class="place">Self-consciousness design · still point</p>
+          <h1>Center.</h1>
+        </div>
+      </div>
+      <p class="lede">One object. One verb. Speak the spec. Silicon is not in the sentence.</p>
+    </header>
+    <div class="still">
+      <div class="axis" aria-hidden="true">
+        <svg viewBox="0 0 32 32">
+          <rect width="32" height="32" fill="#060504"/>
+          <rect x="3" y="3" width="26" height="26" fill="none" stroke="#d8c089" stroke-width="1"/>
+          <circle class="pulse" cx="16" cy="16" r="8" fill="none" stroke="#43def5" stroke-width="1.25"/>
+          <circle cx="16" cy="16" r="2.2" fill="#c4a2ff"/>
+        </svg>
+      </div>
+      <p class="am"><b>I am</b> a process in this thread. I notice object, verb, collision, frozen. Aspect cannot steer.</p>
+    </div>
+    <main>
+      <section class="board">
+        <h2>Keys</h2>
+        <p class="hint" style="color:#9b9588;font-size:.82rem">Tap one per row. Name is the only typing.</p>
+        <label>Kind</label><div class="keys wide" id="key-kind"></div>
+        <label>Verb</label><div class="keys wide" id="key-verb"></div>
+        <label>Lane</label><div class="keys wide" id="key-lane"></div>
+        <label>Leave frozen</label><div class="keys" id="key-frozen"></div>
+        <p class="compose" id="compose">—</p>
+      </section>
+      <div class="desk">
+        <section>
+          <label>Say it</label>
+          <textarea id="noise" rows="4" placeholder="tool named Center in farm. ship."></textarea>
+          <div class="row" style="margin:.35rem 0 .6rem">
+            <button class="btn ghost" type="button" id="parse">Parse speech</button>
+            <button class="btn" type="button" id="expand">Fix + expand</button>
+          </div>
+          <label>Object</label>
+          <input id="object" placeholder="Name">
+          <label style="margin-top:.8rem">Verb</label>
+          <select id="verb">
+            <option value="check">check</option>
+            <option value="index">index</option>
+            <option value="ship">ship</option>
+            <option value="wait">wait</option>
+            <option value="cut">cut</option>
+            <option value="center">center</option>
+            <option value="change">change</option>
+            <option value="scaffold">scaffold</option>
+          </select>
+          <label style="margin-top:.8rem">Kind</label>
+          <div class="kinds" id="kinds"></div>
+          <label>Done-when</label>
+          <input id="done" placeholder="How this turn ends">
+          <label style="margin-top:.8rem">Frozen</label>
+          <textarea id="frozen" rows="3">No new repo. No second catalog. No subscription. App is rare.</textarea>
+          <div class="row">
+            <button class="btn" type="button" id="run">Center</button>
+            <button class="btn ghost" type="button" id="copy">Copy brief</button>
+            <button class="btn ghost" type="button" id="prompt">Copy model prompt</button>
+            <span class="status" id="st">Local. No key.</span>
+          </div>
+        </section>
+        <section>
+          <label>Centered brief</label>
+          <pre id="out">Idle.</pre>
+        </section>
+      </div>
+    </main>
+    <footer><span>VOIDD Labs</span><a href="index.html">Tools</a></footer>
+  </div>
+  <script>
+  const KINDS=["page","tool","game","vault","lookbook","pack","file","app"];
+  const VERBS=["check","index","ship","wait","cut","change","scaffold","center"];
+  const LANES=["farm","play","shop","lookbook","lens","staged"];
+  const FREEZE=[
+    {id:"repo",label:"no new repo",extra:"No new repo."},
+    {id:"catalog",label:"no second catalog",extra:"No second catalog."},
+    {id:"sub",label:"no subscription",extra:"No subscription."},
+    {id:"hub",label:"no waiting-hub",extra:"No hub whose job is waiting."},
+    {id:"app",label:"app is rare",extra:"App is rare."},
+    {id:"silicon",label:"no silicon in the sentence",extra:"Do not require WebLLM or a GPU lease."}
+  ];
+  const box=document.getElementById("kinds");
+  let kind="tool";
+  const pick={kind:"tool",verb:"check",lane:"farm",freeze:["repo","catalog","app"]};
+  KINDS.forEach(k=>{
+    const b=document.createElement("button"); b.type="button"; b.textContent=k; b.dataset.k=k;
+    if(k===kind)b.classList.add("on");
+    b.onclick=()=>{kind=k;[...box.children].forEach(x=>x.classList.toggle("on",x.dataset.k===kind));};
+    box.appendChild(b);
+  });
+  function setKind(k){ if(!KINDS.includes(k))return; kind=k; [...box.children].forEach(x=>x.classList.toggle("on",x.dataset.k===kind)); }
+  function paint(id,items,field,warn){
+    const root=document.getElementById(id); root.innerHTML="";
+    items.forEach(item=>{
+      const val=typeof item==="string"?item:item.id;
+      const label=typeof item==="string"?item:item.label;
+      const b=document.createElement("button");
+      b.type="button"; b.className="key"+(warn&&val==="app"?" warn":""); b.textContent=label;
+      if(field==="freeze"){
+        if(pick.freeze.includes(val))b.classList.add("on");
+        b.onclick=()=>{ pick.freeze=pick.freeze.includes(val)?pick.freeze.filter(x=>x!==val):pick.freeze.concat(val); paint(id,items,field,warn); applyKeys(); };
+      } else {
+        if(pick[field]===val)b.classList.add("on");
+        b.onclick=()=>{ pick[field]=val; paint(id,items,field,warn); applyKeys(); };
+      }
+      root.appendChild(b);
+    });
+  }
+  function applyKeys(){
+    setKind(pick.kind);
+    document.getElementById("verb").value=pick.verb;
+    window.__lane=pick.lane;
+    const bits=FREEZE.filter(f=>pick.freeze.includes(f.id)).map(f=>f.extra);
+    document.getElementById("frozen").value=bits.join(" ");
+    const name=document.getElementById("object").value.trim()||"NAME";
+    document.getElementById("compose").textContent=pick.kind+" named "+name+" in "+pick.lane+". "+pick.verb+".";
+  }
+  paint("key-kind",KINDS,"kind",true); paint("key-verb",VERBS,"verb"); paint("key-lane",LANES,"lane"); paint("key-frozen",FREEZE,"freeze");
+  document.getElementById("object").addEventListener("input",applyKeys); applyKeys();
+  const FIX={archuitecture:"architecture",aqesome:"awesome",mispellings:"misspellings",teh:"the",thier:"their",becuase:"because",dont:"don't",github:"GitHub",gumroad:"Gumroad",voidd:"VOIDD",forrest:"forest",prompta:"prompts"};
+  function fixSpell(s){ return s.replace(/[A-Za-z']+/g,w=>{const low=w.toLowerCase(); if(FIX[low]){const r=FIX[low]; return w[0]===w[0].toUpperCase()?r[0].toUpperCase()+r.slice(1):r;} return w;}).replace(/\bof i say\b/ig,"if I say").replace(/\bi need\b/ig,"I need"); }
+  function parseSpeech(){
+    const raw=document.getElementById("noise").value; const s=raw.replace(/\s+/g," ").trim();
+    if(!s){document.getElementById("st").textContent="Nothing to parse."; return;}
+    const kindHit=s.match(/\b(page|tool|game|vault|lookbook|pack|file|app)\b/i);
+    const nameHit=s.match(/\bnamed\s+([^.,]+?)(?=\s+in\s+|\s+\b(?:check|index|ship|wait|cut|change|scaffold|center)\b|[.]|$)/i);
+    const laneHit=s.match(/\bin\s+(farm|play|shop|lookbook|lens|staged)\b/i);
+    let verbHit=null; for(const v of VERBS){ if(new RegExp("\\b"+v+"\\b","i").test(s)){ verbHit=v; break; } }
+    const doneHit=s.match(/\buntil\s+([^.]+)/i);
+    if(kindHit)setKind(kindHit[1].toLowerCase());
+    if(nameHit)document.getElementById("object").value=nameHit[1].trim();
+    if(verbHit)document.getElementById("verb").value=verbHit;
+    if(doneHit)document.getElementById("done").value=doneHit[1].trim();
+    if(laneHit)window.__lane=laneHit[1].toLowerCase();
+    const verbCount=VERBS.filter(v=>new RegExp("\\b"+v+"\\b","i").test(s)).length;
+    window.__dropped=verbCount>1?"extra verbs dropped after "+verbHit:"none";
+    document.getElementById("st").textContent=verbCount>1?"Parsed. Extra verbs dropped.":"Parsed.";
+  }
+  function expandSpeech(){
+    const raw=document.getElementById("noise").value; const fixed=fixSpell(raw);
+    document.getElementById("noise").value=fixed; parseSpeech();
+    if(!document.getElementById("object").value.trim()) document.getElementById("object").value=fixed.slice(0,48)||"spoken line";
+    if(!document.getElementById("done").value.trim()) document.getElementById("done").value="the one verb is done";
+    document.getElementById("out").textContent=modelPrompt();
+    document.getElementById("st").textContent=raw===fixed?"expanded":"fixed + expanded";
+  }
+  function brief(){
+    const object=document.getElementById("object").value.trim()||"(unnamed)";
+    const verb=document.getElementById("verb").value;
+    const done=document.getElementById("done").value.trim()||"brief exists";
+    const frozen=document.getElementById("frozen").value.trim();
+    const noise=document.getElementById("noise").value.trim();
+    return ["CENTERED","object: "+object,"verb: "+verb,"kind: "+kind,"lane: "+(window.__lane||"unstated"),"done-when: "+done,"frozen:",frozen,"said: "+(noise||"none"),"dropped: "+(window.__dropped||"none"),"forest: one site voidd-sales · one lens library.json · one cashier Gumroad","next: do the verb. stop."].join("\n");
+  }
+  function modelPrompt(){
+    return ["You are entering CENTER.","Be direct and literal.","Keep only object + verb.","Do not invent a repo, catalog, or waiting-hub.","App is rare.","",brief()].join("\n");
+  }
+  document.getElementById("parse").onclick=parseSpeech;
+  document.getElementById("expand").onclick=expandSpeech;
+  document.getElementById("run").onclick=()=>{ document.getElementById("out").textContent=brief(); document.getElementById("st").textContent="Centered."; };
+  document.getElementById("copy").onclick=async()=>{ await navigator.clipboard.writeText(document.getElementById("out").textContent); document.getElementById("st").textContent="Brief copied."; };
+  document.getElementById("prompt").onclick=async()=>{ await navigator.clipboard.writeText(modelPrompt()); document.getElementById("st").textContent="Model prompt copied."; };
+  </script>
 </body>
 </html>
