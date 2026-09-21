@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Text → Prompt · VOIDD</title>
+  <style>
+    :root {
+      --bg:#03040a; --ink:#f7f6ff; --dim:#8b90a5; --gold:#c4a2ff;
+      --line:#1a1e2d; --card:#0b0f18; --cyan:#43def5; --hot:#a06cff;
+      --warn:#e8b15a; --bad:#ff7a8a; --ok:#6ee7b7;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font: 16px/1.45 Georgia, serif; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 24px 16px 72px; }
+    header h1 { font-size: 2rem; margin: .2rem 0 .35rem; }
+    .lede, .dim { color: var(--dim); }
+    .place { letter-spacing:.12em; text-transform:uppercase; font: 11px/1.2 ui-sans-serif, system-ui, sans-serif; color: var(--gold); }
+    .grid { display:grid; gap:1rem; }
+    @media (min-width:900px) { .grid { grid-template-columns: 1fr 1fr; } }
+    label { display:block; font: 11px/1.2 ui-sans-serif, system-ui, sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); margin:0 0 .35rem; }
+    textarea, pre, input, select {
+      width:100%; background:#080a12; color:var(--ink); border:1px solid var(--line);
+      border-radius:10px; padding:.75rem; font: 14px/1.45 ui-sans-serif, system-ui, sans-serif;
+    }
+    pre { font: 12px/1.45 ui-monospace, Menlo, monospace; white-space:pre-wrap; min-height:12rem; }
+    .row { display:flex; flex-wrap:wrap; gap:.45rem; align-items:center; margin-top:.7rem; }
+    button, .btn {
+      appearance:none; border:0; background:var(--hot); color:#fff; border-radius:999px;
+      padding:.55rem .9rem; font: 13px/1 ui-sans-serif, system-ui, sans-serif; cursor:pointer;
+    }
+    button.ghost, .btn.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
+    .status { font: 13px/1.3 ui-sans-serif, system-ui, sans-serif; color:var(--dim); }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:.85rem .95rem; }
+    .part { margin-bottom:.65rem; }
+    .part h3 { margin:0 0 .25rem; font-size:1rem; }
+    .meta { font: 12px/1.4 ui-sans-serif, system-ui, sans-serif; color:var(--dim); }
+    .tag { display:inline-block; margin-right:.35rem; padding:.12rem .45rem; border-radius:999px; border:1px solid var(--line); font:11px/1 ui-sans-serif, system-ui, sans-serif; }
+    .tag.write { color:var(--warn); border-color:#5a4a22; }
+    .tag.read { color:var(--ok); border-color:#1d4a38; }
+    .tag.conflict { color:var(--bad); border-color:#5a2230; }
+    .conflict { color:var(--bad); font: 13px/1.4 ui-sans-serif, system-ui, sans-serif; margin:.4rem 0; }
+    footer { margin-top:2rem; color:var(--dim); font-size:.8rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="place"><a href="index.html" style="color:inherit;text-decoration:none">VOIDD · tools</a> · no key</p>
+      <h1>Text → Prompt.</h1>
+      <p class="lede">Paste messy goals. Get ordered parts with one verb each. Collisions stay on the page instead of in the chat.</p>
+    </header>
+
+    <main class="grid">
+      <section>
+        <label>Messy goals</label>
+        <textarea id="raw" rows="14" placeholder="Check Closer, also ship it to Pages, don't touch GitHub, add it to the tools menu, remember the cashier is Gumroad…"></textarea>
+        <div class="row">
+          <button type="button" id="run">Order this</button>
+          <button type="button" class="ghost" id="sample">Sample</button>
+          <button type="button" class="ghost" id="clear">Clear</button>
+          <span class="status" id="st">Offline. Rules only.</span>
+        </div>
+        <p class="dim" style="margin:.8rem 0 0; font-size:.88rem;">Standing locks baked in: GitHub is source of truth. No second catalog. No Pages flip unless a part says ship. No public phone. Cashier = Gumroad. Lookbook is not for sale.</p>
+      </section>
+      <section>
+        <label>Ordered prompt (paste this)</label>
+        <pre id="out">Nothing yet.</pre>
+        <div class="row">
+          <button type="button" class="ghost" id="copy">Copy prompt</button>
+          <button type="button" class="ghost" id="copyconf">Copy conflicts only</button>
+        </div>
+        <div id="cards" style="margin-top:1rem"></div>
+      </section>
+    </main>
+    <footer>Live on Pages. Local rules only. Does not write the repo.</footer>
+  </div>
+  <script>
+  const VERBS = [
+    { re: /\b(don't|do not|dont|never|stop|hold|wait)\b.{0,40}\b(commit|push|ship|deploy|pages|github|publish|write)\b/i, verb: "wait", write: false, lock: true },
+    { re: /\b(ship|commit|push|deploy|publish|go live|make live)\b/i, verb: "ship", write: true },
+    { re: /\b(change|edit|update|add|index|rewrite|fix|build|make|upgrade)\b/i, verb: "change", write: true },
+    { re: /\b(test|try|click|run)\b/i, verb: "test", write: false },
+    { re: /\b(check|list|show|audit|inspect|read|what do i have)\b/i, verb: "check", write: false },
+    { re: /\b(remember|store|note)\b/i, verb: "remember", write: false },
+    { re: /\b(wait|hold|pause)\b/i, verb: "wait", write: false }
+  ];
+  const OBJECTS = [
+    ["closer", /\bcloser\b/i],
+    ["tools-index", /\btools(\/index| menu| tray| index)?\b/i],
+    ["library.json", /\blibrary\.json\b|\blens\b|\bdatabase\b/i],
+    ["products.json", /\bproducts\.json\b|\bsku/i],
+    ["store", /\bstore\.html\b|\bshop\b|\bcashier\b/i],
+    ["shop-void", /\blookbook\b|\bshop-void\b|\bapparel\b/i],
+    ["github", /\bgithub\b|\brepo\b|\bdd-main\b|\bcommit\b|\bpush\b/i],
+    ["pages", /\bpages\b|\bgithub\.io\b|\bdeploy\b/i],
+    ["gumroad", /\bgumroad\b/i],
+    ["gemini-forge", /\bgemini\s*forge\b|\bgf_key\b/i],
+    ["phone", /\bphone\b|\b786\b/i],
+    ["hub", /\bvoidd-hub\b|\bhub pages\b/i],
+    ["firebase", /\bfirebase\b/i],
+    ["prompt-tool", /\btext\s*to\s*prompt\b|\bprompt tool\b/i]
+  ];
+  const SAMPLE = `Check what is on the store.\nTest Closer with the Maria inbound.\nAdd Closer and Add to the tools index.\nDon't push GitHub until I say so.\nRemember cashier is Gumroad.\nShip Closer to Pages.`;
+
+  function splitRaw(text) {
+    const cleaned = text.replace(/\r/g, "").trim();
+    if (!cleaned) return [];
+    const parts = cleaned
+      .split(/\n+|(?<=[.!?])\s+(?=[A-Z])|\s*;\s*|\s+\b(?:also|then|and also|plus)\b\s+/i)
+      .map(s => s.replace(/^[-*\d.)]+\s*/, "").trim())
+      .filter(s => s.length > 3);
+    return parts.length ? parts : [cleaned];
+  }
+  function detectVerb(s) {
+    for (const v of VERBS) if (v.re.test(s)) return v;
+    return { verb: "check", write: false, inferred: true };
+  }
+  function detectObjects(s) {
+    const hits = [];
+    for (const [name, re] of OBJECTS) if (re.test(s)) hits.push(name);
+    return hits.length ? hits : ["unspecified"];
+  }
+  function doneWhen(verb, objects) {
+    const obj = objects.join(", ");
+    if (verb === "check") return "Report what is live. No writes.";
+    if (verb === "test") return "Click the path. Say pass/fail and blockers.";
+    if (verb === "ship") return "Named file on dd-main, then live URL only after Actions green — and only if this part is allowed.";
+    if (verb === "change") return "One object changed. Show the diff in words.";
+    if (verb === "remember") return "One project fact stored. No extra work.";
+    if (verb === "wait") return "Do not touch " + obj + ".";
+    return "State what changed and what did not.";
+  }
+  function analyze(text) {
+    const rawParts = splitRaw(text);
+    const parts = rawParts.map((text, i) => {
+      const v = detectVerb(text);
+      const objects = detectObjects(text);
+      return {
+        n: i + 1,
+        text,
+        verb: v.verb,
+        write: !!v.write,
+        lock: !!v.lock,
+        inferred: !!v.inferred,
+        objects,
+        done: doneWhen(v.verb, objects)
+      };
+    });
+    const conflicts = [];
+    for (let i = 0; i < parts.length; i++) {
+      for (let j = i + 1; j < parts.length; j++) {
+        const a = parts[i], b = parts[j];
+        const shared = a.objects.filter(o => b.objects.includes(o) && o !== "unspecified");
+        const githubish = [...a.objects, ...b.objects].some(o => o === "github" || o === "pages");
+        const writeClash = (a.write !== b.write) && (shared.length || (githubish && (a.write || b.write)));
+        const verbClash = a.verb !== b.verb && shared.length && ((a.write && !b.write) || (b.write && !a.write) || a.lock || b.lock);
+        if (writeClash || verbClash) {
+          conflicts.push({
+            a: a.n, b: b.n,
+            objects: shared.length ? shared : ["github/pages"],
+            why: a.lock || b.lock
+              ? "A lock (don't write) and a write verb hit the same surface."
+              : "Same object, opposite verbs (read/lock vs change/ship)."
+          });
+        }
+      }
+    }
+    return { parts, conflicts };
+  }
+  function promptText(model) {
+    const lines = [];
+    lines.push("MULTI-PART TURN. Treat each part as its own conversation.");
+    lines.push("Conflict rule: same object + opposite verbs → freeze that object, finish the rest, ask which verb wins.");
+    lines.push("Defaults if a slot is empty: verb=check, no GitHub write, no Pages flip, no second catalog.");
+    lines.push("");
+    model.parts.forEach(p => {
+      lines.push("PART " + p.n + " · verb=" + p.verb + (p.write ? " · WRITE" : " · READ") + " · object=" + p.objects.join(", "));
+      lines.push("Ask: " + p.text);
+      lines.push("Done when: " + p.done);
+      lines.push("");
+    });
+    if (model.conflicts.length) {
+      lines.push("CONFLICTS — do not ship these until I pick a winner:");
+      model.conflicts.forEach(c => {
+        lines.push("- Part " + c.a + " vs Part " + c.b + " on " + c.objects.join(", ") + ". " + c.why);
+      });
+      lines.push("");
+    } else {
+      lines.push("CONFLICTS: none detected by the local rules.");
+      lines.push("");
+    }
+    lines.push("Standing locks: GitHub source of truth. db.html is the lens. Gumroad cashier. Lookbook not for sale. No public phone. No firebaseConfig unless named.");
+    return lines.join("\n");
+  }
+  function paint(model) {
+    document.getElementById("out").textContent = promptText(model);
+    const box = document.getElementById("cards");
+    box.innerHTML = "";
+    if (model.conflicts.length) {
+      const d = document.createElement("div");
+      d.className = "conflict";
+      d.textContent = model.conflicts.map(c => "Part " + c.a + " vs " + c.b + " · " + c.objects.join(", ") + " — " + c.why).join("\n");
+      box.appendChild(d);
+    }
+    model.parts.forEach(p => {
+      const el = document.createElement("div");
+      el.className = "card part";
+      const clash = model.conflicts.some(c => c.a === p.n || c.b === p.n);
+      el.innerHTML = "<h3>Part " + p.n + "</h3>" +
+        "<div>" +
+          "<span class='tag'>" + p.verb + "</span>" +
+          "<span class='tag " + (p.write ? "write" : "read") + "'>" + (p.write ? "write" : "read") + "</span>" +
+          (clash ? "<span class='tag conflict'>conflict</span>" : "") +
+          p.objects.map(o => "<span class='tag'>" + o + "</span>").join("") +
+        "</div>" +
+        "<p class='meta'>" + p.text + "</p>" +
+        "<p class='meta'>Done when: " + p.done + "</p>";
+      box.appendChild(el);
+    });
+    document.getElementById("st").textContent = model.parts.length + " parts · " + model.conflicts.length + " conflicts";
+  }
+
+  const raw = document.getElementById("raw");
+  document.getElementById("run").onclick = () => {
+    const t = raw.value.trim();
+    if (!t) { document.getElementById("st").textContent = "Paste goals first."; return; }
+    paint(analyze(t));
+  };
+  document.getElementById("sample").onclick = () => { raw.value = SAMPLE; paint(analyze(SAMPLE)); };
+  document.getElementById("clear").onclick = () => {
+    raw.value = "";
+    document.getElementById("out").textContent = "Nothing yet.";
+    document.getElementById("cards").innerHTML = "";
+    document.getElementById("st").textContent = "Cleared.";
+  };
+  document.getElementById("copy").onclick = () => navigator.clipboard.writeText(document.getElementById("out").textContent);
+  document.getElementById("copyconf").onclick = () => {
+    const t = document.getElementById("out").textContent;
+    const i = t.indexOf("CONFLICTS");
+    navigator.clipboard.writeText(i >= 0 ? t.slice(i) : "No conflicts.");
+  };
+  </script>
+</body>
+</html>
