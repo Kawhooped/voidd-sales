@@ -14,6 +14,11 @@
     .row { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
     .status { color: #9b9588; font-size: .85rem; }
     label { display: block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: #9b9588; margin: 0 0 .35rem; }
+    .chips button { font: 12px/1.2 ui-sans-serif, system-ui, sans-serif; }
+    .check { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #1a1e2d; color: #9b9588; font-size: .88rem; }
+    .check h2 { color: #ece8df; font-size: .95rem; margin: 0 0 .5rem; }
+    .check ul { margin: 0; padding-left: 1.1rem; }
+    .log { margin-top: .8rem; font: 12px/1.4 ui-monospace, monospace; color: #c4b07a; }
   </style>
 </head>
 <body>
@@ -27,55 +32,92 @@
           <a href="../store.html">Shop</a>
         </nav>
       </div>
-      <p class="place">After-Hours · demo</p>
+      <p class="place">After-Hours · work object</p>
       <h1>Closer.</h1>
-      <p class="lede">Paste a voicemail, text, or form dump. Get a lead and a reply. Key stays in this browser. Pack still sells on Gumroad.</p>
+      <p class="lede">Paste inbound. Get a lead and a reply you could send. Key stays in this browser. Not a playground card.</p>
     </header>
-    <main class="closer">
-      <section>
-        <label>Trade</label>
-        <input id="trade" value="HVAC">
-        <label style="margin-top:1rem">Messy inbound</label>
-        <textarea id="raw" rows="10">hey this is maria on 79th the ac died last night unit is blowing warm and we have a baby in the house can someone come today my number is 3055550199</textarea>
-        <div class="row" style="margin-top:.8rem">
-          <button class="btn" type="button" id="run">Close this</button>
-          <button class="btn ghost" type="button" id="keybtn">API key</button>
-          <span class="status" id="st">Key in localStorage. Same as GeminiForge.</span>
-        </div>
-      </section>
-      <section>
-        <label>Lead JSON</label>
-        <pre id="json">{}</pre>
-        <label>Reply to send</label>
-        <textarea id="reply" rows="5" readonly></textarea>
-        <div class="row" style="margin-top:.8rem">
-          <button class="btn ghost" type="button" id="copyj">Copy JSON</button>
-          <button class="btn ghost" type="button" id="copyr">Copy reply</button>
-          <a class="btn ghost" href="https://gimminomi.gumroad.com/l/bhifxl">Buy pack $47</a>
-        </div>
+    <main>
+      <div class="closer">
+        <section>
+          <label>Trade</label>
+          <div class="row chips" id="chips"></div>
+          <input id="trade" value="HVAC" style="margin-top:.5rem">
+          <label style="margin-top:1rem">Messy inbound</label>
+          <textarea id="raw" rows="10">hey this is maria on 79th the ac died last night unit is blowing warm and we have a baby in the house can someone come today my number is 3055550199</textarea>
+          <div class="row" style="margin-top:.8rem">
+            <button class="btn" type="button" id="run">Close this</button>
+            <button class="btn ghost" type="button" id="keybtn">API key</button>
+            <span class="status" id="st">Same key as GeminiForge (gf_key).</span>
+          </div>
+        </section>
+        <section>
+          <label>Lead JSON</label>
+          <pre id="json">{}</pre>
+          <label>Reply to send</label>
+          <textarea id="reply" rows="5"></textarea>
+          <div class="row" style="margin-top:.8rem">
+            <button class="btn ghost" type="button" id="copyj">Copy JSON</button>
+            <button class="btn ghost" type="button" id="copyr">Copy reply</button>
+            <a class="btn ghost" href="https://gimminomi.gumroad.com/l/bhifxl">Buy pack $47</a>
+          </div>
+          <label style="margin-top:1rem">Last closes (this browser)</label>
+          <pre id="log" class="log">none yet</pre>
+        </section>
+      </div>
+      <section class="check">
+        <h2>Slice checklist — this object only</h2>
+        <ul>
+          <li>Hypothesis: a shop can turn a messy text into a callable lead in one click.</li>
+          <li>Kill: if it needs an account, a second catalog, or more than one HTML file, stop.</li>
+          <li>Keep: JSON + reply + local last-closes.</li>
+          <li>Cut: extra UI chrome, courses, playground cards.</li>
+          <li>Next gate: HVAC landing that posts into this page — only if this click works for you.</li>
+        </ul>
       </section>
     </main>
     <footer><span>VOIDD Labs</span><a href="index.html">Tools</a></footer>
   </div>
   <script>
   const KEY = "gf_key";
+  const LOG = "voidd-closer-log";
+  const trades = ["HVAC","Dental","Law","Detail","Plumbing","Immigration"];
   const schema = {
     type: "OBJECT",
     properties: {
       name: { type: "STRING" },
       phone: { type: "STRING" },
       trade: { type: "STRING" },
-      urgency: { type: "STRING", enum: ["now", "today", "this_week", "unknown"] },
+      urgency: { type: "STRING", enum: ["now","today","this_week","unknown"] },
       problem: { type: "STRING" },
       address_hint: { type: "STRING" },
       reply_sms: { type: "STRING" }
     },
-    required: ["urgency", "problem", "reply_sms"]
+    required: ["urgency","problem","reply_sms"]
   };
+  const chips = document.getElementById("chips");
+  trades.forEach(t => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "btn ghost"; b.textContent = t;
+    b.onclick = () => { document.getElementById("trade").value = t; };
+    chips.appendChild(b);
+  });
   function key(){ return localStorage.getItem(KEY) || ""; }
   function setSt(t){ document.getElementById("st").textContent = t; }
+  function readLog(){
+    try { return JSON.parse(localStorage.getItem(LOG) || "[]"); } catch(e){ return []; }
+  }
+  function paintLog(){
+    const rows = readLog();
+    document.getElementById("log").textContent = rows.length ? rows.map(r => r.at + " · " + (r.name||"?") + " · " + (r.phone||"") + " · " + (r.urgency||"")).join("\n") : "none yet";
+  }
+  function saveLead(obj){
+    const rows = readLog();
+    rows.unshift({ at: new Date().toISOString().slice(0,16).replace("T"," "), name: obj.name, phone: obj.phone, urgency: obj.urgency, problem: obj.problem });
+    localStorage.setItem(LOG, JSON.stringify(rows.slice(0,8)));
+    paintLog();
+  }
   document.getElementById("keybtn").onclick = () => {
-    const v = prompt("Google AI Studio key (stored only in this browser)", key());
+    const v = prompt("Google AI Studio key (this browser only)", key());
     if (v == null) return;
     localStorage.setItem(KEY, v.trim());
     setSt(v.trim() ? "Key saved here." : "No key.");
@@ -87,7 +129,7 @@
     const raw = document.getElementById("raw").value.trim();
     if (!raw) { setSt("Paste inbound first."); return; }
     setSt("Working…");
-    const prompt = "You extract a service lead for a " + trade + " shop. From the inbound message fill the schema. reply_sms is one short text the shop would send back. No markdown.\n\nINBOUND:\n" + raw;
+    const prompt = "Extract a service lead for a " + trade + " shop. Fill every schema field you can. reply_sms is one short text the shop would send. No markdown.\n\nINBOUND:\n" + raw;
     try {
       const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=" + encodeURIComponent(k);
       const res = await fetch(url, {
@@ -99,11 +141,13 @@
         })
       });
       const data = await res.json();
-      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || JSON.stringify(data, null, 2);
+      if (data.error) { setSt(data.error.message || "API error"); document.getElementById("json").textContent = JSON.stringify(data.error, null, 2); return; }
+      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
       let obj;
-      try { obj = JSON.parse(text); } catch(e) { obj = { raw: text }; }
+      try { obj = JSON.parse(text); } catch(e) { obj = { raw: text || data }; }
       document.getElementById("json").textContent = JSON.stringify(obj, null, 2);
       document.getElementById("reply").value = obj.reply_sms || "";
+      if (obj.problem) saveLead(obj);
       setSt("Done.");
     } catch (e) {
       setSt(e.message || "failed");
@@ -112,6 +156,7 @@
   document.getElementById("copyj").onclick = () => navigator.clipboard.writeText(document.getElementById("json").textContent);
   document.getElementById("copyr").onclick = () => navigator.clipboard.writeText(document.getElementById("reply").value);
   setSt(key() ? "Key already in this browser." : "Set a Google AI Studio key to run.");
+  paintLog();
   </script>
 </body>
 </html>
