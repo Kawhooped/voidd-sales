@@ -8,7 +8,7 @@
 <style>
 :root{--bg:#07070e;--ink:#e8e0f0;--dim:#8a8498;--neon:#e84cff;--amber:#ffb24a}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:ui-monospace,Menlo,monospace;overflow:hidden;touch-action:none;user-select:none}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:ui-monospace,Menlo,monospace;overflow:auto;touch-action:manipulation;user-select:none}
 #wrap{height:100%;display:flex;flex-direction:column;max-width:980px;margin:0 auto}
 header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px 4px;gap:8px}
 header h1{margin:0;font-size:13px;letter-spacing:.12em}
@@ -30,6 +30,9 @@ canvas{image-rendering:pixelated;width:100%;height:auto;max-height:100%}
 .dpad .u{grid-column:2;grid-row:1}.dpad .l{grid-column:1;grid-row:2}.dpad .r{grid-column:3;grid-row:2}.dpad .d{grid-column:2;grid-row:3}
 #act{width:84px;height:84px;border-radius:50%;font-size:14px;color:#ffd9ff;border-color:#e84cff88;background:#241428}
 #act:disabled{opacity:.35}
+.how{margin:0 12px 8px;border:1px solid #2a2a3a;padding:8px 10px;font-size:12px;color:var(--dim);overflow:auto;max-height:30vh}
+.how summary{color:var(--ink);cursor:pointer;letter-spacing:.08em}
+.how ul{margin:8px 0 0;padding-left:18px;line-height:1.45}
 </style>
 </head>
 <body>
@@ -45,6 +48,13 @@ canvas{image-rendering:pixelated;width:100%;height:auto;max-height:100%}
   </header>
   <div id="stage"><canvas id="c" width="480" height="180"></canvas><div id="prompt"></div></div>
   <div id="hudline">The city stays in the window. This room is the game.</div>
+<details class="how"><summary>How to play</summary>
+<ul>
+<li>D-pad moves. Walk to a thing. The big button changes: Sleep, Eat, Work, Wash, Look.</li>
+<li>Blue = energy. Orange = hunger. Pink = focus. Sleep and eat when bars drop.</li>
+<li>No score. The room is the game. The door is later.</li>
+</ul>
+</details>
   <div id="pad">
     <div class="dpad">
       <button class="u" data-dir="up">▲</button>
