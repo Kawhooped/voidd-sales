@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#03040a">
   <title>Shop · VOIDD Labs</title>
-  <meta name="description" content="VOIDD showcase. Play free. Packs listed with prices. Inquire to buy. Gumroad stays live for code packs.">
+  <meta name="description" content="Play free games. Buy code packs. Ask if you want something else.">
   <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/store.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="gold.css">
@@ -74,17 +74,17 @@
       </div>
       <div class="hero-row">
         <div>
-          <p class="place">Miami · showcase</p>
+          <p class="place">Miami</p>
           <h1>Shop.</h1>
-          <p class="lede">Catalog is live. This page is the showcase: see the work, play the free games, ask for a pack. Card checkout stays on Gumroad for code SKUs. Apparel is lookbook only.</p>
+          <p class="lede">Play the free games. Buy a pack when you are ready. Clothes live in the lookbook — they are not for sale here.</p>
         </div>
-        <p class="status-pill">Showcase · inquire to buy</p>
+        <p class="status-pill">Play · Buy</p>
       </div>
     </header>
 
     <section class="inquire" id="inquire">
       <h2>Want a pack?</h2>
-      <p class="lede">Send the SKU. Danny confirms. Invoice or Gumroad link follows. No fake cart on this page.</p>
+      <p class="lede">Pick an item and send a short note. We reply with a checkout link.</p>
       <div class="contact-line" id="contactLine"></div>
       <form id="ask" action="#" method="post">
         <div class="row">
@@ -98,7 +98,7 @@
           </p>
         </div>
         <p>
-          <label for="sku">SKU</label>
+          <label for="sku">Item</label>
           <select id="sku" name="sku"></select>
         </p>
         <p>
@@ -107,9 +107,9 @@
         </p>
         <p class="acts">
           <button class="btn" type="submit">Open email draft</button>
-          <button class="btn ghost" type="button" id="copyBtn">Copy inquiry</button>
+          <button class="btn ghost" type="button" id="copyBtn">Copy message</button>
         </p>
-        <p class="note" id="askNote">Copies an inquiry you can paste into mail. Phone and public inbox are not listed on this page.</p>
+        <p class="note" id="askNote">Opens an email draft, or copies the message so you can send it.</p>
       </form>
     </section>
 
@@ -117,7 +117,7 @@
       <div class="shelf" id="shelf"></div>
     </main>
     <footer>
-      <span>VOIDD Labs · showcase</span>
+      <span>VOIDD Labs</span>
       <a href="shop-void.html">Lookbook</a>
       <a href="codeshelf.html">CodeShelf</a>
       <a href="license.html">License</a>
@@ -176,7 +176,7 @@
     if (p.play) bits.push(`<a class="btn ghost" href="${p.play}">Play</a>`);
     if (p.gumroad) bits.push(`<a class="btn" href="${p.gumroad}">Buy on Gumroad</a>`);
     else if (p.wixPath) bits.push(`<a class="btn ghost" href="https://www.void.works${p.wixPath}" target="_blank" rel="noopener">View on Wix</a>`);
-    bits.push(`<a class="btn ghost" href="#inquire" data-sku="${p.id}">Inquire</a>`);
+    bits.push(`<a class="btn ghost" href="#inquire" data-sku="${p.id}">Ask</a>`);
     return bits.join("");
   }
 
@@ -185,7 +185,7 @@
     const products = data.products || [];
     el.innerHTML = products.map(p => `
       <article class="card">
-        <div class="cover">${p.image ? `<img src="${p.image}" alt="">` : coverSvg(p)}<span class="badge">${p.tag || (p.price?("$"+p.price):"SKU")}</span></div>
+        <div class="cover">${p.image ? `<img src="${p.image}" alt="">` : coverSvg(p)}<span class="badge">${p.tag || (p.price?("$"+p.price):"")}</span></div>
         <div class="body">
           <h2>${p.title}</h2>
           <p>${p.blurb || ""}</p>
@@ -206,7 +206,7 @@
     const mail = document.getElementById("mail").value.trim();
     const sku = document.getElementById("sku").value;
     const msg = document.getElementById("msg").value.trim();
-    return `VOIDD shop inquiry\nSKU: ${sku}\nName: ${who}\nEmail: ${mail}\n\n${msg || "(no note)"}`;
+    return `VOIDD shop inquiry\nItem: ${sku}\nName: ${who}\nEmail: ${mail}\n\n${msg || "(no note)"}`;
   }
 
   function renderContact(){
@@ -216,25 +216,25 @@
     if (CONTACT.email) bits.push(`<a href="mailto:${CONTACT.email}">${CONTACT.mailLabel || CONTACT.email}</a>`);
     line.innerHTML = bits.join("");
     if (CONTACT.email) {
-      document.getElementById("askNote").textContent = "Opens your mail app with the SKU filled in.";
+      document.getElementById("askNote").textContent = "Opens your mail app with the item filled in.";
     }
   }
 
   document.getElementById("ask").addEventListener("submit", (e) => {
     e.preventDefault();
     const body = encodeURIComponent(draftText());
-    const subject = encodeURIComponent("VOIDD shop inquiry · " + document.getElementById("sku").value);
+    const subject = encodeURIComponent("VOIDD shop · " + document.getElementById("sku").value);
     const to = CONTACT.email || "";
     if (to) location.href = `mailto:${to}?subject=${subject}&body=${body}`;
     else {
       navigator.clipboard.writeText(draftText()).then(() => {
-        document.getElementById("askNote").textContent = "Copied. Public inbox is not on this page yet — paste into your mail app.";
+        document.getElementById("askNote").textContent = "Copied. Paste it into your mail app.";
       });
     }
   });
   document.getElementById("copyBtn").addEventListener("click", () => {
     navigator.clipboard.writeText(draftText()).then(() => {
-      document.getElementById("askNote").textContent = "Inquiry copied.";
+      document.getElementById("askNote").textContent = "Message copied.";
     });
   });
 
