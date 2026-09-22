@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pixie Seeker · VOIDD Labs</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <style>
+    :root { --bg:#0a0a0c; --ink:#f4f4f5; --mute:#71717a; --line:#27272a; --violet:#a78bfa; --em:#34d399; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 Georgia, serif; }
+    .wrap { max-width:1100px; margin:0 auto; padding:20px 16px 48px; }
+    header { display:flex; justify-content:space-between; gap:12px; align-items:end; border-bottom:1px solid var(--line); padding-bottom:16px; }
+    .mark { color:var(--ink); text-decoration:none; font:12px/1 ui-monospace,monospace; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { margin:8px 0 0; font-weight:400; font-size:32px; letter-spacing:-.02em; }
+    h1 em { color:var(--violet); font-style:italic; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .bar { margin-top:14px; font-size:11px; color:var(--mute); }
+    label { display:block; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--mute); margin:12px 0 6px; }
+    input[type=text] { width:100%; background:#09090b; color:var(--ink); border:1px solid var(--line); border-radius:12px; padding:12px; font:13px/1.3 ui-monospace,monospace; }
+    .row { display:grid; grid-template-columns:1fr; gap:10px; }
+    @media (min-width:800px) { .row { grid-template-columns: 1.4fr 1fr 1fr; } }
+    .acts { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+    button { border:0; border-radius:12px; padding:12px 16px; cursor:pointer; font:12px/1 ui-monospace,monospace; text-transform:uppercase; letter-spacing:.06em; }
+    .go { background:#fff; color:#000; font-weight:700; }
+    .ghost { background:#111; color:#a1a1aa; border:1px solid var(--line); }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+    .card { background:#111114; border:1px solid var(--line); border-radius:16px; overflow:hidden; cursor:pointer; }
+    .card.sel { border-color:var(--violet); }
+    .frame { aspect-ratio:1; background:#09090b; display:grid; place-items:center; position:relative; }
+    .frame img { width:100%; height:100%; object-fit:cover; display:block; }
+    .meta { padding:10px 12px; font-size:14px; }
+    .meta small { display:block; color:#a1a1aa; font:10px/1.3 ui-monospace,monospace; margin-top:4px; }
+    .lineage { display:flex; gap:8px; overflow-x:auto; min-height:84px; padding:10px; border:1px solid var(--line); border-radius:14px; background:#111114; margin-top:16px; }
+    .lineage img { width:68px; height:68px; object-fit:cover; border-radius:10px; }
+    .wait { color:var(--mute); font:12px ui-monospace,monospace; }
+    a { color:var(--violet); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <a class="mark" href="index.html">VOIDD · Tools</a>
+        <h1>Pixie Seeker <em>seek</em></h1>
+      </div>
+      <p class="mono bar" id="gen">GEN 0</p>
+    </header>
+    <p class="bar mono">Pollinations · no key · click a tile to lock that trait</p>
+    <div class="row">
+      <div>
+        <label>Core</label>
+        <input id="core" type="text" value="pixie, small forest creature, two legs with feet, butterfly wings">
+      </div>
+      <div>
+        <label>Locked anatomy</label>
+        <input id="lock" type="text" value="two legs, two arms, clear anatomy">
+      </div>
+      <div>
+        <label>Avoid</label>
+        <input id="neg" type="text" value="fused legs, mermaid tail, blurry, extra limbs, distorted face">
+      </div>
+    </div>
+    <label>Variation <span id="strv">62</span></label>
+    <input id="str" type="range" min="0" max="100" value="62" style="width:100%">
+    <div class="acts">
+      <button class="go" id="genbtn" type="button">Generate</button>
+      <button class="ghost" id="reset" type="button">Reset</button>
+    </div>
+    <p class="bar mono" id="sys"></p>
+    <div class="lineage" id="lineage"><span class="wait">No picks yet.</span></div>
+    <div class="grid" id="grid"></div>
+  </div>
+  <script>
+    const STARTER = [
+      {label:"Orange Monarch", detail:"orange butterfly wings, translucent, monarch pattern"},
+      {label:"Moss Sprite", detail:"green skin teal hair, moss texture, bark freckles"},
+      {label:"Leaf Couture", detail:"wearing leaf clothes, acorn hat, vine belt"},
+      {label:"Glow Glade", detail:"glowing forest background, fireflies, bokeh, magical light"}
+    ];
+    const POOL = STARTER.concat([
+      {label:"Blue Moth", detail:"blue moth wings, dusty, luna moth texture"},
+      {label:"Crystal Wings", detail:"crystal dragonfly wings, iridescent, prismatic"},
+      {label:"Petal Pink", detail:"pink fairy wings, petal shaped, soft glow"},
+      {label:"Silver Wisp", detail:"pale skin silver hair, moonlight sheen"},
+      {label:"Bark Child", detail:"bark skin leaf hair, wooden joints"},
+      {label:"Amber Heart", detail:"amber skin, warm light, honey freckles"},
+      {label:"Mushroom Dress", detail:"wearing mushroom cap dress, spotted red cap"},
+      {label:"Vine Armor", detail:"wearing vine armor, thorn details"},
+      {label:"Misty Swamp", detail:"misty swamp background, fog, lily pads"},
+      {label:"Meadow Sun", detail:"sunlit meadow background, tall grass, golden hour"},
+      {label:"Deep Woods", detail:"dark enchanted forest, ancient trees, shadows"}
+    ]);
+    let gen = 0, picks = [], learned = {}, tiles = [];
+    const $ = (id) => document.getElementById(id);
+    $("str").oninput = () => $("strv").textContent = $("str").value;
+    function urlFor(prompt, seed) {
+      const t = prompt.replace(/&/g, " and ").slice(0, 400);
+      return "https://image.pollinations.ai/prompt/" + encodeURIComponent(t) +
+        "?seed=" + seed + "&width=512&height=512&nologo=true&enhance=true&t=" + Date.now();
+    }
+    function join(parts) {
+      return parts.map(s => String(s||"").trim()).filter(Boolean).join(", ").replace(/,\s*,/g, ",");
+    }
+    function lockedDetails() {
+      return Object.entries(learned).filter(([,n]) => n >= 2).map(([lab]) => {
+        const hit = POOL.find(p => p.label === lab);
+        return hit ? hit.detail : lab;
+      }).join(", ");
+    }
+    function pickPool() {
+      if (gen <= 1) return STARTER.slice();
+      const used = new Set(Object.entries(learned).filter(([,n])=>n>=2).map(([k])=>k));
+      const rest = POOL.filter(p => !used.has(p.label)).sort(() => Math.random() - .5);
+      return rest.slice(0,4).concat(STARTER).slice(0,4);
+    }
+    function generate() {
+      gen += 1;
+      $("gen").textContent = "GEN " + gen;
+      const core = $("core").value, lock = $("lock").value, neg = $("neg").value;
+      const strength = +$("str").value;
+      const last = picks[picks.length-1];
+      const learnedBits = lockedDetails();
+      const lastBit = last && strength > 20 ? last.detail : "";
+      const pool = pickPool();
+      tiles = pool.map((p, i) => {
+        const seed = Math.floor(Date.now()/1000) + i + gen*100 + Math.floor(Math.random()*999);
+        let bits;
+        if (strength < 35) bits = [core, lock, learnedBits, p.detail];
+        else if (strength < 70) bits = [core, lock, learnedBits, lastBit, p.detail];
+        else bits = [core, lock, learnedBits, lastBit, p.detail, "consistent character"];
+        const prompt = join([...bits, "sharp focus, highly detailed" + (neg ? ", avoid " + neg : ""), "pixie portrait, centered, full body visible"]);
+        return { ...p, seed, prompt, url: urlFor(prompt, seed) };
+      });
+      $("sys").textContent = join([core, lock, learnedBits, lastBit]);
+      render();
+    }
+    function breed(t) {
+      picks.push(t);
+      learned[t.label] = (learned[t.label] || 0) + 1;
+      renderLineage();
+      generate();
+    }
+    function renderLineage() {
+      const el = $("lineage");
+      if (!picks.length) { el.innerHTML = '<span class="wait">No picks yet.</span>'; return; }
+      el.innerHTML = picks.map(p => '<img src="'+p.url+'" alt="'+p.label+'" title="'+p.label+'">').join("");
+    }
+    function render() {
+      renderLineage();
+      $("grid").innerHTML = tiles.map((t,i) =>
+        '<article class="card" data-i="'+i+'"><div class="frame"><img alt="'+t.label+'" src="'+t.url+'"></div><div class="meta">'+t.label+'<small>'+t.detail+'</small></div></article>'
+      ).join("");
+      $("grid").querySelectorAll(".card").forEach(card => {
+        card.onclick = () => breed(tiles[+card.dataset.i]);
+      });
+    }
+    $("genbtn").onclick = generate;
+    $("reset").onclick = () => { gen = 0; picks = []; learned = {}; tiles = []; generate(); };
+    generate();
+  </script>
+</body>
+</html>
