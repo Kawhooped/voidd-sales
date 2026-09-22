@@ -24,12 +24,25 @@ p{color:var(--dim);font-size:12px;margin:6px 0 10px}
 .ov.on{display:grid}
 button{background:0;color:var(--ink);border:1px solid #333;padding:8px 10px;font:inherit}
 #log{font-size:11px;color:var(--dim);min-height:72px}
+.how{margin:10px 0;max-width:420px;border:1px solid #222;padding:8px 10px;font-size:12px;color:var(--dim)}
+.how summary{color:var(--ink);cursor:pointer;letter-spacing:.08em}
+.how ul{margin:8px 0 0;padding-left:18px;line-height:1.45}
 </style>
 </head>
 <body>
 <div class="top"><span>GT · VOIDD</span><span id="pill">GRID-07</span></div>
 <h1>GHOST <b>TURK</b></h1>
 <p>Move one. Purps multiply. Ghosts never die.</p>
+<details class="how"><summary>How to play</summary>
+<ul>
+<li>Tap a ghost 👻 or a robot 🤖, then tap a square next to it (up down left right).</li>
+<li>Empty square = move. Alien 👽 or yellow face 😒 = hit.</li>
+<li>One move per turn. Then ghosts hurt neighbors and aliens walk.</li>
+<li>Win: no aliens and no yellow face. Lose: both robots die.</li>
+<li>Ghosts never stay gone. If one is stepped on, it comes back next to a robot.</li>
+<li>Aliens copy themselves on even turns. Crowd them.</li>
+</ul>
+</details>
 <div class="stats"><div class="stat" id="stSide">PLAYER</div><div class="stat" id="stThreat">4</div><div class="stat" id="stAnchor">2</div><div class="stat" id="stGhost">2</div></div>
 <div class="wrap"><div class="board" id="board"></div><div class="ov" id="ov"><div><b id="ovT"></b><br><button id="ovR">RESET</button></div></div></div>
 <button id="rs">RESET</button>
