@@ -30,8 +30,6 @@
     .add { margin:1.6rem 0; padding:1rem; border:1px dashed var(--line2); border-radius:14px; }
     .add h2 { margin:0 0 .6rem; font-size:1rem; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); }
     .add textarea { min-height:4.5rem; }
-    details.ops { margin:2rem 0 1rem; border-top:1px solid var(--line); padding-top:1rem; }
-    details.ops summary { cursor:pointer; color:var(--muted2); letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; }
     .count { color:var(--muted2); font-size:.8rem; }
     .draft { outline:1px dashed #3a4158; }
   </style>
@@ -49,9 +47,9 @@
           <a href="db.html" aria-current="page">Database</a>
         </nav>
       </div>
-      <p class="place">Shelf · one place</p>
+      <p class="place">Catalog</p>
       <h1>Database.</h1>
-      <p class="lede">Everything you make lives here so other sites can stay consistent. Logos, icons, colors, pages, games, packs. Add over time.</p>
+      <p class="lede">Pages, games, packs, and marks in one list. Search and open them.</p>
     </header>
     <main>
       <div class="bar">
@@ -65,32 +63,25 @@
       <div class="kinds" id="kinds"></div>
       <div class="shelf" id="shelf"></div>
       <form class="add" id="add">
-        <h2>Add to this browser</h2>
-        <p class="lede" style="margin-bottom:.7rem">Drafts stay on this phone until you download JSON and ask Grok to commit them into <code>api/library.json</code>. Pages cannot write the repo.</p>
-        <input name="title" required placeholder="Title — VOIDD wordmark, cropper, facade set…">
+        <h2>Add a note</h2>
+        <p class="lede" style="margin-bottom:.7rem">Notes you add stay on this device. Download a copy if you want to keep them.</p>
+        <input name="title" required placeholder="Title">
         <select name="kind">
           <option>mark</option><option>icon</option><option>color</option>
           <option>page</option><option>game</option><option>tool</option>
           <option>pack</option><option>html</option><option>note</option>
         </select>
-        <input name="file" placeholder="file path or URL (optional)">
-        <textarea name="note" placeholder="How to use it. Where it already lives."></textarea>
+        <input name="file" placeholder="Link or file (optional)">
+        <textarea name="note" placeholder="A short note."></textarea>
         <p style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0">
-          <button class="btn" type="submit">Save draft</button>
-          <button class="btn ghost" type="button" id="export">Download drafts.json</button>
-          <button class="btn ghost" type="button" id="clear">Clear drafts</button>
+          <button class="btn" type="submit">Save</button>
+          <button class="btn ghost" type="button" id="export">Download</button>
+          <button class="btn ghost" type="button" id="clear">Clear saved notes</button>
         </p>
       </form>
-      <details class="ops">
-        <summary>Agent board (farm-board STATE)</summary>
-        <p class="place" id="meta">closed until opened</p>
-        <div id="ops"></div>
-      </details>
     </main>
     <footer>
       <span>VOIDD Labs</span>
-      <a href="api/library.json">library.json</a>
-      <a href="manager.html">Shop manager</a>
       <a href="license.html">License</a>
     </footer>
   </div>
@@ -137,7 +128,7 @@ function paint(){
         ${it.file && it.file !== href ? `<a class="btn ghost" href="${esc(it.file)}">${esc(it.file)}</a>` : ""}
       </div>
     </article>`;
-  }).join("") : `<article class="card"><div class="k">none</div><h2>Nothing matches</h2><p>Add a draft below or clear the search.</p></article>`;
+  }).join("") : `<article class="card"><div class="k">none</div><h2>Nothing matches</h2><p>Add a note below or clear the search.</p></article>`;
 }
 document.getElementById("q").addEventListener("input", paint);
 document.getElementById("sort").addEventListener("change", paint);
@@ -173,36 +164,13 @@ document.getElementById("export").onclick = () => {
   a.click();
 };
 document.getElementById("clear").onclick = () => {
-  if (confirm("Clear drafts on this device?")) { setDrafts([]); paint(); }
+  if (confirm("Clear notes saved on this device?")) { setDrafts([]); paint(); }
 };
 fetch("api/library.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   lib = d;
   paintKinds();
   paint();
 }).catch(() => { paintKinds(); paint(); });
-document.querySelector("details.ops").addEventListener("toggle", ev => {
-  if (!ev.target.open || ev.target.dataset.loaded) return;
-  ev.target.dataset.loaded = "1";
-  const urls = [
-    "https://raw.githubusercontent.com/Kawhooped/farm-board/dd-main/STATE.json",
-    "https://cdn.jsdelivr.net/gh/Kawhooped/farm-board@dd-main/STATE.json"
-  ];
-  (async () => {
-    for (const u of urls) {
-      try {
-        const r = await fetch(u, { cache: "no-store" });
-        if (!r.ok) continue;
-        const st = await r.json();
-        document.getElementById("meta").textContent = (st.updated||"") + " · " + (st.current_plot||"");
-        document.getElementById("ops").innerHTML =
-          "<p class=\"lede\">" + esc(st.current_plot_goal||"") + "</p>" +
-          "<p>" + (st.blocked_on_danny||[]).map(x => "<span class=\"k\">" + esc(x) + "</span> ").join(" · ") + "</p>";
-        return;
-      } catch(e) {}
-    }
-    document.getElementById("meta").textContent = "state fetch failed";
-  })();
-});
 </script>
 </body>
 </html>
