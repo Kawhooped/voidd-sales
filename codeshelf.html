@@ -1,81 +1,26 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#03040a">
-  <title>CodeShelf · VOIDD Labs</title>
-  <meta name="description" content="CodeShelf catalog snapshot. Digital tools and HTML packs. Buy on Gumroad.">
-  <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/codeshelf.html">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="gold.css">
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <div class="top">
-        <a class="mark" href="index.html"><span class="ring" aria-hidden="true"></span>VOIDD</a>
-        <nav>
-          <a href="index.html">Work</a>
-          <a href="tools/index.html">Tools</a>
-          <a href="blog.html">Blog</a>
-          <a href="store.html">Shop</a>
-          <a href="codeshelf.html" aria-current="page">CodeShelf</a>
-        </nav>
-      </div>
-      <p class="place">Catalog snapshot</p>
-      <h1>CodeShelf.</h1>
-      <p class="lede">Ten artifacts. Search here. Pay on Gumroad. Notes stay in this browser.</p>
-    </header>
-    <main>
-      <p class="lede" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-        <input id="q" type="search" placeholder="Search the catalog…" style="flex:1;min-width:180px;min-height:40px;padding:0 12px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:transparent;color:inherit">
-        <select id="sort" style="min-height:40px;padding:0 10px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:transparent;color:inherit">
-          <option value="featured">Featured</option>
-          <option value="price-low">Price: low</option>
-          <option value="price-high">Price: high</option>
-          <option value="name">Name</option>
-        </select>
-      </p>
-      <div class="grid" id="grid"></div>
-    </main>
-    <footer>
-      <span>VOIDD Labs</span>
-      <a href="store.html">Shop</a>
-      <a href="license.html">License</a>
-    </footer>
-  </div>
-  <script>
-  const catalog = [
-    {name:"After-Hours Lead Pack — HVAC, dental, law, detail, plumbing, immigration",price:47,summary:"DIY chat + lead-capture kit for six niches.",url:"https://gimminomi.gumroad.com/l/bhifxl"},
-    {name:"UPPER MANAGEMENT — Org Sim Toy",price:9,summary:"Org / upper-management sim toy — systems satire in one HTML.",url:"https://gimminomi.gumroad.com/l/upper-management-sim"},
-    {name:"ASSET FACTORY CONSOLE — Maker Desk",price:12,summary:"Listing and asset desk energy in one HTML.",url:"https://gimminomi.gumroad.com/l/asset-factory-console"},
-    {name:"VECTOR FORGE LIVING — Animated Vector Lab",price:12,summary:"Generative motion in one offline HTML.",url:"https://gimminomi.gumroad.com/l/vector-forge-living"},
-    {name:"COCKPIT PACK — Ops & Live Surfaces",price:15,summary:"Showrunner + Ship Dashboard + Horizon + Hearth.",url:"https://gimminomi.gumroad.com/l/voidd-cockpit-pack"},
-    {name:"COURT PACK — Lore & Castle Toys",price:15,summary:"Whisper Court + King's Hours + Core + Coalition + Young King.",url:"https://gimminomi.gumroad.com/l/voidd-court-pack"},
-    {name:"NUDGE LAB PACK — Interactive Field Toys",price:15,summary:"Four nudge/field toys: cosmos, biome, arena, lab.",url:"https://gimminomi.gumroad.com/l/voidd-nudge-lab-pack"},
-    {name:"ARENA PACK — Combat HTML Games",price:19,summary:"Angels vs Demons + Blade Instinct + Platform Command + Emoji Soccer.",url:"https://gimminomi.gumroad.com/l/voidd-arena-pack"},
-    {name:"CREATIVE PACK — Generative Browser Toys",price:19,summary:"Vector Forge + Loom + Draws + The Forge + Ember.",url:"https://gimminomi.gumroad.com/l/voidd-creative-pack"},
-    {name:"PLAY WAVE PACK — 3 Offline Browser Games",price:19,summary:"Oculus + Ascent Arcade + Draws — three offline HTML toys.",url:"https://gimminomi.gumroad.com/l/voidd-play-wave-pack"}
-  ];
-  function draw(){
-    const q = document.getElementById('q').value.trim().toLowerCase();
-    const sort = document.getElementById('sort').value;
-    let list = catalog.filter(p => (p.name+' '+p.summary).toLowerCase().includes(q));
-    if (sort==='price-low') list.sort((a,b)=>a.price-b.price);
-    if (sort==='price-high') list.sort((a,b)=>b.price-a.price);
-    if (sort==='name') list.sort((a,b)=>a.name.localeCompare(b.name));
-    document.getElementById('grid').innerHTML = list.length ? list.map(p => `
-      <article class="tile">
-        <span class="n">$${p.price}</span>
-        <h2>${p.name}</h2>
-        <p>${p.summary}</p>
-        <a class="btn" href="${p.url}" target="_blank" rel="noopener">Open on Gumroad</a>
-      </article>`).join('') : '<article class="tile"><span class="n">None</span><h2>No match</h2><p>Try another search.</p></article>';
-  }
-  document.getElementById('q').addEventListener('input', draw);
-  document.getElementById('sort').addEventListener('change', draw);
-  draw();
-  </script>
-</body>
-</html>
+<!DOCTYPE HTML>
+<!-- Phantom by HTML5 UP. html5up.net | @ajlkn. CCA 3.0. VOIDD content by VOIDD Labs. -->
+<html lang="en"><head><title>CodeShelf · VOIDD Labs</title><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/css/main.css" /><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/css/noscript.css" /></noscript><link rel="icon" href="favicon.svg" type="image/svg+xml"></head>
+<body class="is-preload"><div id="wrapper">
+<header id="header"><div class="inner"><a href="index.html" class="logo"><span class="symbol"><img src="favicon.svg" alt="" /></span><span class="title">VOIDD</span></a><nav><ul><li><a href="#menu">Menu</a></li></ul></nav></div></header>
+<nav id="menu"><h2>Menu</h2><ul><li><a href="index.html">Work</a></li><li><a href="tools/index.html">Tools</a></li><li><a href="play/ghost-turk.html">Play</a></li><li><a href="blog.html">Blog</a></li><li><a href="store.html">Shop</a></li><li><a href="codeshelf.html">CodeShelf</a></li><li><a href="call.html">Contact</a></li></ul></nav>
+<div id="main"><div class="inner">
+<h1>CodeShelf.</h1>
+<p>Catalog of artifacts. Open a pack. Pay on Gumroad. Local notes live on the Database page.</p>
+<ul>
+<li><a href="https://gimminomi.gumroad.com/l/bhifxl">After-Hours Lead Pack — $47</a></li>
+<li><a href="https://gimminomi.gumroad.com/l/upper-management-sim">UPPER MANAGEMENT — $9</a></li>
+<li><a href="https://gimminomi.gumroad.com/l/asset-factory-console">ASSET FACTORY CONSOLE — $12</a></li>
+<li><a href="https://gimminomi.gumroad.com/l/vector-forge-living">VECTOR FORGE LIVING — $12</a></li>
+<li><a href="https://gimminomi.gumroad.com/l/voidd-cockpit-pack">COCKPIT PACK — $15</a></li>
+</ul>
+<ul class="actions"><li><a href="store.html" class="button primary">Shop</a></li><li><a href="db.html" class="button">Database</a></li></ul>
+</div></div>
+<footer id="footer"><div class="inner"><section><h2>VOIDD Labs</h2><p>Miami. Browser tools, a game, notes, a shop. No public phone.</p><ul class="actions"><li><a href="store.html" class="button primary">Shop</a></li><li><a href="call.html" class="button">Contact</a></li></ul></section><section><h2>Follow</h2><ul class="icons"><li><a href="https://github.com/Kawhooped/voidd-sales" class="icon style2 fa-github"><span class="label">GitHub</span></a></li></ul></section><ul class="copyright"><li>&copy; VOIDD Labs</li><li>Design: <a href="https://html5up.net">HTML5 UP</a> Phantom</li><li><a href="license.html">License</a></li></ul></div></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/js/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/js/browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/js/breakpoints.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/js/util.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/js/main.js"></script>
+</body></html>

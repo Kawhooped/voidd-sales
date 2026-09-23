@@ -1,249 +1,28 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#03040a">
-  <title>Shop · VOIDD Labs</title>
-  <meta name="description" content="Play free games. Buy code packs. Ask if you want something else.">
-  <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/store.html">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="gold.css">
-  <style>
-    .wrap { width: min(72rem, 100%); }
-    .hero-row { display:flex; justify-content:space-between; gap:1.2rem; flex-wrap:wrap; align-items:end; }
-    .status-pill {
-      display:inline-flex; align-items:center; gap:.45rem;
-      border:1px solid var(--line); border-radius:999px;
-      padding:.35rem .75rem; color:var(--cyan); font-size:.72rem;
-      letter-spacing:.14em; text-transform:uppercase;
-    }
-    .shelf {
-      display:grid; gap:1rem; margin:1.5rem 0 2rem;
-      grid-template-columns:1fr;
-    }
-    @media (min-width:640px){ .shelf { grid-template-columns:1fr 1fr; } }
-    @media (min-width:980px){ .shelf { grid-template-columns:1fr 1fr 1fr; } }
-    .card {
-      background: linear-gradient(145deg, #0b0f18, #06080e);
-      border:1px solid var(--line); border-radius:16px; overflow:hidden;
-      display:flex; flex-direction:column; min-height:0;
-    }
-    .cover {
-      aspect-ratio: 16/10; position:relative; isolation:isolate;
-      border-bottom:1px solid var(--line);
-    }
-    .cover svg { width:100%; height:100%; display:block; }
-    .cover .badge {
-      position:absolute; left:12px; top:12px; z-index:2;
-      font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
-      color:#111; background:var(--gold); border-radius:999px; padding:.25rem .55rem; font-weight:700;
-    }
-    .body { padding:1rem 1.05rem 1.1rem; display:flex; flex-direction:column; flex:1; }
-    .body h2 { margin:.15rem 0 .35rem; font-size:1.12rem; }
-    .body p { margin:0 0 1rem; color:var(--dim); font-size:.92rem; flex:1; }
-    .acts { display:flex; flex-wrap:wrap; gap:8px; }
-    .acts .btn { width:auto; }
-    .inquire {
-      border:1px solid var(--line); border-radius:16px; padding:1.1rem 1.15rem 1.2rem;
-      background:linear-gradient(145deg,#0b0f18,#06080e); margin-bottom:1.6rem;
-    }
-    .inquire h2 { margin:0 0 .35rem; font-size:1.2rem; }
-    .inquire .lede { margin-bottom:1rem; }
-    .row { display:grid; gap:.7rem; }
-    @media (min-width:720px){ .row { grid-template-columns:1fr 1fr; } }
-    label { display:block; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted2); margin-bottom:.25rem; }
-    .note { color:var(--muted2); font-size:.85rem; margin:.7rem 0 0; }
-    .contact-line { display:flex; flex-wrap:wrap; gap:.6rem 1.1rem; margin:.4rem 0 1rem; }
-    .contact-line a { color:var(--gold-hot); text-decoration:none; font-weight:650; }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <div class="top">
-        <a class="mark" href="index.html"><span class="ring" aria-hidden="true"></span>VOIDD</a>
-        <nav>
-          <a href="index.html">Work</a>
-          <a href="tools/index.html">Tools</a>
-          <a href="blog.html">Blog</a>
-          <a href="store.html" aria-current="page">Shop</a>
-          <a href="codeshelf.html">CodeShelf</a>
-          <a href="call.html">Contact</a>
-        </nav>
-      </div>
-      <div class="hero-row">
-        <div>
-          <p class="place">Miami</p>
-          <h1>Shop.</h1>
-          <p class="lede">Play the free games. Buy a pack when you are ready. Clothes live in the lookbook — they are not for sale here.</p>
-        </div>
-        <p class="status-pill">Play · Buy</p>
-      </div>
-    </header>
-
-    <section class="inquire" id="inquire">
-      <h2>Want a pack?</h2>
-      <p class="lede">Pick an item and send a short note. We reply with a checkout link.</p>
-      <div class="contact-line" id="contactLine"></div>
-      <form id="ask" action="#" method="post">
-        <div class="row">
-          <p>
-            <label for="who">Your name</label>
-            <input id="who" name="who" autocomplete="name" required>
-          </p>
-          <p>
-            <label for="mail">Your email</label>
-            <input id="mail" name="mail" type="email" autocomplete="email" required>
-          </p>
-        </div>
-        <p>
-          <label for="sku">Item</label>
-          <select id="sku" name="sku"></select>
-        </p>
-        <p>
-          <label for="msg">Note</label>
-          <textarea id="msg" name="msg" rows="4" placeholder="What you want to use it for."></textarea>
-        </p>
-        <p class="acts">
-          <button class="btn" type="submit">Open email draft</button>
-          <button class="btn ghost" type="button" id="copyBtn">Copy message</button>
-        </p>
-        <p class="note" id="askNote">Opens an email draft, or copies the message so you can send it.</p>
-      </form>
-    </section>
-
-    <main>
-      <div class="shelf" id="shelf"></div>
-    </main>
-    <footer>
-      <span>VOIDD Labs</span>
-      <a href="shop-void.html">Lookbook</a>
-      <a href="codeshelf.html">CodeShelf</a>
-      <a href="license.html">License</a>
-    </footer>
-  </div>
-  <script>
-  const CONTACT = { phone: "", email: "", telLabel: "", mailLabel: "" };
-
-  const FALLBACK = {
-    version: 3,
-    cashier: "showcase",
-    products: [
-      {id:"ghost-turk",title:"Ghost Turk",tag:"Play",price:0,blurb:"Move one. Purps multiply. Ghosts never die.",play:"play/ghost-turk.html",gumroad:"",status:"live-play"},
-      {id:"dignity-sweep",title:"Dignity Sweep",tag:"Play",price:0,blurb:"Hold to vacuum coins. Robbers clip the lane.",play:"play/dignity-sweep.html",gumroad:"",status:"live-play"},
-      {id:"after-hours",title:"After-Hours Lead Pack",tag:"$47",price:47,blurb:"DIY chat + lead-capture kit for HVAC, dental, law, detail, plumbing, immigration.",gumroad:"https://gimminomi.gumroad.com/l/bhifxl",status:"for-sale"},
-      {id:"upper-mgmt",title:"UPPER MANAGEMENT",tag:"$9",price:9,blurb:"Org / upper-management sim toy — systems satire in one HTML.",gumroad:"https://gimminomi.gumroad.com/l/upper-management-sim",status:"for-sale"},
-      {id:"asset-factory",title:"ASSET FACTORY CONSOLE",tag:"$12",price:12,blurb:"Listing and asset desk energy in one HTML.",gumroad:"https://gimminomi.gumroad.com/l/asset-factory-console",status:"for-sale"},
-      {id:"vector-forge-living",title:"VECTOR FORGE LIVING",tag:"$12",price:12,blurb:"Generative motion in one offline HTML.",gumroad:"https://gimminomi.gumroad.com/l/vector-forge-living",status:"for-sale"},
-      {id:"cockpit-pack",title:"COCKPIT PACK",tag:"$15",price:15,blurb:"Showrunner + Ship Dashboard + Horizon + Hearth.",gumroad:"https://gimminomi.gumroad.com/l/voidd-cockpit-pack",status:"for-sale"},
-      {id:"court-pack",title:"COURT PACK",tag:"$15",price:15,blurb:"Whisper Court + King's Hours + Core + Coalition + Young King.",gumroad:"https://gimminomi.gumroad.com/l/voidd-court-pack",status:"for-sale"},
-      {id:"nudge-lab-pack",title:"NUDGE LAB PACK",tag:"$15",price:15,blurb:"Four nudge/field toys: cosmos, biome, arena, lab.",gumroad:"https://gimminomi.gumroad.com/l/voidd-nudge-lab-pack",status:"for-sale"},
-      {id:"arena-pack",title:"ARENA PACK",tag:"$19",price:19,blurb:"Angels vs Demons + Blade Instinct + Platform Command + Emoji Soccer.",gumroad:"https://gimminomi.gumroad.com/l/voidd-arena-pack",status:"for-sale"},
-      {id:"creative-pack",title:"CREATIVE PACK",tag:"$19",price:19,blurb:"Vector Forge + Loom + Draws + The Forge + Ember.",gumroad:"https://gimminomi.gumroad.com/l/voidd-creative-pack",status:"for-sale"},
-      {id:"play-wave-pack",title:"PLAY WAVE PACK",tag:"$19",price:19,blurb:"Oculus + Ascent Arcade + Draws — three offline HTML toys.",gumroad:"https://gimminomi.gumroad.com/l/voidd-play-wave-pack",status:"for-sale"},
-      {id:"void-city-facades-vol1",title:"VOID CITY FACADES VOL.1",tag:"$29",price:29,blurb:"15 tileable 4K cyberpunk facade materials. Commercial license.",gumroad:"",wixPath:"/product-page/void-city-facades-vol1",status:"listed-wix"}
-    ]
-  };
-
-  function hue(id){
-    let h = 0;
-    for (let i=0;i<id.length;i++) h = (h*33 + id.charCodeAt(i)) >>> 0;
-    return h % 360;
-  }
-  function coverSvg(p){
-    const h = hue(p.id);
-    const h2 = (h+48)%360;
-    const label = (p.title||p.id).slice(0,18);
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="g-${p.id}" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="hsl(${h} 70% 42%)"/>
-          <stop offset="1" stop-color="hsl(${h2} 80% 18%)"/>
-        </linearGradient>
-      </defs>
-      <rect width="640" height="400" fill="#05070d"/>
-      <rect width="640" height="400" fill="url(#g-${p.id})" opacity=".88"/>
-      <circle cx="520" cy="-10" r="180" fill="rgba(255,255,255,.08)"/>
-      <circle cx="40" cy="360" r="120" fill="rgba(67,222,245,.12)"/>
-      <text x="36" y="214" fill="rgba(255,255,255,.92)" font-family="ui-sans-serif,system-ui" font-size="28" font-weight="700">${label}</text>
-      <text x="36" y="248" fill="rgba(247,246,255,.55)" font-family="ui-monospace,monospace" font-size="14">${p.id}</text>
-    </svg>`;
-  }
-
-  function buyBtns(p){
-    const bits = [];
-    if (p.play) bits.push(`<a class="btn ghost" href="${p.play}">Play</a>`);
-    if (p.gumroad) bits.push(`<a class="btn" href="${p.gumroad}">Buy on Gumroad</a>`);
-    else if (p.wixPath) bits.push(`<a class="btn ghost" href="https://www.void.works${p.wixPath}" target="_blank" rel="noopener">View on Wix</a>`);
-    bits.push(`<a class="btn ghost" href="#inquire" data-sku="${p.id}">Ask</a>`);
-    return bits.join("");
-  }
-
-  function paint(data){
-    const el = document.getElementById("shelf");
-    const products = data.products || [];
-    el.innerHTML = products.map(p => `
-      <article class="card">
-        <div class="cover">${p.image ? `<img src="${p.image}" alt="">` : coverSvg(p)}<span class="badge">${p.tag || (p.price?("$"+p.price):"")}</span></div>
-        <div class="body">
-          <h2>${p.title}</h2>
-          <p>${p.blurb || ""}</p>
-          <div class="acts">${buyBtns(p)}</div>
-        </div>
-      </article>`).join("");
-
-    const sel = document.getElementById("sku");
-    sel.innerHTML = products.map(p => `<option value="${p.id}">${p.title}${p.price?(" · $"+p.price):""}</option>`).join("");
-
-    el.querySelectorAll("[data-sku]").forEach(a => {
-      a.addEventListener("click", () => { sel.value = a.getAttribute("data-sku"); });
-    });
-  }
-
-  function draftText(){
-    const who = document.getElementById("who").value.trim();
-    const mail = document.getElementById("mail").value.trim();
-    const sku = document.getElementById("sku").value;
-    const msg = document.getElementById("msg").value.trim();
-    return `VOIDD shop inquiry\nItem: ${sku}\nName: ${who}\nEmail: ${mail}\n\n${msg || "(no note)"}`;
-  }
-
-  function renderContact(){
-    const line = document.getElementById("contactLine");
-    const bits = [];
-    if (CONTACT.phone) bits.push(`<a href="tel:${CONTACT.phone.replace(/[^\d+]/g,"")}">${CONTACT.telLabel || CONTACT.phone}</a>`);
-    if (CONTACT.email) bits.push(`<a href="mailto:${CONTACT.email}">${CONTACT.mailLabel || CONTACT.email}</a>`);
-    line.innerHTML = bits.join("");
-    if (CONTACT.email) {
-      document.getElementById("askNote").textContent = "Opens your mail app with the item filled in.";
-    }
-  }
-
-  document.getElementById("ask").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const body = encodeURIComponent(draftText());
-    const subject = encodeURIComponent("VOIDD shop · " + document.getElementById("sku").value);
-    const to = CONTACT.email || "";
-    if (to) location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-    else {
-      navigator.clipboard.writeText(draftText()).then(() => {
-        document.getElementById("askNote").textContent = "Copied. Paste it into your mail app.";
-      });
-    }
-  });
-  document.getElementById("copyBtn").addEventListener("click", () => {
-    navigator.clipboard.writeText(draftText()).then(() => {
-      document.getElementById("askNote").textContent = "Message copied.";
-    });
-  });
-
-  renderContact();
-  paint(FALLBACK);
-  fetch("api/products.json", { cache: "no-store" })
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(data => { if (data && data.products && data.products.length) paint(data); })
-    .catch(() => {});
-  </script>
-</body>
-</html>
+<!DOCTYPE HTML>
+<!-- Phantom by HTML5 UP. html5up.net | @ajlkn. CCA 3.0. VOIDD content by VOIDD Labs. -->
+<html lang="en"><head><title>Shop · VOIDD Labs</title><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/css/main.css" /><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/css/noscript.css" /></noscript><link rel="icon" href="favicon.svg" type="image/svg+xml"></head>
+<body class="is-preload"><div id="wrapper">
+<header id="header"><div class="inner"><a href="index.html" class="logo"><span class="symbol"><img src="favicon.svg" alt="" /></span><span class="title">VOIDD</span></a><nav><ul><li><a href="#menu">Menu</a></li></ul></nav></div></header>
+<nav id="menu"><h2>Menu</h2><ul><li><a href="index.html">Work</a></li><li><a href="tools/index.html">Tools</a></li><li><a href="play/ghost-turk.html">Play</a></li><li><a href="blog.html">Blog</a></li><li><a href="store.html">Shop</a></li><li><a href="codeshelf.html">CodeShelf</a></li><li><a href="call.html">Contact</a></li></ul></nav>
+<div id="main"><div class="inner">
+<h1>Shop.</h1>
+<p>Code packs check out on Gumroad. Clothes are lookbook only. No cart on this page. No public phone.</p>
+<ul class="actions"><li><a href="https://gimminomi.gumroad.com" class="button primary">Gumroad</a></li><li><a href="codeshelf.html" class="button">CodeShelf</a></li><li><a href="shop-void.html" class="button">Lookbook</a></li></ul>
+<h2>Packs</h2>
+<ul>
+<li><a href="https://gimminomi.gumroad.com/l/bhifxl">After-Hours Lead Pack — $47</a></li>
+<li><a href="https://gimminomi.gumroad.com/l/upper-management-sim">UPPER MANAGEMENT — $9</a></li>
+<li><a href="https://gimminomi.gumroad.com/l/asset-factory-console">ASSET FACTORY CONSOLE — $12</a></li>
+<li><a href="https://gimminomi.gumroad.com/l/vector-forge-living">VECTOR FORGE LIVING — $12</a></li>
+<li><a href="https://gimminomi.gumroad.com/l/voidd-cockpit-pack">COCKPIT PACK — $15</a></li>
+</ul>
+<p>Free to play: <a href="play/ghost-turk.html">Ghost Turk</a>.</p>
+</div></div>
+<footer id="footer"><div class="inner"><section><h2>VOIDD Labs</h2><p>Miami. Browser tools, a game, notes, a shop. No public phone.</p><ul class="actions"><li><a href="store.html" class="button primary">Shop</a></li><li><a href="call.html" class="button">Contact</a></li></ul></section><section><h2>Follow</h2><ul class="icons"><li><a href="https://github.com/Kawhooped/voidd-sales" class="icon style2 fa-github"><span class="label">GitHub</span></a></li></ul></section><ul class="copyright"><li>&copy; VOIDD Labs</li><li>Design: <a href="https://html5up.net">HTML5 UP</a> Phantom</li><li><a href="license.html">License</a></li></ul></div></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/js/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/js/browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/js/breakpoints.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/js/util.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/js/main.js"></script>
+</body></html>
