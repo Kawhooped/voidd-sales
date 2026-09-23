@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Video Studio · VOIDD Labs</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { background: #0b0d12; font-family: "IBM Plex Sans", ui-sans-serif, system-ui; }
+    .tile { min-width: 160px; }
+    .drop-over { outline: 2px dashed #67e8f9; outline-offset: 4px; }
+  </style>
+</head>
+<body class="text-slate-200 min-h-screen">
+  <header class="border-b border-white/10 px-6 py-3 flex flex-wrap gap-3 items-center justify-between">
+    <a href="../index.html" class="text-sm font-semibold tracking-tight">VOIDD</a>
+    <nav class="flex gap-4 text-xs text-slate-400">
+      <a href="index.html">Tools</a>
+      <a href="../play/ghost-turk.html">Play</a>
+      <a href="../blog.html">Blog</a>
+      <a href="../store.html">Shop</a>
+      <a href="../call.html">Contact</a>
+    </nav>
+  </header>
+  <div class="max-w-6xl mx-auto px-6 pt-6">
+    <h1 class="text-2xl font-semibold">Video Studio</h1>
+    <p class="text-sm text-slate-400 mt-1 max-w-2xl">
+      Arrange images and clips on a 16:9 timeline. Encode to 1080p on your machine.
+      This page is the desk. Pages cannot run ffmpeg. Start the local server, then this UI talks to it.
+    </p>
+    <p class="text-xs text-slate-500 mt-2">
+      Source:
+      <a class="text-cyan-300 underline" href="https://github.com/Kawhooped/voidd-sales/tree/dd-main/studio/video-studio">studio/video-studio</a>
+      ·
+      <code class="text-slate-300">uvicorn main:app --host 127.0.0.1 --port 8765</code>
+    </p>
+    <p id="health" class="text-xs mt-2 text-slate-500">Checking local server…</p>
+  </div>
+  <main class="max-w-6xl mx-auto p-6 grid gap-6 lg:grid-cols-[1fr_280px]">
+    <section class="space-y-6">
+      <div class="grid md:grid-cols-2 gap-4">
+        <label class="block rounded-xl border border-dashed border-cyan-400/40 bg-white/5 p-5 cursor-pointer hover:bg-white/10">
+          <div class="text-sm font-medium">Drop or choose media</div>
+          <div class="text-xs text-slate-400 mt-1">Needs the local server</div>
+          <input id="file" type="file" class="hidden" accept="image/*,audio/*,video/*" multiple />
+        </label>
+        <form id="gen-form" class="rounded-xl border border-white/10 bg-white/5 p-4 space-y-2">
+          <label class="text-sm font-medium">Generate AI clip</label>
+          <textarea id="prompt" rows="2" class="w-full bg-black/40 border border-white/10 rounded-md p-2 text-sm" placeholder="slow aerial over neon Miami at dusk"></textarea>
+          <div class="flex gap-2 items-center">
+            <input id="gen-dur" type="number" min="1" max="16" step="1" value="5" class="w-16 bg-black/40 border border-white/10 rounded px-2 py-1 text-sm" />
+            <span class="text-xs text-slate-400">sec</span>
+            <button class="ml-auto px-3 py-1.5 rounded-md bg-fuchsia-600 hover:bg-fuchsia-500 text-sm">Generate</button>
+          </div>
+          <p id="gen-status" class="text-xs text-slate-400"></p>
+        </form>
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-sm font-medium">Library</h2>
+          <button id="refresh" class="text-xs text-cyan-300">refresh</button>
+        </div>
+        <div id="library" class="flex flex-wrap gap-2 min-h-[72px]"></div>
+      </div>
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-sm font-medium">Timeline</h2>
+          <span class="text-xs text-slate-500">drag to reorder</span>
+        </div>
+        <div id="timeline" class="flex gap-2 overflow-x-auto rounded-xl border border-white/10 bg-black/30 p-3 min-h-[120px]"></div>
+      </div>
+    </section>
+    <aside class="space-y-4">
+      <div class="rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
+        <h2 class="text-sm font-medium">Audio bed</h2>
+        <select id="audio" class="w-full bg-black/40 border border-white/10 rounded px-2 py-2 text-sm">
+          <option value="">No song</option>
+        </select>
+        <label class="block text-xs text-slate-400">Volume <span id="vol-label">40%</span></label>
+        <input id="volume" type="range" min="0" max="100" value="40" class="w-full" />
+      </div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
+        <button id="export" class="w-full py-2.5 rounded-md bg-cyan-500 text-slate-900 font-semibold hover:bg-cyan-400">Export MP4</button>
+        <p id="export-status" class="text-xs text-slate-400">Idle. Export needs the local server.</p>
+        <a id="download" class="hidden text-sm text-cyan-300 underline" href="#" download>Download render</a>
+      </div>
+    </aside>
+  </main>
+  <footer class="max-w-6xl mx-auto px-6 pb-10 text-xs text-slate-500">
+    <a href="index.html">Tools</a> · <a href="../index.html">Work</a> · VOIDD Labs · Miami
+  </footer>
+<script>
+const API = "http://127.0.0.1:8765";
+const state = { assets: [], timeline: [], live: false };
+async function api(path, opts) {
+  const r = await fetch(API + path, opts);
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.detail || r.statusText);
+  return data;
+}
+function kindColor(k) {
+  return k === "image" ? "bg-amber-500/20 text-amber-200"
+    : k === "audio" ? "bg-emerald-500/20 text-emerald-200"
+    : "bg-fuchsia-500/20 text-fuchsia-200";
+}
+async function loadAssets() {
+  if (!state.live) {
+    document.getElementById("library").innerHTML = `<span class="text-xs text-slate-500">Server offline. Start uvicorn on port 8765.</span>`;
+    return;
+  }
+  const doc = await api("/api/assets");
+  state.assets = doc.assets || [];
+  renderLibrary();
+  renderAudio();
+}
+function renderLibrary() {
+  const el = document.getElementById("library");
+  el.innerHTML = state.assets.map(a => `
+    <button data-add="${a.id}" class="px-2 py-1 rounded-md text-xs ${kindColor(a.kind)} border border-white/10">
+      + ${a.kind} · ${escapeHtml(a.name).slice(0, 28)}
+    </button>`).join("") || `<span class="text-xs text-slate-500">empty</span>`;
+  el.querySelectorAll("[data-add]").forEach(btn => { btn.onclick = () => addToTimeline(btn.dataset.add); });
+}
+function renderAudio() {
+  const sel = document.getElementById("audio");
+  const cur = sel.value;
+  const songs = state.assets.filter(a => a.kind === "audio");
+  sel.innerHTML = `<option value="">No song</option>` + songs.map(a =>
+    `<option value="${a.id}">${escapeHtml(a.name)}</option>`).join("");
+  if ([...sel.options].some(o => o.value === cur)) sel.value = cur;
+}
+function addToTimeline(id) {
+  const a = state.assets.find(x => x.id === id);
+  if (!a || a.kind === "audio") return;
+  state.timeline.push({ uid: crypto.randomUUID(), id: a.id, kind: a.kind, name: a.name, duration: a.kind === "image" ? 3 : (a.duration || null) });
+  renderTimeline();
+}
+function renderTimeline() {
+  const el = document.getElementById("timeline");
+  if (!state.timeline.length) {
+    el.innerHTML = `<div class="text-xs text-slate-500 self-center">Add clips after the local server is up</div>`;
+    return;
+  }
+  el.innerHTML = state.timeline.map(c => `
+    <div class="tile rounded-lg border border-white/10 bg-white/5 p-2" draggable="true" data-uid="${c.uid}">
+      <div class="text-[10px] uppercase ${kindColor(c.kind)} inline-block px-1 rounded">${c.kind}</div>
+      <div class="text-xs mt-1 truncate">${escapeHtml(c.name)}</div>
+      <label class="block text-[10px] text-slate-400 mt-2">sec
+        <input data-dur="${c.uid}" type="number" min="0.2" step="0.1" value="${c.duration ?? ""}" placeholder="native"
+          class="w-full bg-black/40 border border-white/10 rounded px-1 py-0.5 text-xs" />
+      </label>
+      <button data-rm="${c.uid}" class="mt-1 text-[10px] text-red-300">remove</button>
+    </div>`).join("");
+  el.querySelectorAll("[data-rm]").forEach(b => b.onclick = () => {
+    state.timeline = state.timeline.filter(c => c.uid !== b.dataset.rm);
+    renderTimeline();
+  });
+  el.querySelectorAll("[data-dur]").forEach(inp => {
+    inp.onchange = () => {
+      const c = state.timeline.find(x => x.uid === inp.dataset.dur);
+      c.duration = inp.value === "" ? null : Number(inp.value);
+    };
+  });
+  let dragUid = null;
+  el.querySelectorAll("[data-uid]").forEach(tile => {
+    tile.addEventListener("dragstart", () => { dragUid = tile.dataset.uid; });
+    tile.addEventListener("dragover", e => { e.preventDefault(); tile.classList.add("drop-over"); });
+    tile.addEventListener("dragleave", () => tile.classList.remove("drop-over"));
+    tile.addEventListener("drop", e => {
+      e.preventDefault();
+      tile.classList.remove("drop-over");
+      const from = state.timeline.findIndex(c => c.uid === dragUid);
+      const to = state.timeline.findIndex(c => c.uid === tile.dataset.uid);
+      if (from < 0 || to < 0 || from === to) return;
+      const [item] = state.timeline.splice(from, 1);
+      state.timeline.splice(to, 0, item);
+      renderTimeline();
+    });
+  });
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+document.getElementById("file").addEventListener("change", async (e) => {
+  if (!state.live) return;
+  for (const file of e.target.files) {
+    const fd = new FormData();
+    fd.append("file", file);
+    await api("/api/upload", { method: "POST", body: fd });
+  }
+  e.target.value = "";
+  await loadAssets();
+});
+document.getElementById("refresh").onclick = loadAssets;
+document.getElementById("gen-form").onsubmit = async (e) => {
+  e.preventDefault();
+  const prompt = document.getElementById("prompt").value.trim();
+  const status = document.getElementById("gen-status");
+  if (!state.live) { status.textContent = "Start the local server first."; return; }
+  if (!prompt) return;
+  status.textContent = "Generating…";
+  try {
+    const rec = await api("/api/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt, duration_sec: Number(document.getElementById("gen-dur").value || 5) }),
+    });
+    status.textContent = rec.provider || "done";
+    await loadAssets();
+    addToTimeline(rec.id);
+  } catch (err) { status.textContent = err.message; }
+};
+document.getElementById("volume").oninput = (e) => {
+  document.getElementById("vol-label").textContent = e.target.value + "%";
+};
+document.getElementById("export").onclick = async () => {
+  const status = document.getElementById("export-status");
+  const link = document.getElementById("download");
+  link.classList.add("hidden");
+  if (!state.live) { status.textContent = "Start uvicorn on 127.0.0.1:8765."; return; }
+  if (!state.timeline.length) { status.textContent = "Add at least one visual clip."; return; }
+  status.textContent = "Rendering 1080p…";
+  try {
+    const rec = await api("/api/assemble", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        clips: state.timeline.map(c => ({ id: c.id, duration: c.duration })),
+        audio_id: document.getElementById("audio").value || null,
+        audio_volume: Number(document.getElementById("volume").value) / 100,
+        fps: 30,
+      }),
+    });
+    status.textContent = `Done · ${rec.id}`;
+    link.href = API + rec.url;
+    link.classList.remove("hidden");
+    await loadAssets();
+  } catch (err) { status.textContent = err.message; }
+};
+(async () => {
+  const h = document.getElementById("health");
+  try {
+    const info = await api("/api/health");
+    state.live = true;
+    h.textContent = `Local server on · ffmpeg ${info.ffmpeg ? "ok" : "MISSING"} · key ${info.google_key ? "set" : "unset"}`;
+    h.className = "text-xs mt-2 text-emerald-300";
+  } catch {
+    state.live = false;
+    h.textContent = "Local server off. Clone studio/video-studio and run uvicorn. This page stays a finished desk.";
+    h.className = "text-xs mt-2 text-amber-200";
+  }
+  await loadAssets();
+  renderTimeline();
+})();
+</script>
+</body>
+</html>
