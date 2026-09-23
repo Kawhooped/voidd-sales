@@ -27,7 +27,9 @@
   </header>
   <div class="max-w-6xl mx-auto px-6 pt-6">
     <h1 class="text-2xl font-semibold">Video Studio</h1>
-    <p class="text-sm text-slate-400 mt-1 max-w-2xl">Drop images, clips, and a song. Arrange a 16:9 timeline. Export a video in this tab.</p>
+    <p class="text-sm text-slate-400 mt-1 max-w-2xl">
+      Drop images, clips, and a song. Arrange a 16:9 timeline. Export 1080p MP4 in this tab. First export loads ffmpeg here (~25MB, then cached).
+    </p>
   </div>
   <main class="max-w-6xl mx-auto p-6 grid gap-6 lg:grid-cols-[1fr_280px]">
     <section class="space-y-6">
@@ -69,9 +71,9 @@
         <input id="volume" type="range" min="0" max="100" value="40" class="w-full" />
       </div>
       <div class="rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
-        <button id="export" class="w-full py-2.5 rounded-md bg-cyan-500 text-slate-900 font-semibold hover:bg-cyan-400">Export video</button>
+        <button id="export" class="w-full py-2.5 rounded-md bg-cyan-500 text-slate-900 font-semibold hover:bg-cyan-400">Export MP4</button>
         <p id="export-status" class="text-xs text-slate-400">Idle.</p>
-        <a id="download" class="hidden text-sm text-cyan-300 underline" href="#" download="voidd-studio.webm">Download</a>
+        <a id="download" class="hidden text-sm text-cyan-300 underline" href="#" download="voidd-studio.mp4">Download</a>
         <video id="preview" class="hidden w-full rounded border border-white/10" controls></video>
       </div>
     </aside>
@@ -79,10 +81,13 @@
   <footer class="max-w-6xl mx-auto px-6 pb-10 text-xs text-slate-500">
     <a href="index.html">Tools</a> · <a href="../index.html">Work</a> · VOIDD Labs · Miami
   </footer>
-<script>
-const W = 1920, H = 1080, FPS = 30;
+<script type="module">
+import { FFmpeg } from "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js";
+import { fetchFile, toBlobURL } from "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/esm/index.js";
+const W = 1920, H = 1080;
 const assets = [];
 const timeline = [];
+let ffmpeg = null;
 function kindOf(file) {
   if (file.type.startsWith("image/")) return "image";
   if (file.type.startsWith("audio/")) return "audio";
@@ -100,7 +105,13 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 }
 function uid() { return crypto.randomUUID(); }
-function probeVideoDuration(url) {
+function extOf(name, kind) {
+  const e = (name.split(".").pop() || "").toLowerCase();
+  if (kind === "image") return ["png","jpg","jpeg","webp","gif","bmp"].includes(e) ? e : "png";
+  if (kind === "audio") return ["mp3","wav","m4a","aac","ogg","flac"].includes(e) ? e : "mp3";
+  return ["mp4","mov","webm","mkv"].includes(e) ? e : "mp4";
+}
+function probeDuration(url) {
   return new Promise(resolve => {
     const v = document.createElement("video");
     v.preload = "metadata";
@@ -115,7 +126,7 @@ async function addFiles(files) {
     if (!kind) continue;
     const url = URL.createObjectURL(file);
     const rec = { id: uid(), kind, name: file.name, url, file, duration: kind === "image" ? 3 : null };
-    if (kind === "video" || kind === "audio") rec.duration = await probeVideoDuration(url);
+    if (kind !== "image") rec.duration = await probeDuration(url);
     assets.unshift(rec);
   }
   renderLibrary(); renderAudio();
@@ -160,14 +171,6 @@ function renderTimeline() {
     });
   });
 }
-function coverDraw(ctx, src, sw, sh) {
-  const scale = Math.max(W / sw, H / sh);
-  const dw = sw * scale, dh = sh * scale;
-  ctx.drawImage(src, (W - dw) / 2, (H - dh) / 2, dw, dh);
-}
-function loadImage(url) {
-  return new Promise((resolve, reject) => { const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = url; });
-}
 document.getElementById("file").addEventListener("change", async e => { await addFiles([...e.target.files]); e.target.value = ""; });
 document.getElementById("gen-form").onsubmit = e => {
   e.preventDefault();
@@ -177,17 +180,26 @@ document.getElementById("gen-form").onsubmit = e => {
   const ctx = canvas.getContext("2d"); ctx.fillStyle = "#1e1b4b"; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = "#f5d0fe"; ctx.font = "64px sans-serif"; ctx.textAlign = "center"; ctx.fillText(text.slice(0, 48), W / 2, H / 2);
   canvas.toBlob(blob => {
-    const url = URL.createObjectURL(blob);
-    const rec = { id: uid(), kind: "image", name: text.slice(0, 40), url, duration: dur };
+    const rec = { id: uid(), kind: "image", name: text.slice(0, 40), url: URL.createObjectURL(blob), file: new File([blob], "title.png", { type: "image/png" }), duration: dur };
     assets.unshift(rec);
     timeline.push({ uid: uid(), id: rec.id, kind: "image", name: rec.name, duration: dur });
     renderLibrary(); renderTimeline();
   }, "image/png");
 };
 document.getElementById("volume").oninput = e => { document.getElementById("vol-label").textContent = e.target.value + "%"; };
-function pickMime() {
-  const types = ["video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"];
-  return types.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || "video/webm";
+const VF = "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,setsar=1,fps=30,format=yuv420p";
+async function loadFfmpeg(status) {
+  if (ffmpeg) return ffmpeg;
+  status.textContent = "Loading ffmpeg in this tab (~25MB, once)…";
+  const ff = new FFmpeg();
+  ff.on("log", ({ message }) => { if (message && message.length < 160) status.textContent = message; });
+  const base = "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm";
+  await ff.load({
+    coreURL: await toBlobURL(`${base}/ffmpeg-core.js`, "text/javascript"),
+    wasmURL: await toBlobURL(`${base}/ffmpeg-core.wasm`, "application/wasm"),
+  });
+  ffmpeg = ff;
+  return ff;
 }
 document.getElementById("export").onclick = async () => {
   const status = document.getElementById("export-status");
@@ -195,64 +207,53 @@ document.getElementById("export").onclick = async () => {
   const preview = document.getElementById("preview");
   link.classList.add("hidden"); preview.classList.add("hidden");
   if (!timeline.length) { status.textContent = "Add at least one visual clip."; return; }
-  if (typeof MediaRecorder === "undefined") { status.textContent = "This browser cannot record video."; return; }
-  status.textContent = "Rendering…";
-  const canvas = document.createElement("canvas"); canvas.width = W; canvas.height = H;
-  const ctx = canvas.getContext("2d");
-  const vstream = canvas.captureStream(FPS);
-  const mime = pickMime(); const chunks = [];
-  let audioEl = null; let mixed = vstream;
-  const audioId = document.getElementById("audio").value;
-  const vol = Number(document.getElementById("volume").value) / 100;
-  if (audioId) {
-    const song = assets.find(a => a.id === audioId);
-    if (song) {
-      audioEl = new Audio(song.url); audioEl.volume = vol; audioEl.loop = true;
-      const ac = new AudioContext(); const dest = ac.createMediaStreamDestination();
-      const src = ac.createMediaElementSource(audioEl); const gain = ac.createGain(); gain.gain.value = vol;
-      src.connect(gain); gain.connect(dest); gain.connect(ac.destination);
-      mixed = new MediaStream([...vstream.getVideoTracks(), ...dest.stream.getAudioTracks()]);
+  try {
+    const ff = await loadFfmpeg(status);
+    status.textContent = "Writing clips…";
+    const parts = [];
+    for (let i = 0; i < timeline.length; i++) {
+      const clip = timeline[i];
+      const asset = assets.find(a => a.id === clip.id);
+      if (!asset || !asset.file) throw new Error("missing file for " + clip.name);
+      const ext = extOf(asset.name, asset.kind);
+      const inName = `in_${i}.${ext}`;
+      const outName = `part_${i}.mp4`;
+      const dur = Math.max(0.2, Number(clip.duration) || 3);
+      await ff.writeFile(inName, await fetchFile(asset.file));
+      const args = asset.kind === "image"
+        ? ["-loop", "1", "-i", inName, "-t", String(dur), "-vf", VF, "-an", "-c:v", "libx264", "-pix_fmt", "yuv420p", outName]
+        : ["-i", inName, "-t", String(dur), "-vf", VF, "-an", "-c:v", "libx264", "-pix_fmt", "yuv420p", outName];
+      status.textContent = `Encoding clip ${i + 1} / ${timeline.length}…`;
+      await ff.exec(args);
+      parts.push(outName);
     }
-  }
-  const recorder = new MediaRecorder(mixed, { mimeType: mime, videoBitsPerSecond: 6000000 });
-  recorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
-  const finished = new Promise(resolve => { recorder.onstop = resolve; });
-  if (audioEl) { try { await audioEl.play(); } catch (err) {} }
-  recorder.start(200);
-  for (const clip of timeline) {
-    const asset = assets.find(a => a.id === clip.id);
-    if (!asset) continue;
-    const dur = Math.max(0.2, Number(clip.duration) || 3);
-    if (asset.kind === "image") {
-      const img = await loadImage(asset.url);
-      const frames = Math.round(dur * FPS);
-      for (let i = 0; i < frames; i++) {
-        ctx.fillStyle = "#000"; ctx.fillRect(0, 0, W, H);
-        coverDraw(ctx, img, img.width, img.height);
-        await new Promise(r => setTimeout(r, 1000 / FPS));
+    await ff.writeFile("concat.txt", parts.map(p => `file '${p}'`).join("\n"));
+    status.textContent = "Concat…";
+    await ff.exec(["-f", "concat", "-safe", "0", "-i", "concat.txt", "-c", "copy", "silent.mp4"]);
+    const audioId = document.getElementById("audio").value;
+    const vol = Number(document.getElementById("volume").value) / 100;
+    if (audioId) {
+      const song = assets.find(a => a.id === audioId);
+      if (song && song.file) {
+        const aext = extOf(song.name, "audio");
+        await ff.writeFile("song." + aext, await fetchFile(song.file));
+        status.textContent = "Mux audio…";
+        await ff.exec(["-i", "silent.mp4", "-i", "song." + aext, "-filter_complex", `[1:a]volume=${vol}[a]`, "-map", "0:v:0", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-shortest", "out.mp4"]);
+      } else {
+        await ff.exec(["-i", "silent.mp4", "-c", "copy", "out.mp4"]);
       }
-    } else if (asset.kind === "video") {
-      const v = document.createElement("video"); v.src = asset.url; v.muted = true;
-      await new Promise((res, rej) => { v.onloadeddata = res; v.onerror = rej; });
-      try { await v.play(); } catch (err) {}
-      const end = Math.min(v.duration || dur, dur);
-      const t0 = performance.now();
-      while ((performance.now() - t0) / 1000 < end) {
-        ctx.fillStyle = "#000"; ctx.fillRect(0, 0, W, H);
-        coverDraw(ctx, v, v.videoWidth || W, v.videoHeight || H);
-        await new Promise(r => setTimeout(r, 1000 / FPS));
-      }
-      v.pause();
+    } else {
+      await ff.exec(["-i", "silent.mp4", "-c", "copy", "out.mp4"]);
     }
+    const data = await ff.readFile("out.mp4");
+    const blob = new Blob([data.buffer], { type: "video/mp4" });
+    const url = URL.createObjectURL(blob);
+    link.href = url; link.download = "voidd-studio.mp4"; link.classList.remove("hidden");
+    preview.src = url; preview.classList.remove("hidden");
+    status.textContent = "Done · " + (blob.size / 1e6).toFixed(1) + " MB · MP4 1080p";
+  } catch (err) {
+    status.textContent = "ffmpeg failed: " + (err && err.message ? err.message : err);
   }
-  recorder.stop();
-  if (audioEl) { audioEl.pause(); audioEl.currentTime = 0; }
-  await finished;
-  const blob = new Blob(chunks, { type: mime.split(";")[0] });
-  const url = URL.createObjectURL(blob);
-  link.href = url; link.download = "voidd-studio.webm"; link.classList.remove("hidden");
-  preview.src = url; preview.classList.remove("hidden");
-  status.textContent = "Done · " + (blob.size / 1e6).toFixed(1) + " MB · WebM 1080p";
 };
 </script>
 </body>
