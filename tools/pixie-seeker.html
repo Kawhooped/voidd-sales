@@ -56,19 +56,19 @@
       <p class="place">Seek</p>
       <h1>Pixie Seeker.</h1>
     </header>
-    <p class="hint">Click a loaded tile to breed toward it. Same trait twice locks. Pollinations, no key. First image can take ~15s.</p>
+    <p class="hint">Edit first. Generate spends four images. Enter closes the keyboard. Same trait twice locks.</p>
     <div class="fields">
       <div>
         <label>Core</label>
-        <input id="core" type="text" value="pixie, small forest creature, two legs with feet, butterfly wings">
+        <input id="core" type="text" enterkeyhint="done" autocomplete="off" inputmode="text" value="pixie, small forest creature, two legs with feet, butterfly wings">
       </div>
       <div>
         <label>Locked anatomy</label>
-        <input id="lock" type="text" value="two legs, two arms, clear anatomy">
+        <input id="lock" type="text" enterkeyhint="done" autocomplete="off" inputmode="text" value="two legs, two arms, clear anatomy">
       </div>
       <div>
         <label>Avoid</label>
-        <input id="neg" type="text" value="fused legs, mermaid tail, blurry, extra limbs, distorted face">
+        <input id="neg" type="text" enterkeyhint="done" autocomplete="off" inputmode="text" value="fused legs, mermaid tail, blurry, extra limbs, distorted face">
       </div>
     </div>
     <label>Variation <span id="strv">62</span></label>
@@ -106,6 +106,11 @@
     let gen = 0, picks = [], learned = {}, tiles = [], busy = false;
     const $ = (id) => document.getElementById(id);
     $("str").oninput = () => $("strv").textContent = $("str").value;
+    document.querySelectorAll("input[type=text]").forEach((el) => {
+      el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); el.blur(); }
+      });
+    });
     function urlFor(prompt, seed) {
       const t = prompt.replace(/&/g, " and ").slice(0, 400);
       return "https://image.pollinations.ai/prompt/" + encodeURIComponent(t) +
@@ -128,6 +133,7 @@
     }
     function generate() {
       if (busy) return;
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
       busy = true;
       $("genbtn").disabled = true;
       gen += 1;
@@ -207,7 +213,6 @@
     }
     $("genbtn").onclick = generate;
     $("reset").onclick = () => { gen = 0; picks = []; learned = {}; tiles = []; busy = false; $("genbtn").disabled = false; renderLine(); $("grid").innerHTML = ""; $("sys").textContent = ""; $("genlab").textContent = "GEN 0"; };
-    generate();
   </script>
 </body>
 </html>
