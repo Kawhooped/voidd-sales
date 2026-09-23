@@ -7,40 +7,43 @@
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../gold.css">
   <style>
-    .seek { max-width: 1100px; }
-    .seek h1 { margin: 0; }
-    .hint { font: 12px/1.4 ui-monospace, monospace; color: var(--mute, #8b8896); margin: 8px 0 16px; }
-    label { display:block; font:10px/1 ui-monospace,monospace; letter-spacing:.14em; text-transform:uppercase; color:#8b8896; margin:12px 0 6px; }
-    input[type=text] { width:100%; background:#0a0a12; color:#f7f6ff; border:1px solid #1a1e2d; border-radius:12px; padding:12px; font:13px/1.3 ui-monospace,monospace; }
+    .hint { font: 12px/1.45 ui-monospace, monospace; color: var(--dim, #858aa2); margin: 0 0 1rem; max-width: 40rem; }
+    label { display:block; font:10px/1 ui-monospace,monospace; letter-spacing:.14em; text-transform:uppercase; color: var(--muted2, #5f6478); margin:12px 0 6px; }
+    input[type=text] { width:100%; background:#05070d; color:var(--ink,#f7f6ff); border:1px solid var(--line,#1a1e2d); border-radius:12px; padding:12px; font-size:16px; line-height:1.3; font-family: ui-monospace,monospace; }
+    input[type=range] { width:100%; min-height: var(--tap, 2.7rem); }
     .fields { display:grid; gap:10px; }
-    @media (min-width:800px) { .fields { grid-template-columns: 1.4fr 1fr 1fr; } }
-    .acts { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
-    .acts button { border:0; border-radius:12px; padding:12px 16px; cursor:pointer; font:12px/1 ui-monospace,monospace; text-transform:uppercase; }
-    .go { background:#c4a2ff; color:#12081c; font-weight:700; }
+    @media (min-width:720px) { .fields { grid-template-columns: 1.4fr 1fr 1fr; } }
+    .acts { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; align-items:center; }
+    .acts button { border:0; border-radius:12px; padding:0 16px; min-height: var(--tap, 2.7rem); cursor:pointer; font:650 13px/1 ui-monospace,monospace; text-transform:uppercase; }
+    .go { background: var(--gold-hot, #c4a2ff); color:#12081c; }
     .go[disabled] { opacity:.5; }
-    .ghost { background:#111; color:#a1a1aa; border:1px solid #1a1e2d; }
-    .sys { font:11px/1.4 ui-monospace,monospace; color:#8b8896; min-height:1.4em; }
-    .lineage, .learned { display:flex; gap:8px; overflow-x:auto; min-height:72px; padding:10px; border:1px solid #1a1e2d; border-radius:14px; background:#0a0a12; margin-top:12px; }
-    .lineage img { width:64px; height:64px; object-fit:cover; border-radius:10px; }
-    .chip { font:11px ui-monospace,monospace; border:1px solid #1a1e2d; border-radius:999px; padding:6px 10px; color:#c4a2ff; white-space:nowrap; }
+    .ghost { background:#090c14; color:var(--ink,#f7f6ff); border:1px solid var(--line,#1a1e2d); }
+    .sys { font:11px/1.4 ui-monospace,monospace; color:var(--dim,#858aa2); min-height:1.4em; overflow-wrap:anywhere; }
+    .lineage, .learned { display:flex; gap:8px; overflow-x:auto; -webkit-overflow-scrolling:touch; min-height:72px; padding:10px; border:1px solid var(--line,#1a1e2d); border-radius:14px; background:#0a0a12; margin-top:12px; }
+    .lineage img { width:64px; height:64px; object-fit:cover; border-radius:10px; flex-shrink:0; }
+    .chip { font:11px ui-monospace,monospace; border:1px solid var(--line,#1a1e2d); border-radius:999px; padding:8px 12px; color:var(--gold-hot,#c4a2ff); white-space:nowrap; }
     .chip.lock { background:#143028; color:#34d399; }
-    .wait { color:#8b8896; font:12px ui-monospace,monospace; align-self:center; }
-    .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
-    .card { background:#0a0a12; border:1px solid #1a1e2d; border-radius:16px; overflow:hidden; }
+    .wait { color:var(--muted2,#5f6478); font:12px ui-monospace,monospace; align-self:center; }
+    .tiles { display:grid; gap:12px; margin-top:16px; grid-template-columns: 1fr; }
+    @media (min-width:640px) { .tiles { grid-template-columns: 1fr 1fr; } }
+    .card { background:#0a0a12; border:1px solid var(--line,#1a1e2d); border-radius:16px; overflow:hidden; }
     .card.ready { cursor:pointer; }
-    .card.ready:hover { border-color:#a06cff; }
+    .card.ready:hover { border-color: var(--gold, #a06cff); }
     .frame { aspect-ratio:1; background:#07070c; position:relative; display:grid; place-items:center; }
     .frame img { width:100%; height:100%; object-fit:cover; display:none; }
     .frame.ok img { display:block; }
-    .stat { position:absolute; inset:0; display:grid; place-items:center; font:12px/1.4 ui-monospace,monospace; color:#8b8896; padding:16px; text-align:center; }
+    .stat { position:absolute; inset:0; display:grid; place-items:center; font:12px/1.4 ui-monospace,monospace; color:var(--dim,#858aa2); padding:16px; text-align:center; }
     .frame.ok .stat { display:none; }
     .meta { padding:10px 12px; }
     .meta b { display:block; font-weight:500; }
-    .meta small { display:block; color:#8b8896; font:10px/1.3 ui-monospace,monospace; margin-top:4px; }
+    .meta small { display:block; color:var(--dim,#858aa2); font:10px/1.3 ui-monospace,monospace; margin-top:4px; }
+    @media (max-width:520px) {
+      .acts .go { width:100%; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap seek">
+  <div class="wrap wide seek">
     <header>
       <div class="top">
         <a class="mark" href="../index.html"><span class="ring" aria-hidden="true"></span>VOIDD</a>
@@ -69,16 +72,16 @@
       </div>
     </div>
     <label>Variation <span id="strv">62</span></label>
-    <input id="str" type="range" min="0" max="100" value="62" style="width:100%">
+    <input id="str" type="range" min="0" max="100" value="62">
     <div class="acts">
       <button class="go" id="genbtn" type="button">Generate</button>
       <button class="ghost" id="reset" type="button">Reset</button>
-      <span class="hint" id="genlab" style="margin:0;align-self:center">GEN 0</span>
+      <span class="hint" id="genlab" style="margin:0">GEN 0</span>
     </div>
     <p class="sys" id="sys"></p>
     <div class="lineage" id="lineage"><span class="wait">No picks yet.</span></div>
     <div class="learned" id="learned"><span class="wait">No traits learned.</span></div>
-    <div class="grid" id="grid"></div>
+    <div class="tiles" id="grid"></div>
   </div>
   <script>
     const STARTER = [
