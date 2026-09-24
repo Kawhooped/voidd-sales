@@ -27,11 +27,7 @@
     .card .row { display:flex; gap:.55rem; align-items:center; }
     .card .links { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.35rem; }
     .card .links a, .card .links button { min-height:2.2rem; }
-    .add { margin:1.6rem 0; padding:1rem; border:1px dashed var(--line2); border-radius:14px; }
-    .add h2 { margin:0 0 .6rem; font-size:1rem; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); }
-    .add textarea { min-height:4.5rem; }
     .count { color:var(--muted2); font-size:.8rem; }
-    .draft { outline:1px dashed #3a4158; }
   </style>
 </head>
 <body>
@@ -49,7 +45,7 @@
       </div>
       <p class="place">Catalog</p>
       <h1>Database.</h1>
-      <p class="lede">Pages, games, packs, and marks in one list. Search and open them.</p>
+      <p class="lede">Public pages, games, and packs. Search and open them.</p>
     </header>
     <main>
       <div class="bar">
@@ -62,38 +58,24 @@
       </div>
       <div class="kinds" id="kinds"></div>
       <div class="shelf" id="shelf"></div>
-      <form class="add" id="add">
-        <h2>Add a note</h2>
-        <p class="lede" style="margin-bottom:.7rem">Notes you add stay on this device. Download a copy if you want to keep them.</p>
-        <input name="title" required placeholder="Title">
-        <select name="kind">
-          <option>mark</option><option>icon</option><option>color</option>
-          <option>page</option><option>game</option><option>tool</option>
-          <option>pack</option><option>html</option><option>note</option>
-        </select>
-        <input name="file" placeholder="Link or file (optional)">
-        <textarea name="note" placeholder="A short note."></textarea>
-        <p style="display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0 0">
-          <button class="btn" type="submit">Save</button>
-          <button class="btn ghost" type="button" id="export">Download</button>
-          <button class="btn ghost" type="button" id="clear">Clear saved notes</button>
-        </p>
-      </form>
     </main>
     <footer>
       <span>VOIDD Labs</span>
       <a href="license.html">License</a>
+      <a href="tools/shelf.html">Inside</a>
     </footer>
   </div>
 <script>
 const KIND_ALL = "all";
-const DRAFT_KEY = "voidd-library-drafts";
 let lib = { items: [], kinds: ["mark","icon","color","page","game","tool","pack","html","note"] };
 let kind = KIND_ALL;
-function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
-function drafts(){ try { return JSON.parse(localStorage.getItem(DRAFT_KEY)||"[]"); } catch(e){ return []; } }
-function setDrafts(a){ try { localStorage.setItem(DRAFT_KEY, JSON.stringify(a)); } catch(e){} }
-function allItems(){ return lib.items.concat(drafts().map(d => Object.assign({draft:true}, d))); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g, c => ({"&":"&","<":"<",">":">","\"":"""}[c])); }
+function isPublic(it){
+  if (it.visibility === "inside") return false;
+  if (it.visibility === "public") return true;
+  return it.status === "live" || it.status === "for-sale";
+}
+function allItems(){ return (lib.items || []).filter(isPublic); }
 function paintKinds(){
   const used = [KIND_ALL].concat(lib.kinds || []);
   document.getElementById("kinds").innerHTML = used.map(k =>
@@ -114,11 +96,11 @@ function paint(){
   document.getElementById("shelf").innerHTML = list.length ? list.map(it => {
     const href = it.url || it.file || "";
     const prev = it.preview || (/\.(svg|png|jpe?g|webp)$/i.test(it.file||"") ? it.file : "");
-    return `<article class="card${it.draft?" draft":""}">
+    return `<article class="card">
       <div class="row">
         ${prev ? `<img class="prev" alt="" src="${esc(prev)}">` : ""}
         <div>
-          <div class="k">${esc(it.kind)}${it.draft?" · draft":""}</div>
+          <div class="k">${esc(it.kind)}</div>
           <h2>${esc(it.title)}</h2>
         </div>
       </div>
@@ -128,7 +110,7 @@ function paint(){
         ${it.file && it.file !== href ? `<a class="btn ghost" href="${esc(it.file)}">${esc(it.file)}</a>` : ""}
       </div>
     </article>`;
-  }).join("") : `<article class="card"><div class="k">none</div><h2>Nothing matches</h2><p>Add a note below or clear the search.</p></article>`;
+  }).join("") : `<article class="card"><div class="k">none</div><h2>Nothing matches</h2><p>Clear the search.</p></article>`;
 }
 document.getElementById("q").addEventListener("input", paint);
 document.getElementById("sort").addEventListener("change", paint);
@@ -139,33 +121,6 @@ document.getElementById("kinds").addEventListener("click", e => {
   paintKinds();
   paint();
 });
-document.getElementById("add").addEventListener("submit", e => {
-  e.preventDefault();
-  const f = e.target;
-  const item = {
-    id: "draft-" + Date.now(),
-    kind: f.kind.value,
-    title: f.title.value.trim(),
-    file: f.file.value.trim(),
-    url: /^https?:/i.test(f.file.value.trim()) ? f.file.value.trim() : "",
-    note: f.note.value.trim(),
-    added: new Date().toISOString()
-  };
-  if (!item.title) return;
-  setDrafts(drafts().concat(item));
-  f.reset();
-  paint();
-});
-document.getElementById("export").onclick = () => {
-  const blob = new Blob([JSON.stringify({ drafts: drafts() }, null, 2)], { type: "application/json" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "library-drafts.json";
-  a.click();
-};
-document.getElementById("clear").onclick = () => {
-  if (confirm("Clear notes saved on this device?")) { setDrafts([]); paint(); }
-};
 fetch("api/library.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   lib = d;
   paintKinds();
