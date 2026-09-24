@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "updated": "2026-09-23",
+  "updated": "2026-09-24",
   "purpose": "One lens over GitHub. GitHub is source of truth. This file indexes creations so humans and AIs can find them. Do not start a second database.",
   "home": "https://kawhooped.github.io/voidd-sales/",
   "lens": "https://kawhooped.github.io/voidd-sales/db.html",
@@ -8,6 +8,10 @@
   "kinds": ["mark", "icon", "color", "page", "game", "tool", "pack", "html", "note"],
   "items": [
     {"id": "note-architecture", "kind": "note", "title": "Architecture 2026-09-20", "note": "GitHub = storage. db.html + this JSON = access lens. farm-board is ops, not a product catalog. Do not add another database.", "status": "live"},
+    {"id": "note-ideas", "kind": "note", "title": "Ideas 01–08", "note": "Upstream of implementation. Seeds: Living Tool, Useful Web, Idea Space, Human-Making Tools, Specialized Intelligence, Representation Explorer, Personal Knowledge/Memory Space, Tools That Become Systems. Text lives in project artifacts/IDEAS.md, not a public page. Do not treat seeds as shipped tools.", "status": "artifact"},
+    {"id": "note-governance", "kind": "note", "title": "Architecture governance", "note": "Idea → architecture → experiment → implementation. Patterns: traceability, invariants vs variants, capability not vendor, hard permission gate, frozen vs mutable, one architecture many artifacts, fidelity review, drift. File artifacts/GOVERNANCE.md. Not a website.", "status": "artifact"},
+    {"id": "note-living-tool", "kind": "note", "title": "Living Tool", "note": "Idea 01. Architecture + specimen exist locally (living-tool-architecture.md, living-tool.html). Authority is written spec + explicit permissions. Not shipped. No tools URL.", "status": "prototype"},
+    {"id": "note-visitor-minimum", "kind": "note", "title": "Visitor minimum", "note": "Public-page finished bar. Phantom shell on index, blog, store, codeshelf, call, tools/index. Shop buy story is Gumroad.", "status": "live"},
     {"id": "repo-voidd-sales", "kind": "note", "title": "Repo voidd-sales", "url": "https://github.com/Kawhooped/voidd-sales", "note": "Public shop + database website. Branch dd-main. Pages live.", "status": "live"},
     {"id": "repo-voidd-hub", "kind": "note", "title": "Repo voidd-hub", "url": "https://github.com/Kawhooped/voidd-hub", "note": "Public hub scaffold + api/feed.json. Pages not enabled yet (github.io/voidd-hub 404).", "status": "repo-only"},
     {"id": "catalog-feed", "kind": "note", "title": "feed.json", "url": "https://raw.githubusercontent.com/Kawhooped/voidd-hub/dd-main/api/feed.json", "note": "Second public index. Merge toward library.json later. Not a third database.", "status": "live"},
