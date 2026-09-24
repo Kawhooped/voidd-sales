@@ -30,21 +30,16 @@
   <p class="meta"><a href="index.html">Tools</a></p>
   <h1>Speech</h1>
   <p class="lead">Type words. Hear them. The voice engine is a plug, not the product.</p>
-
   <label for="text">Text</label>
   <textarea id="text">Welcome to VOIDD Speech. The tool is ours. The model can change.</textarea>
-
   <label for="provider">Engine</label>
   <select id="provider"></select>
-
   <label for="voice">Voice</label>
   <select id="voice"></select>
-
   <p id="keyRow" style="display:none">
     <label for="key">Remote key (saved only in this browser as gf_key)</label>
     <input id="key" type="password" autocomplete="off" placeholder="Paste key only for the remote engine">
   </p>
-
   <div class="row">
     <button id="go" type="button">Generate</button>
     <button id="dl" class="ghost" type="button" disabled>Download</button>
@@ -64,12 +59,10 @@ const keyInput = document.getElementById('key');
 const dl = document.getElementById('dl');
 let lastBlob = null;
 let lastUrl = null;
-
 function setStatus(msg, err){
   statusEl.textContent = msg;
   statusEl.className = err ? 'err' : '';
 }
-
 function pcmToWav(pcm16, rate){
   const buf = new ArrayBuffer(44 + pcm16.length * 2);
   const v = new DataView(buf);
@@ -81,13 +74,9 @@ function pcmToWav(pcm16, rate){
   for(let i=0;i<pcm16.length;i++) v.setInt16(44+i*2, pcm16[i], true);
   return new Blob([v], {type:'audio/wav'});
 }
-
 const PROVIDERS = {
   device: {
-    id: 'device',
-    label: 'Device (browser)',
-    where: 'device',
-    needsKey: false,
+    id: 'device', label: 'Device (browser)', where: 'device', needsKey: false,
     async listVoices(){
       const wait = () => new Promise(res=>{
         const have = speechSynthesis.getVoices();
@@ -111,17 +100,9 @@ const PROVIDERS = {
     }
   },
   gemini: {
-    id: 'gemini',
-    label: 'Remote Gemini TTS',
-    where: 'remote',
-    needsKey: true,
+    id: 'gemini', label: 'Remote Gemini TTS', where: 'remote', needsKey: true,
     async listVoices(){
-      return [
-        { id: 'Kore', label: 'Kore' },
-        { id: 'Puck', label: 'Puck' },
-        { id: 'Zephyr', label: 'Zephyr' },
-        { id: 'Charon', label: 'Charon' }
-      ];
+      return [{ id: 'Kore', label: 'Kore' },{ id: 'Puck', label: 'Puck' },{ id: 'Zephyr', label: 'Zephyr' },{ id: 'Charon', label: 'Charon' }];
     },
     async synthesize({ text, voice }){
       const key = (localStorage.getItem(KEY) || '').trim();
@@ -146,25 +127,19 @@ const PROVIDERS = {
     }
   }
 };
-
-function currentProvider(){
-  return PROVIDERS[providerSel.value] || PROVIDERS.device;
-}
-
+function currentProvider(){ return PROVIDERS[providerSel.value] || PROVIDERS.device; }
 async function fillVoices(){
   const p = currentProvider();
   keyRow.style.display = p.needsKey ? 'block' : 'none';
   const voices = await p.listVoices();
   voiceSel.innerHTML = voices.map(v => '<option value="'+v.id.replace(/"/g,'')+'">'+v.label.replace(/</g,'')+'</option>').join('') || '<option>default</option>';
 }
-
 async function generate(){
   const text = document.getElementById('text').value.trim();
   if(!text){ setStatus('Enter text.', true); return; }
   lastBlob = null;
   if(lastUrl){ URL.revokeObjectURL(lastUrl); lastUrl = null; }
-  player.hidden = true;
-  dl.disabled = true;
+  player.hidden = true; dl.disabled = true;
   const p = currentProvider();
   setStatus('Running ' + p.where + ' inference…');
   document.getElementById('go').disabled = true;
@@ -173,34 +148,20 @@ async function generate(){
     if(out.blob){
       lastBlob = out.blob;
       lastUrl = URL.createObjectURL(out.blob);
-      player.src = lastUrl;
-      player.hidden = false;
-      player.play();
-      dl.disabled = false;
+      player.src = lastUrl; player.hidden = false; player.play(); dl.disabled = false;
     }
     setStatus(out.note || 'Done.');
-  }catch(e){
-    setStatus(e.message || String(e), true);
-  }finally{
-    document.getElementById('go').disabled = false;
-  }
+  }catch(e){ setStatus(e.message || String(e), true); }
+  finally{ document.getElementById('go').disabled = false; }
 }
-
 providerSel.innerHTML = Object.values(PROVIDERS).map(p => '<option value="'+p.id+'">'+p.label+'</option>').join('');
 keyInput.value = localStorage.getItem(KEY) || '';
-keyInput.addEventListener('change', () => {
-  const v = keyInput.value.trim();
-  if(v) localStorage.setItem(KEY, v);
-});
+keyInput.addEventListener('change', () => { const v = keyInput.value.trim(); if(v) localStorage.setItem(KEY, v); });
 providerSel.addEventListener('change', fillVoices);
 document.getElementById('go').addEventListener('click', generate);
-tdl = document.getElementById('dl');
-dl.addEventListener('click', () => {
+document.getElementById('dl').addEventListener('click', () => {
   if(!lastBlob) return;
-  const a = document.createElement('a');
-  a.href = lastUrl;
-  a.download = 'speech.wav';
-  a.click();
+  const a = document.createElement('a'); a.href = lastUrl; a.download = 'speech.wav'; a.click();
 });
 fillVoices();
 </script>
