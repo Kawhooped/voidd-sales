@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#03040a">
+  <title>Technology Ology · VOIDD</title>
+  <link rel="canonical" href="https://kawhooped.github.io/voidd-sales/watch/technology-ology.html">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../gold.css">
+  <style>
+    video { width:100%; max-height:70vh; background:#000; border-radius:14px; border:1px solid var(--line); }
+    .hint { color:var(--dim); font-size:.92rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="top">
+        <a class="mark" href="../index.html"><span class="ring" aria-hidden="true"></span>VOIDD</a>
+        <nav>
+          <a href="../index.html">Work</a>
+          <a href="../db.html">Database</a>
+        </nav>
+      </div>
+      <p class="place">Watch</p>
+      <h1>Technology Ology.</h1>
+      <p class="lede">Loop cut. Same station at 0:00 and 2:44. Song audio only.</p>
+    </header>
+    <main>
+      <video id="v" controls playsinline loop poster=""></video>
+      <p class="hint" id="hint">No file on Pages yet. Attach <code>technology-ology-loop.mp4</code> to a GitHub Release on voidd-sales, then paste the asset URL below or I will wire it.</p>
+      <p><a class="btn ghost" href="https://github.com/Kawhooped/voidd-sales/releases/new">New release · attach mp4</a></p>
+    </main>
+    <footer>
+      <span>VOIDD Labs</span>
+      <a href="../license.html">License</a>
+    </footer>
+  </div>
+<script>
+const SRC = ""; // set to release asset URL when the mp4 is attached
+const v = document.getElementById("v");
+const hint = document.getElementById("hint");
+if (SRC) { v.src = SRC; hint.textContent = "2:44 · 1080p · eternity dock"; }
+</script>
+</body>
+</html>
