@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "updated": "2026-09-24",
+  "updated": "2026-09-25",
   "purpose": "Public lens only. Drafts and ops live on private voidd-shelf. Grok publishes via GitHub in chat. tools/shelf.html is not on Pages.",
   "home": "https://kawhooped.github.io/voidd-sales/",
   "lens": "https://kawhooped.github.io/voidd-sales/db.html",
@@ -24,6 +24,7 @@
     {"id": "page-shop-void", "kind": "page", "title": "VOID lookbook", "where": "shop-void.html", "url": "shop-void.html", "note": "Apparel is lookbook. Code tiles buy on Gumroad.", "status": "live", "visibility": "public"},
     {"id": "page-codeshelf", "kind": "page", "title": "CodeShelf", "where": "codeshelf.html", "url": "codeshelf.html", "note": "Ten Gumroad packs.", "status": "live", "visibility": "public"},
     {"id": "page-database", "kind": "page", "title": "Database", "where": "db.html", "url": "db.html", "file": "api/library.json", "note": "Public catalog only. Inside catalog is private voidd-shelf.", "status": "live", "visibility": "public"},
+    {"id": "page-about", "kind": "page", "title": "About", "where": "about.html", "url": "about.html", "note": "One screen. Miami. Not an app store. No public phone.", "status": "live", "visibility": "public"},
     {"id": "page-contact", "kind": "page", "title": "Contact", "where": "call.html", "url": "call.html", "note": "No public phone.", "status": "live", "visibility": "public"},
     {"id": "page-license", "kind": "page", "title": "License", "where": "license.html", "url": "license.html", "status": "live", "visibility": "public"},
     {"id": "catalog-library", "kind": "note", "title": "library.json", "where": "api/library.json", "url": "api/library.json", "file": "api/library.json", "note": "Public index. Drafts are not in this file.", "status": "live", "visibility": "public"},
