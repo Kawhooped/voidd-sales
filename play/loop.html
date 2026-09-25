@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#03040a">
+  <title>Loop · VOIDD</title>
+  <meta name="description" content="An endless rollercoaster loop. Stay on the rail. No account.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../gold.css">
+  <style>
+    .stage { margin: 1.1rem 0 1.2rem; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #05060c; }
+    canvas { display: block; width: 100%; height: auto; touch-action: none; }
+    .row { display: flex; gap: .5rem; flex-wrap: wrap; margin: .8rem 0 1.4rem; }
+    .stat { color: var(--dim); font-size: .88rem; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main</a>
+  <div class="wrap">
+    <header class="top">
+      <a class="mark" href="../index.html"><span class="ring" aria-hidden="true"></span>VOIDD</a>
+      <nav>
+        <a href="../index.html">Work</a>
+        <a href="../tools/index.html">Tools</a>
+        <a href="loop.html" aria-current="page">Loop</a>
+        <a href="../store.html">Shop</a>
+      </nav>
+    </header>
+    <main id="main">
+      <p class="place">Ride · our rail</p>
+      <h1>Endless loop.</h1>
+      <p class="lede">Same hill. Same drop. No ticket booth. Drag to lean. It does not stop.</p>
+      <div class="stage"><canvas id="c" width="960" height="540" aria-label="Endless rollercoaster"></canvas></div>
+      <div class="row">
+        <button class="btn" type="button" id="boost">Boost</button>
+        <button class="btn ghost" type="button" id="reset">Reset lean</button>
+        <span class="stat" id="stat">lap 0</span>
+      </div>
+    </main>
+    <footer>
+      <span>VOIDD Labs</span>
+      <a href="../about.html">About</a>
+      <a href="../call.html">Contact</a>
+    </footer>
+  </div>
+  <script>
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width, H = canvas.height;
+  let t = 0, lean = 0, boost = 0, laps = 0, lastLap = 0;
+  function rail(u) {
+    const a = u * Math.PI * 2;
+    const loop = Math.sin(a) * 0.55 + Math.sin(a * 2) * 0.12;
+    const x = W * 0.5 + Math.cos(a) * (210 + loop * 20);
+    const y = H * 0.52 + Math.sin(a) * 150 - Math.max(0, Math.sin(a)) * 40;
+    const z = (Math.sin(a + 1.2) + 1) * 0.5;
+    return { x, y, z, a };
+  }
+  function draw() {
+    t += 0.018 + boost;
+    boost *= 0.96;
+    const u = (t % (Math.PI * 2)) / (Math.PI * 2);
+    if (u < lastLap) laps++;
+    lastLap = u;
+    ctx.fillStyle = "#05060c";
+    ctx.fillRect(0, 0, W, H);
+    const g = ctx.createRadialGradient(W/2, H*0.2, 20, W/2, H*0.3, 420);
+    g.addColorStop(0, "#6a3cff22");
+    g.addColorStop(1, "transparent");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    ctx.beginPath();
+    for (let i = 0; i <= 160; i++) {
+      const p = rail(i / 160);
+      if (i === 0) ctx.moveTo(p.x, p.y);
+      else ctx.lineTo(p.x, p.y);
+    }
+    ctx.strokeStyle = "#1a1e2d";
+    ctx.lineWidth = 22;
+    ctx.stroke();
+    ctx.strokeStyle = "#a06cff";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    const car = rail(u);
+    const nxt = rail((u + 0.01) % 1);
+    const ang = Math.atan2(nxt.y - car.y, nxt.x - car.x) + lean;
+    ctx.save();
+    ctx.translate(car.x, car.y);
+    ctx.rotate(ang);
+    ctx.fillStyle = "#43def5";
+    ctx.fillRect(-16, -8, 32, 16);
+    ctx.fillStyle = "#c4a2ff";
+    ctx.fillRect(8, -6, 10, 12);
+    ctx.restore();
+    document.getElementById("stat").textContent = "lap " + laps + " · lean " + lean.toFixed(2);
+    requestAnimationFrame(draw);
+  }
+  canvas.addEventListener("pointermove", e => {
+    const r = canvas.getBoundingClientRect();
+    lean = ((e.clientX - r.left) / r.width - 0.5) * 0.8;
+  });
+  document.getElementById("boost").onclick = () => { boost = 0.04; };
+  document.getElementById("reset").onclick = () => { lean = 0; };
+  draw();
+  </script>
+</body>
+</html>
