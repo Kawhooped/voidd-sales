@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#03040a">
   <title>Loop · VOIDD</title>
-  <meta name="description" content="An endless rollercoaster loop. Stay on the rail. No account.">
+  <meta name="description" content="Lift so high the car goes inverted and looks backward. Our rail.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../gold.css">
   <style>
@@ -29,9 +29,9 @@
     </header>
     <main id="main">
       <p class="place">Ride · our rail</p>
-      <h1>Endless loop.</h1>
-      <p class="lede">Same hill. Same drop. No ticket booth. Drag to lean. It does not stop.</p>
-      <div class="stage"><canvas id="c" width="960" height="540" aria-label="Endless rollercoaster"></canvas></div>
+      <h1>So up it turns over.</h1>
+      <p class="lede">The lift keeps climbing until the car is upside down and the heading reads backward. Then the drop. Then again.</p>
+      <div class="stage"><canvas id="c" width="960" height="540" aria-label="Inverted rollercoaster"></canvas></div>
       <div class="row">
         <button class="btn" type="button" id="boost">Boost</button>
         <button class="btn ghost" type="button" id="reset">Reset lean</button>
@@ -48,59 +48,95 @@
   const canvas = document.getElementById("c");
   const ctx = canvas.getContext("2d");
   const W = canvas.width, H = canvas.height;
-  let t = 0, lean = 0, boost = 0, laps = 0, lastLap = 0;
+  let t = 0, lean = 0, boost = 0, laps = 0, lastU = 0;
+
   function rail(u) {
-    const a = u * Math.PI * 2;
-    const loop = Math.sin(a) * 0.55 + Math.sin(a * 2) * 0.12;
-    const x = W * 0.5 + Math.cos(a) * (210 + loop * 20);
-    const y = H * 0.52 + Math.sin(a) * 150 - Math.max(0, Math.sin(a)) * 40;
-    const z = (Math.sin(a + 1.2) + 1) * 0.5;
-    return { x, y, z, a };
+    u = ((u % 1) + 1) % 1;
+    const liftX0 = 70, ground = 470, peak = 48;
+    const loopR = 86, loopCx = 620, loopCy = 470 - loopR;
+    let x, y;
+    if (u < 0.28) {
+      const k = u / 0.28;
+      const rise = Math.pow(k, 1.35);
+      x = liftX0 + k * 360;
+      y = ground - rise * (ground - peak);
+    } else if (u < 0.36) {
+      const k = (u - 0.28) / 0.08;
+      x = 430 + k * 70;
+      y = peak + k * 18;
+    } else if (u < 0.48) {
+      const k = (u - 0.36) / 0.12;
+      x = 500 + k * 34;
+      y = 66 + k * ((loopCy + loopR) - 66);
+    } else if (u < 0.86) {
+      const k = (u - 0.48) / 0.38;
+      const th = -Math.PI / 2 + k * Math.PI * 2;
+      x = loopCx + Math.cos(th) * loopR;
+      y = loopCy + Math.sin(th) * loopR;
+    } else {
+      const k = (u - 0.86) / 0.14;
+      x = loopCx + loopR + k * (liftX0 + W - 40 - (loopCx + loopR));
+      y = ground - Math.sin(k * Math.PI) * 28;
+      if (k > 0.72) {
+        const r = (k - 0.72) / 0.28;
+        x = x * (1 - r) + liftX0 * r;
+        y = y * (1 - r) + ground * r;
+      }
+    }
+    return { x, y };
   }
+
+  function heading(u) {
+    const a = rail(u), b = rail(u + 0.003);
+    return Math.atan2(b.y - a.y, b.x - a.x);
+  }
+
   function draw() {
-    t += 0.018 + boost;
-    boost *= 0.96;
+    t += 0.011 + boost;
+    boost *= 0.965;
     const u = (t % (Math.PI * 2)) / (Math.PI * 2);
-    if (u < lastLap) laps++;
-    lastLap = u;
+    if (u < lastU) laps++;
+    lastU = u;
     ctx.fillStyle = "#05060c";
     ctx.fillRect(0, 0, W, H);
-    const g = ctx.createRadialGradient(W/2, H*0.2, 20, W/2, H*0.3, 420);
-    g.addColorStop(0, "#6a3cff22");
-    g.addColorStop(1, "transparent");
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, "#1a0b3a");
+    g.addColorStop(0.35, "#05060c");
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
     ctx.beginPath();
-    for (let i = 0; i <= 160; i++) {
-      const p = rail(i / 160);
+    for (let i = 0; i <= 220; i++) {
+      const p = rail(i / 220);
       if (i === 0) ctx.moveTo(p.x, p.y);
       else ctx.lineTo(p.x, p.y);
     }
     ctx.strokeStyle = "#1a1e2d";
-    ctx.lineWidth = 22;
+    ctx.lineWidth = 20;
     ctx.stroke();
     ctx.strokeStyle = "#a06cff";
     ctx.lineWidth = 3;
     ctx.stroke();
     const car = rail(u);
-    const nxt = rail((u + 0.01) % 1);
-    const ang = Math.atan2(nxt.y - car.y, nxt.x - car.x) + lean;
+    const ang = heading(u) + lean;
+    const inverted = u > 0.55 && u < 0.78;
+    const backward = inverted && Math.cos(ang) < 0;
     ctx.save();
     ctx.translate(car.x, car.y);
     ctx.rotate(ang);
-    ctx.fillStyle = "#43def5";
-    ctx.fillRect(-16, -8, 32, 16);
-    ctx.fillStyle = "#c4a2ff";
-    ctx.fillRect(8, -6, 10, 12);
+    ctx.fillStyle = inverted ? "#c4a2ff" : "#43def5";
+    ctx.fillRect(-18, -7, 36, 14);
+    ctx.fillStyle = "#f7f6ff";
+    ctx.fillRect(10, -5, 8, 10);
     ctx.restore();
-    document.getElementById("stat").textContent = "lap " + laps + " · lean " + lean.toFixed(2);
+    const pose = inverted ? (backward ? "upside down · heading back" : "upside down") : "upright";
+    document.getElementById("stat").textContent = "lap " + laps + " · " + pose;
     requestAnimationFrame(draw);
   }
   canvas.addEventListener("pointermove", e => {
     const r = canvas.getBoundingClientRect();
-    lean = ((e.clientX - r.left) / r.width - 0.5) * 0.8;
+    lean = ((e.clientX - r.left) / r.width - 0.5) * 0.7;
   });
-  document.getElementById("boost").onclick = () => { boost = 0.04; };
+  document.getElementById("boost").onclick = () => { boost = 0.035; };
   document.getElementById("reset").onclick = () => { lean = 0; };
   draw();
   </script>
