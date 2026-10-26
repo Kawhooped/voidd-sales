@@ -17,7 +17,19 @@
 		<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ezabhishek/phantom@master/assets/css/noscript.css" /></noscript>
 		<link rel="icon" href="favicon.svg" type="image/svg+xml">
 		<style>
-			.tiles article .image img { width: 100%; height: auto; aspect-ratio: 1 / 1; display: block; }
+			.tiles article .image {
+				position: relative;
+				padding-bottom: 100%;
+				overflow: hidden;
+				background: #1a1e2d;
+			}
+			.tiles article .image img {
+				position: absolute;
+				top: 0; left: 0;
+				width: 100%; height: 100%;
+				object-fit: cover;
+				display: block;
+			}
 			.tiles article .image:before,
 			.tiles article .image:after { display: none !important; }
 		</style>
