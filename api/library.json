@@ -1,57 +1,877 @@
 {
   "version": 4,
-  "updated": "2026-09-25",
+  "updated": "2026-11-20",
   "purpose": "Public lens only. Drafts and ops live on private voidd-shelf. Grok publishes via GitHub in chat. tools/shelf.html is not on Pages.",
   "home": "https://kawhooped.github.io/voidd-sales/",
   "lens": "https://kawhooped.github.io/voidd-sales/db.html",
   "inside": "voidd-shelf/api/library.json",
   "architecture": "github-source / db-lens / projects-in-repos",
-  "kinds": ["mark", "icon", "color", "page", "game", "tool", "pack", "html", "note"],
+  "kinds": [
+    "mark",
+    "icon",
+    "color",
+    "page",
+    "game",
+    "tool",
+    "pack",
+    "html",
+    "note",
+    "experiment",
+    "collection",
+    "research",
+    "site",
+    "article"
+  ],
   "items": [
-    {"id": "repo-voidd-sales", "kind": "note", "title": "Repo voidd-sales", "url": "https://github.com/Kawhooped/voidd-sales", "note": "Public shop + database website. Branch dd-main. Pages live.", "status": "live", "visibility": "public"},
-    {"id": "page-dd-lab", "kind": "page", "title": "DD Lab", "url": "https://kawhooped.github.io/dd-lab/", "note": "Separate live Pages site.", "status": "live", "visibility": "public"},
-    {"id": "page-site-control", "kind": "page", "title": "voidd-site-control", "url": "https://kawhooped.github.io/voidd-site-control/", "note": "Separate live Pages site.", "status": "live", "visibility": "public"},
-    {"id": "html-voidd-links", "kind": "html", "title": "VOIDD links", "where": "tools/links.html", "url": "tools/links.html", "note": "Handy list of live Pages, catalogs, GitHub.", "status": "live", "visibility": "public"},
-    {"id": "voidd-mark-ring", "kind": "mark", "title": "VOIDD ring mark", "where": "gold.css + every header", "file": "favicon.svg", "preview": "favicon.svg", "note": "22px ring: #866fff / #b17dff / #4ec8ff, rotate -18deg. Wordmark VOIDD.", "use_on": ["voidd-sales", "all public pages"], "status": "live", "visibility": "public"},
-    {"id": "voidd-favicon-v", "kind": "icon", "title": "Favicon V plate", "where": "favicon.svg", "file": "favicon.svg", "preview": "favicon.svg", "note": "32px, dark plate #060504, gold field #d8c089, Georgia V.", "use_on": ["voidd-sales"], "status": "live", "visibility": "public"},
-    {"id": "voidd-gold-tokens", "kind": "color", "title": "VOIDD chrome tokens", "where": "gold.css :root", "file": "gold.css", "url": "gold.css", "note": "bg #03040a, ink #f7f6ff, gold #a06cff, gold-hot #c4a2ff, cyan #43def5, line #1a1e2d.", "use_on": ["voidd-sales"], "status": "live", "visibility": "public"},
-    {"id": "page-work", "kind": "page", "title": "Work", "where": "index.html", "url": "index.html", "repo": "https://github.com/Kawhooped/voidd-sales", "note": "Portfolio home.", "status": "live", "visibility": "public"},
-    {"id": "page-farm", "kind": "tool", "title": "Farm", "where": "farm.html", "url": "farm.html", "note": "Calculator variety tray. Not the Tools front door.", "status": "live", "visibility": "public"},
-    {"id": "page-tools-index", "kind": "page", "title": "Tools index", "where": "tools/index.html", "url": "tools/index.html", "note": "Tools front door.", "status": "live", "visibility": "public"},
-    {"id": "page-tools-simple", "kind": "tool", "title": "Simple tools demo", "where": "tools/simple/index.html", "url": "tools/simple/index.html", "status": "live", "visibility": "public"},
-    {"id": "page-blog", "kind": "page", "title": "Blog", "where": "blog.html", "url": "blog.html", "status": "live", "visibility": "public"},
-    {"id": "page-shop", "kind": "page", "title": "Shop", "where": "store.html", "url": "store.html", "note": "Showcase shop. Gumroad on pack tiles.", "status": "live", "visibility": "public"},
-    {"id": "page-shop-void", "kind": "page", "title": "VOID lookbook", "where": "shop-void.html", "url": "shop-void.html", "note": "Apparel is lookbook. Code tiles buy on Gumroad.", "status": "live", "visibility": "public"},
-    {"id": "page-codeshelf", "kind": "page", "title": "CodeShelf", "where": "codeshelf.html", "url": "codeshelf.html", "note": "Ten Gumroad packs.", "status": "live", "visibility": "public"},
-    {"id": "page-database", "kind": "page", "title": "Database", "where": "db.html", "url": "db.html", "file": "api/library.json", "note": "Public catalog only. Inside catalog is private voidd-shelf.", "status": "live", "visibility": "public"},
-    {"id": "page-about", "kind": "page", "title": "About", "where": "about.html", "url": "about.html", "note": "One screen. Miami. Not an app store. No public phone.", "status": "live", "visibility": "public"},
-    {"id": "page-contact", "kind": "page", "title": "Contact", "where": "call.html", "url": "call.html", "note": "No public phone.", "status": "live", "visibility": "public"},
-    {"id": "page-license", "kind": "page", "title": "License", "where": "license.html", "url": "license.html", "status": "live", "visibility": "public"},
-    {"id": "catalog-library", "kind": "note", "title": "library.json", "where": "api/library.json", "url": "api/library.json", "file": "api/library.json", "note": "Public index. Drafts are not in this file.", "status": "live", "visibility": "public"},
-    {"id": "catalog-products", "kind": "note", "title": "products.json", "where": "api/products.json", "url": "api/products.json", "file": "api/products.json", "note": "Cashier is Gumroad (gimminomi).", "status": "live", "visibility": "public"},
-    {"id": "game-ghost-turk", "kind": "game", "title": "Ghost Turk", "where": "play/ghost-turk.html", "url": "play/ghost-turk.html", "status": "live", "visibility": "public"},
-    {"id": "game-dignity-sweep", "kind": "game", "title": "Dignity Sweep", "where": "play/dignity-sweep.html", "url": "play/dignity-sweep.html", "status": "live", "visibility": "public"},
-    {"id": "game-bean", "kind": "game", "title": "Bean", "where": "bean.html", "url": "bean.html", "status": "live", "visibility": "public"},
-    {"id": "html-gemini-forge", "kind": "html", "title": "GeminiForge — AI App Template", "where": "tools/gemini-forge.html", "url": "tools/gemini-forge.html", "repo": "https://github.com/Kawhooped/gemini-forge", "status": "live", "visibility": "public"},
-    {"id": "html-gemini-forge-studio", "kind": "html", "title": "GeminiForge Studio — Live Builder", "where": "tools/gemini-forge-studio.html", "url": "tools/gemini-forge-studio.html", "repo": "https://github.com/Kawhooped/gemini-forge", "status": "live", "visibility": "public"},
-    {"id": "html-plain", "kind": "html", "title": "PLAIN — literal character agent", "where": "tools/plain.html", "url": "tools/plain.html", "file": "tools/plain.svg", "note": "Direct, literal, rigid. Optional gf_key. Local parser without key.", "status": "live", "visibility": "public"},
-    {"id": "mark-plain", "kind": "mark", "title": "PLAIN mark", "where": "tools/plain.svg", "file": "tools/plain.svg", "preview": "tools/plain.svg", "note": "32px dark plate #060504, gold frame #d8c089, violet vertical bar, cyan crossbar.", "use_on": ["plain"], "status": "live", "visibility": "public"},
-    {"id": "html-closer", "kind": "html", "title": "Closer", "where": "tools/closer.html", "url": "tools/closer.html", "note": "Messy inbound to lead JSON + reply. gf_key.", "status": "live", "visibility": "public"},
-    {"id": "html-center", "kind": "html", "title": "CENTER — still point", "where": "tools/center.html", "url": "tools/center.html", "file": "tools/center.svg", "note": "Keys + speech. Fix and expand. One object one verb. No key.", "status": "live", "visibility": "public"},
-    {"id": "html-text-to-prompt", "kind": "html", "title": "Text → Prompt", "where": "tools/text-to-prompt.html", "url": "tools/text-to-prompt.html", "note": "Messy goals into one-verb parts. Local rules. No key.", "status": "live", "visibility": "public"},
-    {"id": "html-pixie-seeker", "kind": "html", "title": "Pixie Seeker", "where": "tools/pixie-seeker.html", "url": "tools/pixie-seeker.html", "note": "Click-to-breed image seeker. Pollinations, no key.", "status": "live", "visibility": "public"},
-    {"id": "html-speech", "kind": "html", "title": "Speech", "where": "tools/speech.html", "url": "tools/speech.html", "note": "Text to speech. Device engine or remote Gemini TTS via gf_key. Provider is a plug.", "status": "live", "visibility": "public"},
-    {"id": "html-video-studio", "kind": "html", "title": "Video Studio", "where": "tools/video-studio.html", "url": "tools/video-studio.html", "file": "studio/video-studio/main.py", "note": "Public desk. Encode is local FastAPI + ffmpeg.", "status": "live", "visibility": "public"},
-    {"id": "mark-center", "kind": "mark", "title": "CENTER mark", "where": "tools/center.svg", "file": "tools/center.svg", "preview": "tools/center.svg", "note": "32px plate #060504, gold frame, cyan ring, violet point.", "use_on": ["center"], "status": "live", "visibility": "public"},
-    {"id": "pack-after-hours", "kind": "pack", "title": "After-Hours Lead Pack", "url": "https://gimminomi.gumroad.com/l/bhifxl", "note": "$47", "status": "for-sale", "visibility": "public"},
-    {"id": "pack-upper-mgmt", "kind": "pack", "title": "UPPER MANAGEMENT", "url": "https://gimminomi.gumroad.com/l/upper-management-sim", "note": "$9", "status": "for-sale", "visibility": "public"},
-    {"id": "pack-asset-factory", "kind": "pack", "title": "ASSET FACTORY CONSOLE", "url": "https://gimminomi.gumroad.com/l/asset-factory-console", "note": "$12", "status": "for-sale", "visibility": "public"},
-    {"id": "pack-vector-forge", "kind": "pack", "title": "VECTOR FORGE LIVING", "url": "https://gimminomi.gumroad.com/l/vector-forge-living", "note": "$12", "status": "for-sale", "visibility": "public"},
-    {"id": "pack-cockpit", "kind": "pack", "title": "COCKPIT PACK", "url": "https://gimminomi.gumroad.com/l/voidd-cockpit-pack", "note": "$15", "status": "for-sale", "visibility": "public"},
-    {"id": "pack-court", "kind": "pack", "title": "COURT PACK", "url": "https://gimminomi.gumroad.com/l/voidd-court-pack", "note": "$15", "status": "for-sale", "visibility": "public"},
-    {"id": "pack-nudge-lab", "kind": "pack", "title": "NUDGE LAB PACK", "url": "https://gimminomi.gumroad.com/l/voidd-nudge-lab-pack", "note": "$15", "status": "for-sale", "visibility": "public"},
-    {"id": "pack-arena", "kind": "pack", "title": "ARENA PACK", "url": "https://gimminomi.gumroad.com/l/voidd-arena-pack", "note": "$19", "status": "for-sale", "visibility": "public"},
-    {"id": "pack-creative", "kind": "pack", "title": "CREATIVE PACK", "url": "https://gimminomi.gumroad.com/l/voidd-creative-pack", "note": "$19", "status": "for-sale", "visibility": "public"},
-    {"id": "pack-play-wave", "kind": "pack", "title": "PLAY WAVE PACK", "url": "https://gimminomi.gumroad.com/l/voidd-play-wave-pack", "note": "$19", "status": "for-sale", "visibility": "public"}
+    {
+      "id": "repo-voidd-sales",
+      "kind": "note",
+      "title": "Repo voidd-sales",
+      "url": "https://github.com/Kawhooped/voidd-sales",
+      "note": "Public shop + database website. Branch dd-main. Pages live.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-dd-lab",
+      "kind": "page",
+      "title": "DD Lab",
+      "url": "https://kawhooped.github.io/dd-lab/",
+      "note": "Separate live Pages site.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-site-control",
+      "kind": "page",
+      "title": "voidd-site-control",
+      "url": "https://kawhooped.github.io/voidd-site-control/",
+      "note": "Separate live Pages site.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "html-voidd-links",
+      "kind": "html",
+      "title": "VOIDD links",
+      "where": "tools/links.html",
+      "url": "tools/links.html",
+      "note": "Handy list of live Pages, catalogs, GitHub.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "voidd-mark-ring",
+      "kind": "mark",
+      "title": "VOIDD ring mark",
+      "where": "gold.css + every header",
+      "file": "favicon.svg",
+      "preview": "favicon.svg",
+      "note": "22px ring: #866fff / #b17dff / #4ec8ff, rotate -18deg. Wordmark VOIDD.",
+      "use_on": [
+        "voidd-sales",
+        "all public pages"
+      ],
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "voidd-favicon-v",
+      "kind": "icon",
+      "title": "Favicon V plate",
+      "where": "favicon.svg",
+      "file": "favicon.svg",
+      "preview": "favicon.svg",
+      "note": "32px, dark plate #060504, gold field #d8c089, Georgia V.",
+      "use_on": [
+        "voidd-sales"
+      ],
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "voidd-gold-tokens",
+      "kind": "color",
+      "title": "VOIDD chrome tokens",
+      "where": "gold.css :root",
+      "file": "gold.css",
+      "url": "gold.css",
+      "note": "bg #03040a, ink #f7f6ff, gold #a06cff, gold-hot #c4a2ff, cyan #43def5, line #1a1e2d.",
+      "use_on": [
+        "voidd-sales"
+      ],
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-work",
+      "kind": "page",
+      "title": "Work",
+      "where": "index.html",
+      "url": "index.html",
+      "repo": "https://github.com/Kawhooped/voidd-sales",
+      "note": "Portfolio home.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-farm",
+      "kind": "tool",
+      "title": "Farm",
+      "where": "farm.html",
+      "url": "farm.html",
+      "note": "Calculator variety tray. Not the Tools front door.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-tools-index",
+      "kind": "page",
+      "title": "Tools index",
+      "where": "tools/index.html",
+      "url": "tools/index.html",
+      "note": "Tools front door.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-tools-simple",
+      "kind": "tool",
+      "title": "Simple tools demo",
+      "where": "tools/simple/index.html",
+      "url": "tools/simple/index.html",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-blog",
+      "kind": "page",
+      "title": "Blog",
+      "where": "blog.html",
+      "url": "blog.html",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-shop",
+      "kind": "page",
+      "title": "Shop",
+      "where": "store.html",
+      "url": "store.html",
+      "note": "Showcase shop. Gumroad on pack tiles.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-shop-void",
+      "kind": "page",
+      "title": "VOID lookbook",
+      "where": "shop-void.html",
+      "url": "shop-void.html",
+      "note": "Apparel is lookbook. Code tiles buy on Gumroad.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-codeshelf",
+      "kind": "page",
+      "title": "CodeShelf",
+      "where": "codeshelf.html",
+      "url": "codeshelf.html",
+      "note": "Ten Gumroad packs.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-database",
+      "kind": "page",
+      "title": "Database",
+      "where": "db.html",
+      "url": "db.html",
+      "file": "api/library.json",
+      "note": "Public catalog only. Inside catalog is private voidd-shelf.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-about",
+      "kind": "page",
+      "title": "About",
+      "where": "about.html",
+      "url": "about.html",
+      "note": "One screen. Miami. Not an app store. No public phone.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-contact",
+      "kind": "page",
+      "title": "Contact",
+      "where": "call.html",
+      "url": "call.html",
+      "note": "No public phone.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "page-license",
+      "kind": "page",
+      "title": "License",
+      "where": "license.html",
+      "url": "license.html",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "catalog-library",
+      "kind": "note",
+      "title": "library.json",
+      "where": "api/library.json",
+      "url": "api/library.json",
+      "file": "api/library.json",
+      "note": "Public index. Drafts are not in this file.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "catalog-products",
+      "kind": "note",
+      "title": "products.json",
+      "where": "api/products.json",
+      "url": "api/products.json",
+      "file": "api/products.json",
+      "note": "Cashier is Gumroad (gimminomi).",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "game-ghost-turk",
+      "kind": "game",
+      "title": "Ghost Turk",
+      "where": "play/ghost-turk.html",
+      "url": "play/ghost-turk.html",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "game-dignity-sweep",
+      "kind": "game",
+      "title": "Dignity Sweep",
+      "where": "play/dignity-sweep.html",
+      "url": "play/dignity-sweep.html",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "game-bean",
+      "kind": "game",
+      "title": "Bean",
+      "where": "bean.html",
+      "url": "bean.html",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "html-gemini-forge",
+      "kind": "html",
+      "title": "GeminiForge — AI App Template",
+      "where": "tools/gemini-forge.html",
+      "url": "tools/gemini-forge.html",
+      "repo": "https://github.com/Kawhooped/gemini-forge",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "html-gemini-forge-studio",
+      "kind": "html",
+      "title": "GeminiForge Studio — Live Builder",
+      "where": "tools/gemini-forge-studio.html",
+      "url": "tools/gemini-forge-studio.html",
+      "repo": "https://github.com/Kawhooped/gemini-forge",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "html-plain",
+      "kind": "html",
+      "title": "PLAIN — literal character agent",
+      "where": "tools/plain.html",
+      "url": "tools/plain.html",
+      "file": "tools/plain.svg",
+      "note": "Direct, literal, rigid. Optional gf_key. Local parser without key.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "mark-plain",
+      "kind": "mark",
+      "title": "PLAIN mark",
+      "where": "tools/plain.svg",
+      "file": "tools/plain.svg",
+      "preview": "tools/plain.svg",
+      "note": "32px dark plate #060504, gold frame #d8c089, violet vertical bar, cyan crossbar.",
+      "use_on": [
+        "plain"
+      ],
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "html-closer",
+      "kind": "html",
+      "title": "Closer",
+      "where": "tools/closer.html",
+      "url": "tools/closer.html",
+      "note": "Messy inbound to lead JSON + reply. gf_key.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "html-center",
+      "kind": "html",
+      "title": "CENTER — still point",
+      "where": "tools/center.html",
+      "url": "tools/center.html",
+      "file": "tools/center.svg",
+      "note": "Keys + speech. Fix and expand. One object one verb. No key.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "html-text-to-prompt",
+      "kind": "html",
+      "title": "Text → Prompt",
+      "where": "tools/text-to-prompt.html",
+      "url": "tools/text-to-prompt.html",
+      "note": "Messy goals into one-verb parts. Local rules. No key.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "html-pixie-seeker",
+      "kind": "html",
+      "title": "Pixie Seeker",
+      "where": "tools/pixie-seeker.html",
+      "url": "tools/pixie-seeker.html",
+      "note": "Click-to-breed image seeker. Pollinations, no key.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "html-speech",
+      "kind": "html",
+      "title": "Speech",
+      "where": "tools/speech.html",
+      "url": "tools/speech.html",
+      "note": "Text to speech. Device engine or remote Gemini TTS via gf_key. Provider is a plug.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "html-video-studio",
+      "kind": "html",
+      "title": "Video Studio",
+      "where": "tools/video-studio.html",
+      "url": "tools/video-studio.html",
+      "file": "studio/video-studio/main.py",
+      "note": "Public desk. Encode is local FastAPI + ffmpeg.",
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "mark-center",
+      "kind": "mark",
+      "title": "CENTER mark",
+      "where": "tools/center.svg",
+      "file": "tools/center.svg",
+      "preview": "tools/center.svg",
+      "note": "32px plate #060504, gold frame, cyan ring, violet point.",
+      "use_on": [
+        "center"
+      ],
+      "status": "live",
+      "visibility": "public"
+    },
+    {
+      "id": "pack-after-hours",
+      "kind": "pack",
+      "title": "After-Hours Lead Pack",
+      "url": "https://gimminomi.gumroad.com/l/bhifxl",
+      "note": "$47",
+      "status": "for-sale",
+      "visibility": "public"
+    },
+    {
+      "id": "pack-upper-mgmt",
+      "kind": "pack",
+      "title": "UPPER MANAGEMENT",
+      "url": "https://gimminomi.gumroad.com/l/upper-management-sim",
+      "note": "$9",
+      "status": "for-sale",
+      "visibility": "public"
+    },
+    {
+      "id": "pack-asset-factory",
+      "kind": "pack",
+      "title": "ASSET FACTORY CONSOLE",
+      "url": "https://gimminomi.gumroad.com/l/asset-factory-console",
+      "note": "$12",
+      "status": "for-sale",
+      "visibility": "public"
+    },
+    {
+      "id": "pack-vector-forge",
+      "kind": "pack",
+      "title": "VECTOR FORGE LIVING",
+      "url": "https://gimminomi.gumroad.com/l/vector-forge-living",
+      "note": "$12",
+      "status": "for-sale",
+      "visibility": "public"
+    },
+    {
+      "id": "pack-cockpit",
+      "kind": "pack",
+      "title": "COCKPIT PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-cockpit-pack",
+      "note": "$15",
+      "status": "for-sale",
+      "visibility": "public"
+    },
+    {
+      "id": "pack-court",
+      "kind": "pack",
+      "title": "COURT PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-court-pack",
+      "note": "$15",
+      "status": "for-sale",
+      "visibility": "public"
+    },
+    {
+      "id": "pack-nudge-lab",
+      "kind": "pack",
+      "title": "NUDGE LAB PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-nudge-lab-pack",
+      "note": "$15",
+      "status": "for-sale",
+      "visibility": "public"
+    },
+    {
+      "id": "pack-arena",
+      "kind": "pack",
+      "title": "ARENA PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-arena-pack",
+      "note": "$19",
+      "status": "for-sale",
+      "visibility": "public"
+    },
+    {
+      "id": "pack-creative",
+      "kind": "pack",
+      "title": "CREATIVE PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-creative-pack",
+      "note": "$19",
+      "status": "for-sale",
+      "visibility": "public"
+    },
+    {
+      "id": "pack-play-wave",
+      "kind": "pack",
+      "title": "PLAY WAVE PACK",
+      "url": "https://gimminomi.gumroad.com/l/voidd-play-wave-pack",
+      "note": "$19",
+      "status": "for-sale",
+      "visibility": "public"
+    },
+    {
+      "id": "html-workshop",
+      "kind": "tool",
+      "title": "HTML Workshop",
+      "url": "https://kawhooped.github.io/voidd-hub/apps/html-workshop/",
+      "note": "A browser-based workspace for making small websites without setting up a development environment. Write or import HTML, preview it as you work, save drafts, and export a standalone page when it is ready to share.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "html",
+        "builder",
+        "editor",
+        "creator"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "mind-playgrounds",
+      "kind": "experiment",
+      "title": "Mind Playgrounds",
+      "url": "https://kawhooped.github.io/voidd-hub/apps/mind-playgrounds/",
+      "note": "An interactive sandbox for exploring how thoughts, associations, ideas, and simple models might behave. Move through a thought-space, grow an idea garden, inspect a small self-model, and try experiments directly in the browser.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "ideas",
+        "simulation",
+        "interactive",
+        "mind"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "center",
+      "kind": "tool",
+      "title": "CENTER",
+      "url": "https://kawhooped.github.io/voidd-sales/tools/center.html",
+      "note": "A compact tool for pausing, regaining focus, and choosing a next step when attention feels scattered. Open it for a quick reset rather than another complicated productivity system.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "focus",
+        "utility",
+        "wellbeing"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "add",
+      "kind": "tool",
+      "title": "Add",
+      "url": "https://kawhooped.github.io/voidd-sales/tools/add.html",
+      "note": "A deliberately simple addition tool for quick arithmetic. No setup or extra features to get in the way: enter the numbers and get the result.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "calculator",
+        "math",
+        "utility"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "speech",
+      "kind": "tool",
+      "title": "Speech",
+      "url": "https://kawhooped.github.io/voidd-sales/tools/speech.html",
+      "note": "A lightweight text-to-speech tool that uses the voices available in your browser. Type or paste text and listen to it aloud, useful for proofreading, accessibility, or hearing how words sound.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "audio",
+        "text-to-speech",
+        "accessibility"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "pixie-seeker",
+      "kind": "tool",
+      "title": "Pixie Seeker",
+      "url": "https://kawhooped.github.io/voidd-sales/tools/pixie-seeker.html",
+      "note": "A playful little discovery interface for following curiosity and finding something unexpected to explore. It is an experiment in making search feel more like wandering than filling out a form.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "search",
+        "discovery",
+        "interactive"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "gemini-forge",
+      "kind": "tool",
+      "title": "GeminiForge",
+      "url": "https://kawhooped.github.io/voidd-sales/tools/gemini-forge.html",
+      "note": "A browser-based interface for experimenting with Google's Gemini AI models. It provides a focused place to send prompts and work with model responses without building a chat application from scratch.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "ai",
+        "gemini",
+        "chat"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "gemini-forge-studio",
+      "kind": "tool",
+      "title": "GeminiForge Studio",
+      "url": "https://kawhooped.github.io/voidd-sales/tools/gemini-forge-studio.html",
+      "note": "A visual workspace for creating HTML and seeing the result beside the code. It brings editing and preview together so small interface ideas can be tested quickly.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "ai",
+        "html",
+        "builder"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "ghost-turk",
+      "kind": "game",
+      "title": "Ghost Turk",
+      "url": "https://kawhooped.github.io/voidd-sales/play/ghost-turk.html",
+      "note": "A small arcade game built around a board that refuses to stay still. Play a quick round, watch the grid change, and see how well you adapt as the puzzle shifts.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "arcade",
+        "grid",
+        "game"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "bean",
+      "kind": "game",
+      "title": "BEAN",
+      "url": "https://kawhooped.github.io/voidd-sales/bean.html",
+      "note": "A tiny life simulation centered on a character living through everyday needs and the passage of time. Watch a simple world evolve and explore how small decisions shape its behavior.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "simulation",
+        "game",
+        "life"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "loop",
+      "kind": "game",
+      "title": "Loop",
+      "url": "https://kawhooped.github.io/voidd-sales/play/loop.html",
+      "note": "A compact physics experiment built around motion along a rail. It is a small interactive playground for seeing how movement, momentum, and the shape of a track combine.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "physics",
+        "arcade",
+        "canvas"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "tools-directory",
+      "kind": "collection",
+      "title": "VOIDD Tools Directory",
+      "url": "https://kawhooped.github.io/voidd-sales/tools/index.html",
+      "note": "A central index of browser-based utilities collected across the VOIDD projects. Browse the available tools by purpose and jump directly into the ones that solve a practical task.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "tools",
+        "directory",
+        "collection"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "developer-tools-directory",
+      "kind": "collection",
+      "title": "Developer Tools Directory",
+      "url": "https://github.com/Kawhooped/devtools-directory",
+      "note": "A curated starting point for developers looking for useful software, AI coding assistants, and technical resources. The directory is intended to reduce discovery time and make promising tools easier to compare.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "developer",
+        "ai",
+        "directory"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "tools-for-everyone",
+      "kind": "collection",
+      "title": "Tools for Everyone",
+      "url": "https://github.com/Kawhooped/tools-for-everyone",
+      "note": "A public collection of free tools intended to be useful without a complicated setup or purchase. Explore the available utilities and use the ones that fit the task at hand.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "free",
+        "tools",
+        "open"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "physical-computing-energy",
+      "kind": "research",
+      "title": "Physical Computing & Energy",
+      "url": "https://kawhooped.github.io/voidd-sales/articles/physical-computing-energy.html",
+      "note": "An exploration of the physical foundations behind computation, including the energy required to store, move, and process information. It connects abstract ideas about computing to the material systems and power demands that make it possible.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "research",
+        "computing",
+        "energy"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "voidd-sales",
+      "kind": "site",
+      "title": "VOIDD Labs",
+      "url": "https://kawhooped.github.io/voidd-sales/",
+      "note": "The broader VOIDD Labs site: a public home for tools, publications, experiments, and other projects. Visit it to browse the wider collection beyond the experiments hosted in this hub.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "shop",
+        "portfolio",
+        "publishing"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "things-worth-making",
+      "kind": "article",
+      "title": "Things Worth Making",
+      "url": "https://kawhooped.github.io/voidd-hub/apps/things-worth-making/",
+      "note": "A field guide to turning curiosity into things that exist outside the imagination. It explores practical making, creative tools, intelligence, experiments, and the value of learning from real use rather than treating an idea as finished when it sounds convincing.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "ideas",
+        "making",
+        "intelligence",
+        "creative-tools",
+        "experiments"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "intelligence-beyond-models",
+      "kind": "research",
+      "title": "Intelligence Beyond Models",
+      "url": "https://kawhooped.github.io/voidd-hub/research/intelligence-beyond-models.html",
+      "note": "This working paper asks how intelligence should be evaluated when a system has to act, receive feedback, and adapt. It looks beyond fluent answers toward observable learning, recovery from mistakes, and reliable results in an environment.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "ai",
+        "intelligence",
+        "agents",
+        "feedback",
+        "evaluation"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "context-is-not-memory",
+      "kind": "research",
+      "title": "Context Is Not Memory",
+      "url": "https://kawhooped.github.io/voidd-hub/research/context-is-not-memory.html",
+      "note": "This paper distinguishes remembering past information from representing the situation that matters now. It explores how entities, relationships, conditions, evidence, and uncertainty can help a system understand what is happening instead of merely retrieving facts.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "context",
+        "memory",
+        "situational-models",
+        "ai",
+        "knowledge"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "bot-detect-behavioral-evidence",
+      "kind": "research",
+      "title": "Bot Detect: Behavior Before Labels",
+      "url": "https://kawhooped.github.io/voidd-hub/research/bot-detect-behavioral-evidence.html",
+      "note": "This paper examines how to distinguish automated activity from harmful behavior without treating every bot as a threat. It focuses on observable signals, evidence quality, uncertainty, and proportionate responses that reduce false positives.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "bot-detection",
+        "behavior",
+        "security",
+        "automation",
+        "evidence"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "outcome-first-falsification-loop",
+      "kind": "research",
+      "title": "The Outcome-First Falsification Loop",
+      "url": "https://github.com/Kawhooped/voidd-hub/blob/dd-main/research/outcome-first-falsification-loop.md",
+      "note": "A practical method for turning a broad idea into one small experiment with an observable result. The loop emphasizes choosing a concrete outcome, testing assumptions against evidence, and changing course when reality disagrees.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "research-method",
+        "experiments",
+        "evidence",
+        "falsification",
+        "workflow"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "palette-lab",
+      "kind": "tool",
+      "title": "Palette Lab",
+      "url": "https://kawhooped.github.io/voidd-hub/experiments/palette-lab.html",
+      "note": "A quick color playground for generating five-color palettes, locking the shades you like, and copying the result. It is a small design utility and an experiment in making useful creative tools that open instantly in a browser.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "color",
+        "design",
+        "generator",
+        "creative"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "life-grid",
+      "kind": "experiment",
+      "title": "Life Grid",
+      "url": "https://kawhooped.github.io/voidd-hub/experiments/life-grid.html",
+      "note": "A playable cellular automaton inspired by Conway's Game of Life. Draw cells, run the simulation, step through generations, and watch simple local rules produce patterns that can look surprisingly alive.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "cellular-automata",
+        "simulation",
+        "emergence",
+        "interactive"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "price-sandbox",
+      "kind": "tool",
+      "title": "Price Sandbox",
+      "url": "https://kawhooped.github.io/voidd-hub/experiments/price-sandbox.html",
+      "note": "A lightweight pricing calculator for testing the basic economics of a small offer. Change price, direct cost, sales volume, and fixed costs to see the estimated monthly remainder and break-even sales volume.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "business",
+        "pricing",
+        "calculator",
+        "revenue"
+      ],
+      "source": "voidd-hub"
+    },
+    {
+      "id": "decision-dice",
+      "kind": "tool",
+      "title": "Decision Dice",
+      "url": "https://kawhooped.github.io/voidd-hub/experiments/decision-dice.html",
+      "note": "A tiny random choice tool: enter a list of possibilities and roll to select one. Use it to break a tie, pick a creative constraint, or let chance introduce a direction you might not have chosen yourself.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "randomness",
+        "decision",
+        "play",
+        "utility"
+      ],
+      "source": "voidd-hub"
+    }
   ]
 }
