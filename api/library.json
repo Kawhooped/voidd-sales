@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "updated": "2026-11-20",
+  "updated": "2026-11-24",
   "purpose": "Public lens only. Drafts and ops live on private voidd-shelf. Grok publishes via GitHub in chat. tools/shelf.html is not on Pages.",
   "home": "https://kawhooped.github.io/voidd-sales/",
   "lens": "https://kawhooped.github.io/voidd-sales/db.html",
@@ -23,6 +23,24 @@
     "article"
   ],
   "items": [
+    {
+      "id": "sonora-music-to-art",
+      "kind": "tool",
+      "title": "SONORA — Music to Art",
+      "url": "https://kawhooped.github.io/voidd-hub/apps/sonora/",
+      "note": "A browser-based music-to-art instrument. Analyze a local audio track, generate abstract sound-reactive artwork, choose moods and palettes, and export a 1200 × 1200 PNG. Audio is processed locally.",
+      "status": "catalogued",
+      "visibility": "public",
+      "tags": [
+        "music",
+        "audio",
+        "generative-art",
+        "visualizer",
+        "creative",
+        "png"
+      ],
+      "source": "voidd-hub"
+    },
     {
       "id": "repo-voidd-sales",
       "kind": "note",
